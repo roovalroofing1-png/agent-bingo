@@ -503,6 +503,66 @@
   .footer-ad .services { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
   .footer-ad .services span { font-size: 0.7rem; color: rgba(255,255,255,0.6); }
 
+  /* ── TRIVIA ── */
+  .trivia-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.8); z-index: 300;
+    align-items: center; justify-content: center;
+  }
+  .trivia-overlay.show { display: flex; }
+  .trivia-box {
+    background: white; border-radius: 22px; padding: 28px 24px;
+    max-width: 400px; width: 92%; position: relative;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+  .trivia-label {
+    display: inline-block;
+    background: var(--dark); color: var(--gold);
+    font-size: 0.68rem; font-weight: 800;
+    padding: 4px 12px; border-radius: 20px;
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .trivia-box h2 { font-size: 1rem; font-weight: 900; color: var(--dark); margin-bottom: 18px; line-height: 1.4; }
+  .trivia-options { display: grid; gap: 10px; margin-bottom: 16px; }
+  .trivia-opt {
+    padding: 13px 16px;
+    border: 2px solid #e8e8e8;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    background: white;
+    transition: all 0.18s;
+    color: var(--dark);
+  }
+  .trivia-opt:hover { border-color: var(--red); background: #fef9f9; }
+  .trivia-opt.correct { background: #d1fae5; border-color: var(--green); color: #065f46; }
+  .trivia-opt.wrong { background: #fee2e2; border-color: var(--red); color: #991b1b; }
+  .trivia-opt:disabled { cursor: default; }
+  .trivia-result {
+    display: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .trivia-result.correct { background: #d1fae5; color: #065f46; }
+  .trivia-result.wrong { background: #fef3c7; color: #92400e; }
+  .trivia-continue {
+    width: 100%; padding: 13px;
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    color: white; border: none; border-radius: 12px;
+    font-size: 0.95rem; font-weight: 800; cursor: pointer;
+    display: none;
+  }
+  .trivia-streak {
+    text-align: center; font-size: 0.75rem; color: var(--muted); margin-top: 10px;
+  }
+
   /* ── MODALS ── */
   .modal-overlay {
     display: none; position: fixed; inset: 0;
@@ -859,6 +919,18 @@
   </div>
 </div>
 
+<!-- TRIVIA MODAL -->
+<div class="trivia-overlay" id="triviaModal">
+  <div class="trivia-box">
+    <div class="trivia-label">🧠 Insurance Trivia — Earn Your Number!</div>
+    <h2 id="triviaQuestion">Loading question...</h2>
+    <div class="trivia-options" id="triviaOptions"></div>
+    <div class="trivia-result" id="triviaResult"></div>
+    <button class="trivia-continue" id="triviaContinue" onclick="closeTriviaAndReward()">Claim My Number! 🎉</button>
+    <div class="trivia-streak" id="triviaStreak"></div>
+  </div>
+</div>
+
 <!-- QR MODAL -->
 <div class="modal-overlay" id="qrModal">
   <div class="modal-box">
@@ -891,6 +963,110 @@
 </div>
 
 <script>
+// ── TRIVIA DATA ──
+const triviaBank = [
+  { q:"What does 'liability insurance' protect you against?", a:1, opts:["Damage to your own property","Claims from others for injury or damage you cause","Your own medical bills","Natural disasters"] },
+  { q:"What is a deductible in an insurance policy?", a:0, opts:["The amount you pay out-of-pocket before insurance kicks in","The maximum your insurer will ever pay","Your monthly premium","A penalty for filing too many claims"] },
+  { q:"What does 'actual cash value' (ACV) mean in a roofing claim?", a:2, opts:["The original cost of your roof","The cost to replace with a brand new roof","Replacement cost minus depreciation","Whatever the adjuster decides"] },
+  { q:"What is 'replacement cost value' (RCV) coverage?", a:1, opts:["Pays only what the roof is worth today","Pays the full cost to replace with new materials","Covers only storm damage","Requires no deductible"] },
+  { q:"Which type of insurance claim covers wind and hail damage to a roof?", a:0, opts:["Homeowners insurance","Auto insurance","Life insurance","Workers comp"] },
+  { q:"What is an insurance 'premium'?", a:3, opts:["The amount paid after a claim","A bonus for not filing claims","The policy limit","The regular payment to keep your policy active"] },
+  { q:"What does 'subrogation' mean in insurance?", a:2, opts:["A type of roof coverage","Canceling a policy early","The insurer recovering costs from the at-fault party","Adding a new person to a policy"] },
+  { q:"What is a 'policy limit' in an insurance contract?", a:1, opts:["How long the policy lasts","The maximum amount the insurer will pay for a covered loss","The minimum deductible required","The agent's commission rate"] },
+  { q:"What is 'force majeure' as it relates to insurance claims?", a:0, opts:["Acts of nature beyond human control that may affect coverage","A special rider for valuable items","A type of flood insurance","A government insurance program"] },
+  { q:"Which government program provides flood insurance in the U.S.?", a:3, opts:["FEMA Direct Pay","HUD Flood Assist","SBA Disaster Relief","National Flood Insurance Program (NFIP)"] },
+  { q:"What does 'coinsurance' mean in a property insurance policy?", a:2, opts:["Two insurers sharing the same risk","Coverage for roommates","A requirement to insure property for a certain % of its value","Insuring multiple properties together"] },
+  { q:"What is a 'binder' in insurance?", a:1, opts:["A folder for policy documents","Temporary proof of insurance coverage while a formal policy is prepared","A discount for bundling policies","A legal penalty for misrepresentation"] },
+  { q:"What does 'indemnity' mean in insurance?", a:0, opts:["Restoring the insured to their financial position before the loss","Paying more than the actual loss","Denying a claim","Canceling a policy"] },
+  { q:"What is 'umbrella insurance'?", a:2, opts:["Insurance for rainy-day emergencies","Coverage for boats and watercraft","Extra liability coverage beyond standard policy limits","Health insurance for freelancers"] },
+  { q:"What does a 'public adjuster' do?", a:1, opts:["Works for the insurance company to deny claims","Represents the policyholder in negotiating a claim settlement","Inspects roofs for safety","Sets insurance premium rates"] },
+  { q:"What is 'depreciation' in a roofing insurance claim?", a:3, opts:["The cost of materials increasing over time","A discount for older homes","Extra coverage for expensive roofs","The reduction in value of the roof due to age and wear"] },
+  { q:"What is a 'claims adjuster'?", a:0, opts:["A professional who evaluates insurance claims on behalf of the insurer","An agent who sells policies","A contractor who does repairs","A government inspector"] },
+  { q:"Which of these is typically NOT covered by standard homeowners insurance?", a:2, opts:["Fire damage","Theft","Flooding from heavy rain","Wind damage"] },
+  { q:"What does 'E&O insurance' stand for and who needs it?", a:1, opts:["Everything & Operations — for contractors","Errors & Omissions — for professionals like insurance agents","Entry & Occupancy — for landlords","Emergency & Operations — for hospitals"] },
+  { q:"What is a 'named peril' policy?", a:3, opts:["A policy named after the homeowner","Coverage only for the most expensive risks","A policy covering all risks except those excluded","A policy that only covers specific risks listed in the policy"] },
+];
+
+let triviaQueue = [];
+let triviaCallback = null;
+let triviaAnsweredCorrect = false;
+let triviaStreak = 0;
+let pendingBonusType = null;
+let pendingBonusCount = 0;
+
+function shuffleTrivia() {
+  triviaQueue = [...triviaBank].sort(() => Math.random() - 0.5);
+}
+shuffleTrivia();
+
+function getNextTrivia() {
+  if (triviaQueue.length === 0) shuffleTrivia();
+  return triviaQueue.pop();
+}
+
+function showTrivia(callback, bonusType, bonusCount) {
+  triviaCallback = callback;
+  pendingBonusType = bonusType;
+  pendingBonusCount = bonusCount;
+  triviaAnsweredCorrect = false;
+
+  const q = getNextTrivia();
+  document.getElementById('triviaQuestion').textContent = q.q;
+  document.getElementById('triviaResult').style.display = 'none';
+  document.getElementById('triviaContinue').style.display = 'none';
+
+  const opts = document.getElementById('triviaOptions');
+  opts.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'trivia-opt';
+    btn.textContent = opt;
+    btn.onclick = () => answerTrivia(i, q.a, q.opts[q.a]);
+    opts.appendChild(btn);
+  });
+
+  document.getElementById('triviaStreak').textContent =
+    triviaStreak > 0 ? `🔥 ${triviaStreak} correct in a row!` : '';
+  document.getElementById('triviaModal').classList.add('show');
+}
+
+function answerTrivia(chosen, correct, correctText) {
+  const btns = document.querySelectorAll('.trivia-opt');
+  btns.forEach(b => { b.disabled = true; b.onclick = null; });
+
+  const result = document.getElementById('triviaResult');
+  const continueBtn = document.getElementById('triviaContinue');
+
+  if (chosen === correct) {
+    btns[chosen].classList.add('correct');
+    triviaAnsweredCorrect = true;
+    triviaStreak++;
+    result.className = 'trivia-result correct';
+    result.innerHTML = `✅ <strong>Correct!</strong> Great knowledge! Your bonus number${pendingBonusCount > 1 ? 's are' : ' is'} added to your card.`;
+    continueBtn.textContent = `Claim My Number${pendingBonusCount > 1 ? 's' : ''}! 🎉`;
+  } else {
+    btns[chosen].classList.add('wrong');
+    btns[correct].classList.add('correct');
+    triviaAnsweredCorrect = false;
+    triviaStreak = 0;
+    result.className = 'trivia-result wrong';
+    result.innerHTML = `📚 <strong>Not quite!</strong> The correct answer is: <strong>"${correctText}"</strong><br>You still get your number — keep learning!`;
+    continueBtn.textContent = `Got it — Claim My Number! 📚`;
+  }
+
+  result.style.display = 'block';
+  continueBtn.style.display = 'block';
+  if (triviaStreak > 1) {
+    document.getElementById('triviaStreak').textContent = `🔥 ${triviaStreak} correct in a row! You're on fire!`;
+  }
+}
+
+function closeTriviaAndReward() {
+  document.getElementById('triviaModal').classList.remove('show');
+  if (triviaCallback) triviaCallback();
+  triviaCallback = null;
+}
+
 // ── DATA ──
 const agentsData = [
   { name:'Sarah Johnson', email:'sarah.j@agency.com', progress:14, bonus:3, active:'2 hours ago', status:'active' },
@@ -995,22 +1171,27 @@ function showPage(name) {
 function claimBonus(type) {
   const el = document.getElementById('bonus-'+type);
   if (!el || el.classList.contains('done')) return;
-  el.classList.add('done');
-  const badge = el.querySelector('.b-badge');
-  if (badge) { badge.textContent = '✓ Done'; badge.classList.add('done'); }
-  const sub = el.querySelector('.b-desc');
-  if (sub) sub.textContent = 'Completed — numbers added!';
-  const count = type==='referral'?2:1;
-  const cur = parseInt(document.getElementById('statBonus').textContent);
-  document.getElementById('statBonus').textContent = cur + count;
-  const ref = parseInt(document.getElementById('statReferrals').textContent);
-  if (type==='referral') document.getElementById('statReferrals').textContent = ref + 1;
-  for (let i=0;i<count;i++) {
-    const n = Math.floor(Math.random()*75)+1;
-    recentCalled.unshift(n); calledNumbers.add(n);
-  }
-  buildRecentNumbers(); buildBingoGrid(); showConfetti();
-  alert(`🎉 Nice work! You earned ${count} free number${count>1?'s':''}!\n\nThank you for supporting Rooval Roofing! 🏠`);
+  const count = type==='referral' ? 2 : 1;
+
+  // Show trivia first — reward comes after they answer
+  showTrivia(() => {
+    el.classList.add('done');
+    const badge = el.querySelector('.b-badge');
+    if (badge) { badge.textContent = '✓ Done'; badge.classList.add('done'); }
+    const sub = el.querySelector('.b-desc');
+    if (sub) sub.textContent = 'Completed — numbers added!';
+    const cur = parseInt(document.getElementById('statBonus').textContent);
+    document.getElementById('statBonus').textContent = cur + count;
+    if (type==='referral') {
+      const ref = parseInt(document.getElementById('statReferrals').textContent);
+      document.getElementById('statReferrals').textContent = ref + 1;
+    }
+    for (let i=0; i<count; i++) {
+      const n = Math.floor(Math.random()*75)+1;
+      recentCalled.unshift(n); calledNumbers.add(n);
+    }
+    buildRecentNumbers(); buildBingoGrid(); showConfetti();
+  }, type, count);
 }
 
 // ── QR ──
@@ -1087,25 +1268,29 @@ function determineWinner(angle) {
   const pointer=(Math.PI*1.5-angle+Math.PI*20)%(2*Math.PI);
   let acc=0, winner=wheelSegs[0];
   for(const seg of wheelSegs){ if(pointer>=acc&&pointer<acc+arc){winner=seg;break;} acc+=arc; }
-  recentCalled.unshift(winner.num); calledNumbers.add(winner.num);
-  buildRecentNumbers();
-  let onCard=false;
-  cardNumbers.forEach(row=>{ if(row.includes(winner.num)) onCard=true; });
-  if(onCard) buildBingoGrid();
-  const res=document.getElementById('prizeResult');
-  if(onCard){
-    res.innerHTML=`🎉 <strong>${winner.label}</strong> — It's on your card! ✅<br><small style="color:var(--muted)">Number marked on your Rooval Bingo card!</small>`;
-    res.style.background='#d1fae5'; showConfetti();
-  } else {
-    res.innerHTML=`🎲 <strong>${winner.label}</strong> — Not on your card this time!<br><small style="color:var(--muted)">Keep earning bonus numbers — better luck next spin! 🏠</small>`;
-    res.style.background='#f8f8f8';
-  }
-  res.style.display='block';
-  document.getElementById('spinBtn').disabled=true;
-  document.getElementById('spinBtn').textContent='✓ Used this week';
-  document.getElementById('spinTriggerBtn').textContent='✓ Used This Week';
-  const b=parseInt(document.getElementById('statBonus').textContent);
-  document.getElementById('statBonus').textContent=b+1;
+
+  // Close wheel, show trivia, then reveal result
+  closeWheel();
+  showTrivia(() => {
+    recentCalled.unshift(winner.num); calledNumbers.add(winner.num);
+    buildRecentNumbers();
+    let onCard=false;
+    cardNumbers.forEach(row=>{ if(row.includes(winner.num)) onCard=true; });
+    if(onCard) buildBingoGrid();
+
+    document.getElementById('spinBtn').disabled=true;
+    document.getElementById('spinBtn').textContent='✓ Used this week';
+    document.getElementById('spinTriggerBtn').textContent='✓ Spin Used This Week';
+    const b=parseInt(document.getElementById('statBonus').textContent);
+    document.getElementById('statBonus').textContent=b+1;
+
+    if(onCard){
+      showConfetti();
+      setTimeout(()=>alert(`🎉 Number ${winner.label} landed — and it's ON your card! Marked! 🏠`), 200);
+    } else {
+      setTimeout(()=>alert(`🎲 Number ${winner.label} called — not on your card this time.\nKeep earning bonus numbers! 🏠`), 200);
+    }
+  }, 'spin', 1);
 }
 
 // ── CONFETTI ──
