@@ -515,10 +515,10 @@
           <div>B</div><div>I</div><div>N</div><div>G</div><div>O</div>
         </div>
         <div class="bingo-grid" id="bingoGrid"></div>
-        <div style="margin-top:16px;padding:12px;background:#f0fdf4;border-radius:10px;font-size:0.82rem;color:var(--green);text-align:center;font-weight:600" id="winHint">
-          🎉 You have a BINGO! Click the button below to spin the prize wheel!
+        <div style="margin-top:16px;padding:12px;background:#fffbeb;border-radius:10px;font-size:0.82rem;color:#92400e;text-align:center;font-weight:600" id="winHint">
+          🎡 Your weekly spin is ready! Spin to get a bonus number — it may or may not land on your card!
         </div>
-        <button class="btn-primary" style="margin-top:12px" onclick="openWheel()" id="spinTrigger">🎡 Spin Prize Wheel!</button>
+        <button class="btn-primary" style="margin-top:12px;background:var(--accent);color:#000" onclick="openWheel()" id="spinTrigger">🎡 Weekly Spin — Get a Bonus Number!</button>
       </div>
     </div>
 
@@ -687,8 +687,8 @@
 <div class="modal-overlay" id="wheelModal">
   <div class="modal-box">
     <button class="close-modal" onclick="closeWheel()">✕</button>
-    <h2>🎡 You Got BINGO!</h2>
-    <p>Spin the wheel to claim your prize!</p>
+    <h2>🎡 Weekly Spin!</h2>
+    <p>Spin to land on a bonus number — if it's on your card, it gets marked!</p>
     <div class="wheel-wrap">
       <div class="wheel-pointer">▼</div>
       <canvas id="prizeWheel" width="280" height="280"></canvas>
@@ -838,12 +838,14 @@ function simulateQRScan() {
 
 // ---- PRIZE WHEEL ----
 const prizes_wheel = [
-  { label: '$5 Cash', color: '#3b82f6', prob: 30 },
-  { label: '$10 Gift', color: '#8b5cf6', prob: 25 },
-  { label: '$15 Cash', color: '#10b981', prob: 20 },
-  { label: '$25 Gift', color: '#f59e0b', prob: 12 },
-  { label: '$50 Cash', color: '#ef4444', prob: 8 },
-  { label: 'Amazon!', color: '#ec4899', prob: 5 },
+  { label: 'B-7',  color: '#3b82f6', num: 7  },
+  { label: 'I-22', color: '#8b5cf6', num: 22 },
+  { label: 'N-33', color: '#10b981', num: 33 },
+  { label: 'G-52', color: '#f59e0b', num: 52 },
+  { label: 'O-68', color: '#ef4444', num: 68 },
+  { label: 'B-11', color: '#ec4899', num: 11 },
+  { label: 'I-19', color: '#1a3a6b', num: 19 },
+  { label: 'N-40', color: '#0891b2', num: 40 },
 ];
 const total = prizes_wheel.reduce((a,b) => a + b.prob, 0);
 let spinning = false;
@@ -854,12 +856,12 @@ function drawWheel(angle) {
   const ctx = canvas.getContext('2d');
   const cx = 140, cy = 140, r = 130;
   ctx.clearRect(0, 0, 280, 280);
+  const segArc = (2 * Math.PI) / prizes_wheel.length;
   let start = angle;
   prizes_wheel.forEach(seg => {
-    const arc = (seg.prob / total) * 2 * Math.PI;
     ctx.beginPath();
     ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, start, start + arc);
+    ctx.arc(cx, cy, r, start, start + segArc);
     ctx.fillStyle = seg.color;
     ctx.fill();
     ctx.strokeStyle = 'white';
@@ -868,13 +870,13 @@ function drawWheel(angle) {
     // Label
     ctx.save();
     ctx.translate(cx, cy);
-    ctx.rotate(start + arc / 2);
+    ctx.rotate(start + segArc / 2);
     ctx.textAlign = 'right';
     ctx.fillStyle = 'white';
     ctx.font = 'bold 13px Segoe UI';
     ctx.fillText(seg.label, r - 10, 5);
     ctx.restore();
-    start += arc;
+    start += segArc;
   });
   // Center circle
   ctx.beginPath();
@@ -924,21 +926,42 @@ function spinWheel() {
 }
 
 function determineWinner(angle) {
-  // Pointer is at top (3π/2 from positive x-axis, so π/2 from start)
   const pointer = (Math.PI * 1.5 - angle + Math.PI * 20) % (Math.PI * 2);
+  const segArc = (2 * Math.PI) / prizes_wheel.length;
   let acc = 0;
   let winner = prizes_wheel[0];
   for (const seg of prizes_wheel) {
-    const arc = (seg.prob / total) * 2 * Math.PI;
-    if (pointer >= acc && pointer < acc + arc) { winner = seg; break; }
-    acc += arc;
+    if (pointer >= acc && pointer < acc + segArc) { winner = seg; break; }
+    acc += segArc;
   }
+
+  // Add the number to called list
+  recentCalled.unshift(winner.num);
+  calledNumbers.add(winner.num);
+  buildRecentNumbers();
+
+  // Check if it's on their card
+  let onCard = false;
+  cardNumbers.forEach(row => { if (row.includes(winner.num)) onCard = true; });
+  if (onCard) buildBingoGrid();
+
   const res = document.getElementById('prizeResult');
-  res.textContent = `🎉 You won: ${winner.label}!`;
+  if (onCard) {
+    res.innerHTML = `🎉 Number <strong>${winner.label}</strong> — it's on your card! ✅`;
+    res.style.color = 'var(--green)';
+    showConfetti();
+  } else {
+    res.innerHTML = `🎲 Number <strong>${winner.label}</strong> — not on your card this time. Better luck next week!`;
+    res.style.color = 'var(--muted)';
+  }
   res.style.display = 'block';
-  showConfetti();
-  const wins = parseInt(document.getElementById('statWins').textContent);
-  document.getElementById('statWins').textContent = wins + 1;
+
+  // Disable spin until next week (demo: just disable button)
+  document.getElementById('spinBtn').disabled = true;
+  document.getElementById('spinBtn').textContent = '✓ Used this week';
+
+  const bonus = parseInt(document.getElementById('statBonus').textContent);
+  document.getElementById('statBonus').textContent = bonus + 1;
 }
 
 // ---- CONFETTI ----
