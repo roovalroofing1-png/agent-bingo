@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentBingo — Insurance Agent Loyalty</title>
+<style>
+  :root {
+    --primary: #1a3a6b;
+    --accent: #f59e0b;
+    --green: #10b981;
+    --red: #ef4444;
+    --bg: #f0f4ff;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* NAV */
+  nav {
+    background: var(--primary);
+    color: white;
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  nav .logo { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
+  nav .logo span { color: var(--accent); }
+  nav .nav-links { display: flex; gap: 8px; }
+  nav .nav-btn {
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  nav .nav-btn:hover, nav .nav-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+    font-weight: 600;
+  }
+
+  /* PAGES */
+  .page { display: none; padding: 32px 24px; max-width: 1100px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* LOGIN PAGE */
+  .login-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 60px);
+    background: linear-gradient(135deg, #1a3a6b 0%, #2563eb 100%);
+    margin: -32px -24px;
+    padding: 32px 24px;
+  }
+  .login-card {
+    background: white;
+    border-radius: 20px;
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    text-align: center;
+  }
+  .login-card .trophy { font-size: 3rem; margin-bottom: 12px; }
+  .login-card h1 { font-size: 1.8rem; color: var(--primary); font-weight: 800; }
+  .login-card p { color: var(--muted); margin: 8px 0 28px; font-size: 0.95rem; }
+  .login-card input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    margin-bottom: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .login-card input:focus { border-color: var(--primary); }
+  .btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
+  .login-card .demo-hint {
+    margin-top: 16px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    background: #f8fafc;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  /* BINGO CARD PAGE */
+  .agent-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .agent-header h2 { font-size: 1.5rem; color: var(--primary); }
+  .agent-header .week-badge {
+    background: var(--primary);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-top: 4px solid var(--primary);
+  }
+  .stat-card .num { font-size: 2rem; font-weight: 800; color: var(--primary); }
+  .stat-card .lbl { font-size: 0.78rem; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .main-grid { display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+  @media(max-width: 768px) { .main-grid { grid-template-columns: 1fr; } }
+
+  /* BINGO CARD */
+  .bingo-card-wrap {
+    background: white;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .bingo-card-wrap h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 16px; font-weight: 700; }
+  .bingo-header {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .bingo-header div {
+    text-align: center;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--primary);
+    padding: 8px;
+    background: #eef2ff;
+    border-radius: 8px;
+  }
+  .bingo-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+  .bingo-cell {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: default;
+    border: 2px solid #e2e8f0;
+    background: #f8fafc;
+    color: var(--text);
+    transition: all 0.3s;
+    position: relative;
+  }
+  .bingo-cell.called {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(26,58,107,0.3);
+  }
+  .bingo-cell.free {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    font-size: 0.7rem;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .bingo-cell.bingo-win {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+    animation: pulse 0.6s ease infinite alternate;
+  }
+  @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.08); } }
+
+  /* SIDE PANEL */
+  .side-panel { display: flex; flex-direction: column; gap: 16px; }
+
+  .bonus-card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .bonus-card h3 { font-size: 1rem; color: var(--primary); margin-bottom: 14px; font-weight: 700; }
+  .bonus-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #f8fafc;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1.5px solid transparent;
+  }
+  .bonus-item:hover { border-color: var(--accent); background: #fffbeb; }
+  .bonus-item.done { opacity: 0.5; cursor: default; }
+  .bonus-item.done:hover { border-color: transparent; background: #f8fafc; }
+  .bonus-icon { font-size: 1.4rem; }
+  .bonus-info .bonus-title { font-size: 0.88rem; font-weight: 600; }
+  .bonus-info .bonus-sub { font-size: 0.75rem; color: var(--muted); }
+  .bonus-badge {
+    margin-left: auto;
+    background: var(--accent);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .bonus-badge.done-badge { background: var(--green); }
+
+  .recent-card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .recent-card h3 { font-size: 1rem; color: var(--primary); margin-bottom: 14px; font-weight: 700; }
+  .number-chip {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin: 3px;
+  }
+
+  /* WIN MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-box {
+    background: white;
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 480px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  }
+  .modal-box h2 { font-size: 2rem; color: var(--primary); margin-bottom: 8px; }
+  .modal-box p { color: var(--muted); margin-bottom: 24px; }
+
+  /* PRIZE WHEEL */
+  .wheel-wrap { position: relative; display: inline-block; margin-bottom: 20px; }
+  #prizeWheel { border-radius: 50%; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+  .wheel-pointer {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  }
+  .spin-btn {
+    padding: 14px 40px;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(245,158,11,0.4);
+  }
+  .spin-btn:hover { transform: scale(1.05); }
+  .spin-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+  .prize-result {
+    margin-top: 20px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--green);
+    display: none;
+  }
+  .close-modal {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: #f1f5f9;
+    border: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  /* ADMIN PAGE */
+  .admin-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .tab-btn {
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 1.5px solid #e2e8f0;
+    background: white;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    color: var(--muted);
+  }
+  .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  th { background: var(--primary); color: white; padding: 14px 16px; text-align: left; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 13px 16px; font-size: 0.88rem; border-bottom: 1px solid #f1f5f9; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fafc; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .badge-green { background: #d1fae5; color: #065f46; }
+  .badge-yellow { background: #fef3c7; color: #92400e; }
+  .badge-blue { background: #dbeafe; color: #1e40af; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+
+  .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+  .admin-stat {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 5px solid var(--primary);
+  }
+  .admin-stat .num { font-size: 2.2rem; font-weight: 800; color: var(--primary); }
+  .admin-stat .lbl { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+  .admin-stat.accent { border-left-color: var(--accent); }
+  .admin-stat.accent .num { color: var(--accent); }
+  .admin-stat.green { border-left-color: var(--green); }
+  .admin-stat.green .num { color: var(--green); }
+
+  .fulfill-btn {
+    padding: 5px 14px;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .fulfill-btn:disabled { background: #d1fae5; color: #065f46; cursor: default; }
+
+  .search-bar {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    outline: none;
+    margin-bottom: 16px;
+  }
+  .search-bar:focus { border-color: var(--primary); }
+
+  /* QR SCANNER MOCK */
+  .qr-scan-area {
+    border: 3px dashed #e2e8f0;
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .qr-scan-area:hover { border-color: var(--accent); background: #fffbeb; }
+  .qr-scan-area .qr-icon { font-size: 3rem; margin-bottom: 8px; }
+
+  /* CONFETTI */
+  .confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    animation: fall 3s ease-in forwards;
+    pointer-events: none;
+    z-index: 9999;
+  }
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  .logout-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.82rem;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Agent<span>Bingo</span></div>
+  <div class="nav-links" id="navLinks" style="display:none">
+    <button class="nav-btn active" onclick="showPage('bingo')">My Card</button>
+    <button class="nav-btn" onclick="showPage('admin')">Admin</button>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- LOGIN PAGE -->
+<div class="page active" id="page-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="trophy">🏆</div>
+      <h1>AgentBingo</h1>
+      <p>Log in to view your bingo card and track your rewards</p>
+      <input type="text" id="loginInput" placeholder="Enter your email or agent code" />
+      <button class="btn-primary" onclick="doLogin()">Sign In</button>
+      <div class="demo-hint">
+        <strong>Demo:</strong> Type anything and press Sign In — or try <strong>admin</strong> for the admin view
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BINGO CARD PAGE -->
+<div class="page" id="page-bingo">
+  <div class="agent-header">
+    <div>
+      <h2 id="agentGreeting">Welcome back, Agent!</h2>
+      <p style="color:var(--muted);font-size:0.88rem">Keep playing to win prizes every week 🎯</p>
+    </div>
+    <div class="week-badge">📅 Week 23 — May 2026</div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="num" id="statNumbers">14</div>
+      <div class="lbl">Numbers Called</div>
+    </div>
+    <div class="stat-card">
+      <div class="num" id="statBonus">3</div>
+      <div class="lbl">Bonus Numbers</div>
+    </div>
+    <div class="stat-card">
+      <div class="num" id="statReferrals">2</div>
+      <div class="lbl">Referrals Made</div>
+    </div>
+    <div class="stat-card">
+      <div class="num" id="statWins">1</div>
+      <div class="lbl">Prizes Won</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div>
+      <div class="bingo-card-wrap">
+        <h3>🎱 Your Bingo Card</h3>
+        <div class="bingo-header">
+          <div>B</div><div>I</div><div>N</div><div>G</div><div>O</div>
+        </div>
+        <div class="bingo-grid" id="bingoGrid"></div>
+        <div style="margin-top:16px;padding:12px;background:#f0fdf4;border-radius:10px;font-size:0.82rem;color:var(--green);text-align:center;font-weight:600" id="winHint">
+          🎉 You have a BINGO! Click the button below to spin the prize wheel!
+        </div>
+        <button class="btn-primary" style="margin-top:12px" onclick="openWheel()" id="spinTrigger">🎡 Spin Prize Wheel!</button>
+      </div>
+    </div>
+
+    <div class="side-panel">
+      <div class="bonus-card">
+        <h3>⚡ Earn Bonus Numbers</h3>
+        <div class="bonus-item" id="bonus-review" onclick="claimBonus('review')">
+          <div class="bonus-icon">⭐</div>
+          <div class="bonus-info">
+            <div class="bonus-title">Leave a Google Review</div>
+            <div class="bonus-sub">Scan QR or click to complete</div>
+          </div>
+          <div class="bonus-badge">+1 #</div>
+        </div>
+        <div class="bonus-item" id="bonus-referral" onclick="claimBonus('referral')">
+          <div class="bonus-icon">👥</div>
+          <div class="bonus-info">
+            <div class="bonus-title">Make a Referral</div>
+            <div class="bonus-sub">Submit a client referral</div>
+          </div>
+          <div class="bonus-badge">+2 #</div>
+        </div>
+        <div class="bonus-item done" id="bonus-social">
+          <div class="bonus-icon">📱</div>
+          <div class="bonus-info">
+            <div class="bonus-title">Follow on Social Media</div>
+            <div class="bonus-sub">Already completed!</div>
+          </div>
+          <div class="bonus-badge done-badge">✓ Done</div>
+        </div>
+        <div class="bonus-item" id="bonus-qr" onclick="openQR()">
+          <div class="bonus-icon">📷</div>
+          <div class="bonus-info">
+            <div class="bonus-title">Scan Event QR Code</div>
+            <div class="bonus-sub">At agency events</div>
+          </div>
+          <div class="bonus-badge">+1 #</div>
+        </div>
+      </div>
+
+      <div class="recent-card">
+        <h3>📋 Recently Called Numbers</h3>
+        <div id="recentNumbers"></div>
+        <p style="font-size:0.78rem;color:var(--muted);margin-top:10px">Next number drops Monday at 8 AM</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PAGE -->
+<div class="page" id="page-admin">
+  <h2 style="color:var(--primary);margin-bottom:6px">Admin Dashboard</h2>
+  <p style="color:var(--muted);margin-bottom:24px;font-size:0.9rem">Manage agents, track referrals, and fulfill prizes</p>
+
+  <div class="admin-stats">
+    <div class="admin-stat">
+      <div class="num">42</div>
+      <div class="lbl">Active Agents</div>
+    </div>
+    <div class="admin-stat accent">
+      <div class="num">$180</div>
+      <div class="lbl">Prizes Pending</div>
+    </div>
+    <div class="admin-stat green">
+      <div class="num">18</div>
+      <div class="lbl">Referrals This Week</div>
+    </div>
+    <div class="admin-stat" style="border-left-color:#8b5cf6">
+      <div class="num" style="color:#8b5cf6">7</div>
+      <div class="lbl">Bingos This Month</div>
+    </div>
+  </div>
+
+  <div class="admin-tabs">
+    <button class="tab-btn active" onclick="switchTab('agents')">Agents</button>
+    <button class="tab-btn" onclick="switchTab('prizes')">Prize Fulfillment</button>
+    <button class="tab-btn" onclick="switchTab('referrals')">Referrals</button>
+    <button class="tab-btn" onclick="switchTab('email')">Email Schedule</button>
+  </div>
+
+  <div class="tab-content active" id="tab-agents">
+    <input class="search-bar" placeholder="🔍 Search agents by name or email..." oninput="filterAgents(this.value)">
+    <table id="agentsTable">
+      <thead>
+        <tr><th>Agent</th><th>Email</th><th>Progress</th><th>Last Active</th><th>Bonus #s</th><th>Status</th></tr>
+      </thead>
+      <tbody id="agentsBody"></tbody>
+    </table>
+  </div>
+
+  <div class="tab-content" id="tab-prizes">
+    <table>
+      <thead>
+        <tr><th>Agent</th><th>Prize</th><th>Won On</th><th>Type</th><th>Status</th><th>Action</th></tr>
+      </thead>
+      <tbody id="prizesBody"></tbody>
+    </table>
+  </div>
+
+  <div class="tab-content" id="tab-referrals">
+    <table>
+      <thead>
+        <tr><th>Referring Agent</th><th>Client Name</th><th>Date</th><th>Bonus Given</th><th>Status</th></tr>
+      </thead>
+      <tbody id="referralsBody"></tbody>
+    </table>
+  </div>
+
+  <div class="tab-content" id="tab-email">
+    <div style="background:white;border-radius:18px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.08)">
+      <h3 style="color:var(--primary);margin-bottom:20px">📧 Email Automation Schedule</h3>
+      <div style="display:grid;gap:14px">
+        <div style="display:flex;align-items:center;gap:16px;padding:16px;background:#f8fafc;border-radius:12px;border-left:4px solid var(--primary)">
+          <div style="font-size:1.8rem">📬</div>
+          <div>
+            <div style="font-weight:700;margin-bottom:2px">Weekly Bingo Number Drop</div>
+            <div style="font-size:0.82rem;color:var(--muted)">Every Monday at 8:00 AM — Sends new number to all active agents</div>
+          </div>
+          <div style="margin-left:auto"><span class="badge badge-green">● Active</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;padding:16px;background:#f8fafc;border-radius:12px;border-left:4px solid var(--green)">
+          <div style="font-size:1.8rem">🎉</div>
+          <div>
+            <div style="font-weight:700;margin-bottom:2px">Bingo Win Notification</div>
+            <div style="font-size:0.82rem;color:var(--muted)">Triggered instantly when agent gets 5-in-a-row or full card</div>
+          </div>
+          <div style="margin-left:auto"><span class="badge badge-green">● Active</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;padding:16px;background:#f8fafc;border-radius:12px;border-left:4px solid var(--accent)">
+          <div style="font-size:1.8rem">⏰</div>
+          <div>
+            <div style="font-weight:700;margin-bottom:2px">Re-engagement Reminder</div>
+            <div style="font-size:0.82rem;color:var(--muted)">Sent after 2 weeks of inactivity — nudge to complete bonus actions</div>
+          </div>
+          <div style="margin-left:auto"><span class="badge badge-yellow">● Scheduled</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;padding:16px;background:#f8fafc;border-radius:12px;border-left:4px solid #8b5cf6">
+          <div style="font-size:1.8rem">🎁</div>
+          <div>
+            <div style="font-weight:700;margin-bottom:2px">Prize Fulfillment Confirmation</div>
+            <div style="font-size:0.82rem;color:var(--muted)">Sent when admin marks a prize as fulfilled</div>
+          </div>
+          <div style="margin-left:auto"><span class="badge badge-green">● Active</span></div>
+        </div>
+      </div>
+      <button class="btn-primary" style="margin-top:20px;max-width:260px" onclick="alert('Number sent to all 42 agents!')">📤 Send Number Now (Test)</button>
+    </div>
+  </div>
+</div>
+
+<!-- QR MODAL -->
+<div class="modal-overlay" id="qrModal">
+  <div class="modal-box">
+    <button class="close-modal" onclick="closeQR()">✕</button>
+    <h2>📷 Scan QR Code</h2>
+    <p>Point your camera at an event QR code to earn a bonus number</p>
+    <div class="qr-scan-area" onclick="simulateQRScan()">
+      <div class="qr-icon">▦</div>
+      <p style="font-weight:600;color:var(--primary)">Click to Simulate Scan</p>
+      <p style="font-size:0.8rem;color:var(--muted);margin-top:4px">(In production: uses device camera)</p>
+    </div>
+  </div>
+</div>
+
+<!-- PRIZE WHEEL MODAL -->
+<div class="modal-overlay" id="wheelModal">
+  <div class="modal-box">
+    <button class="close-modal" onclick="closeWheel()">✕</button>
+    <h2>🎡 You Got BINGO!</h2>
+    <p>Spin the wheel to claim your prize!</p>
+    <div class="wheel-wrap">
+      <div class="wheel-pointer">▼</div>
+      <canvas id="prizeWheel" width="280" height="280"></canvas>
+    </div>
+    <br>
+    <button class="spin-btn" id="spinBtn" onclick="spinWheel()">🎲 SPIN!</button>
+    <div class="prize-result" id="prizeResult"></div>
+  </div>
+</div>
+
+<script>
+// ---- DATA ----
+const agents = [
+  { name: 'Sarah Johnson', email: 'sarah.j@agency.com', progress: 14, bonus: 3, active: '2 hours ago', status: 'active' },
+  { name: 'Mike Torres', email: 'mtorres@agency.com', progress: 11, bonus: 1, active: 'Yesterday', status: 'active' },
+  { name: 'Lisa Chen', email: 'lchen@agency.com', progress: 18, bonus: 4, active: '1 hour ago', status: 'bingo' },
+  { name: 'James Park', email: 'jpark@agency.com', progress: 6, bonus: 0, active: '5 days ago', status: 'inactive' },
+  { name: 'Amy Williams', email: 'awilliams@agency.com', progress: 9, bonus: 2, active: 'Today', status: 'active' },
+  { name: 'David Brown', email: 'dbrown@agency.com', progress: 21, bonus: 5, active: '30 min ago', status: 'bingo' },
+  { name: 'Rachel Kim', email: 'rkim@agency.com', progress: 3, bonus: 0, active: '2 weeks ago', status: 'inactive' },
+];
+
+const prizes = [
+  { agent: 'Lisa Chen', prize: '$25 Gift Card', won: 'May 26', type: 'Gift Card', fulfilled: false },
+  { agent: 'David Brown', prize: '$50 Cash', won: 'May 25', type: 'Cash', fulfilled: false },
+  { agent: 'Sarah Johnson', prize: '$10 Gift Card', won: 'May 18', type: 'Gift Card', fulfilled: true },
+  { agent: 'Mike Torres', prize: '$5 Cash', won: 'May 10', type: 'Cash', fulfilled: true },
+];
+
+const referrals = [
+  { agent: 'Sarah Johnson', client: 'Tom Henderson', date: 'May 27', bonus: '+2 numbers', status: 'approved' },
+  { agent: 'Amy Williams', client: 'Karen Liu', date: 'May 26', bonus: '+2 numbers', status: 'pending' },
+  { agent: 'David Brown', client: 'Frank Adams', date: 'May 25', bonus: '+2 numbers', status: 'approved' },
+  { agent: 'Sarah Johnson', client: 'Maria Santos', date: 'May 20', bonus: '+2 numbers', status: 'approved' },
+  { agent: 'Mike Torres', client: 'John Carey', date: 'May 18', bonus: '+2 numbers', status: 'pending' },
+];
+
+// Bingo card numbers
+const cardNumbers = [
+  [5, 19, 33, 47, 63],
+  [11, 22, 38, 52, 70],
+  [7, 16, 'FREE', 55, 65],
+  [3, 28, 44, 58, 72],
+  [14, 25, 40, 60, 68]
+];
+
+const calledNumbers = new Set([5, 19, 33, 47, 63, 22, 38, 16, 55, 44, 25, 40, 14, 60]);
+const recentCalled = [60, 55, 40, 33, 22, 14, 19];
+
+// Win row: row 0 (B column top row) is fully called
+const winCells = new Set(['0-0','0-1','0-2','0-3','0-4']); // row 0 all called
+
+// ---- BINGO GRID ----
+function buildBingoGrid() {
+  const grid = document.getElementById('bingoGrid');
+  grid.innerHTML = '';
+  cardNumbers.forEach((row, ri) => {
+    row.forEach((num, ci) => {
+      const cell = document.createElement('div');
+      cell.className = 'bingo-cell';
+      const key = `${ri}-${ci}`;
+      if (num === 'FREE') {
+        cell.classList.add('called', 'free');
+        cell.textContent = 'FREE';
+      } else if (winCells.has(key)) {
+        cell.classList.add('called', 'bingo-win');
+        cell.textContent = num;
+      } else if (calledNumbers.has(num)) {
+        cell.classList.add('called');
+        cell.textContent = num;
+      } else {
+        cell.textContent = num;
+      }
+      grid.appendChild(cell);
+    });
+  });
+}
+
+function buildRecentNumbers() {
+  const el = document.getElementById('recentNumbers');
+  el.innerHTML = recentCalled.map(n => `<span class="number-chip">${n}</span>`).join('');
+}
+
+// ---- LOGIN ----
+function doLogin() {
+  const val = document.getElementById('loginInput').value.trim();
+  if (!val) { alert('Please enter your email or agent code'); return; }
+  if (val.toLowerCase() === 'admin') {
+    showPage('admin');
+    document.getElementById('navLinks').style.display = 'flex';
+    return;
+  }
+  const name = val.includes('@') ? val.split('@')[0].replace(/\./g,' ').replace(/\b\w/g, c => c.toUpperCase()) : 'Agent ' + val;
+  document.getElementById('agentGreeting').textContent = `Welcome back, ${name}! 👋`;
+  showPage('bingo');
+  document.getElementById('navLinks').style.display = 'flex';
+  buildBingoGrid();
+  buildRecentNumbers();
+  buildAdminTables();
+}
+
+function logout() {
+  document.getElementById('navLinks').style.display = 'none';
+  document.getElementById('loginInput').value = '';
+  showPage('login');
+}
+
+// ---- PAGES ----
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const btns = document.querySelectorAll('.nav-btn');
+  if (name === 'bingo') btns[0].classList.add('active');
+  if (name === 'admin') { btns[1].classList.add('active'); buildAdminTables(); }
+}
+
+// ---- BONUS ----
+function claimBonus(type) {
+  const el = document.getElementById('bonus-' + type);
+  if (el.classList.contains('done')) return;
+  el.classList.add('done');
+  const badge = el.querySelector('.bonus-badge');
+  badge.textContent = '✓ Done';
+  badge.classList.add('done-badge');
+  el.querySelector('.bonus-sub').textContent = 'Completed!';
+  const bonus = type === 'referral' ? 2 : 1;
+  const cur = parseInt(document.getElementById('statBonus').textContent);
+  document.getElementById('statBonus').textContent = cur + bonus;
+  // Add a number to recent
+  const newNum = Math.floor(Math.random() * 75) + 1;
+  recentCalled.unshift(newNum);
+  calledNumbers.add(newNum);
+  buildRecentNumbers();
+  buildBingoGrid();
+  showConfetti();
+  alert(`🎉 Bonus earned! You got ${bonus} new number${bonus>1?'s':''}!`);
+}
+
+// ---- QR MODAL ----
+function openQR() { document.getElementById('qrModal').classList.add('show'); }
+function closeQR() { document.getElementById('qrModal').classList.remove('show'); }
+function simulateQRScan() {
+  closeQR();
+  claimBonus('qr');
+}
+
+// ---- PRIZE WHEEL ----
+const prizes_wheel = [
+  { label: '$5 Cash', color: '#3b82f6', prob: 30 },
+  { label: '$10 Gift', color: '#8b5cf6', prob: 25 },
+  { label: '$15 Cash', color: '#10b981', prob: 20 },
+  { label: '$25 Gift', color: '#f59e0b', prob: 12 },
+  { label: '$50 Cash', color: '#ef4444', prob: 8 },
+  { label: 'Amazon!', color: '#ec4899', prob: 5 },
+];
+const total = prizes_wheel.reduce((a,b) => a + b.prob, 0);
+let spinning = false;
+let currentAngle = 0;
+
+function drawWheel(angle) {
+  const canvas = document.getElementById('prizeWheel');
+  const ctx = canvas.getContext('2d');
+  const cx = 140, cy = 140, r = 130;
+  ctx.clearRect(0, 0, 280, 280);
+  let start = angle;
+  prizes_wheel.forEach(seg => {
+    const arc = (seg.prob / total) * 2 * Math.PI;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, start, start + arc);
+    ctx.fillStyle = seg.color;
+    ctx.fill();
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // Label
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(start + arc / 2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = 'white';
+    ctx.font = 'bold 13px Segoe UI';
+    ctx.fillText(seg.label, r - 10, 5);
+    ctx.restore();
+    start += arc;
+  });
+  // Center circle
+  ctx.beginPath();
+  ctx.arc(cx, cy, 20, 0, 2 * Math.PI);
+  ctx.fillStyle = 'white';
+  ctx.fill();
+  ctx.strokeStyle = '#e2e8f0';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+}
+
+function openWheel() {
+  document.getElementById('wheelModal').classList.add('show');
+  document.getElementById('spinBtn').disabled = false;
+  document.getElementById('prizeResult').style.display = 'none';
+  drawWheel(currentAngle);
+}
+function closeWheel() { document.getElementById('wheelModal').classList.remove('show'); }
+
+function spinWheel() {
+  if (spinning) return;
+  spinning = true;
+  document.getElementById('spinBtn').disabled = true;
+  document.getElementById('prizeResult').style.display = 'none';
+
+  const spinDeg = 1800 + Math.random() * 1440;
+  const spinRad = spinDeg * Math.PI / 180;
+  const duration = 4000;
+  const start = performance.now();
+  const startAngle = currentAngle;
+
+  function animate(now) {
+    const elapsed = now - start;
+    const t = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - t, 4);
+    const angle = startAngle + spinRad * ease;
+    drawWheel(angle);
+    if (t < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      currentAngle = angle % (2 * Math.PI);
+      spinning = false;
+      determineWinner(currentAngle);
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+function determineWinner(angle) {
+  // Pointer is at top (3π/2 from positive x-axis, so π/2 from start)
+  const pointer = (Math.PI * 1.5 - angle + Math.PI * 20) % (Math.PI * 2);
+  let acc = 0;
+  let winner = prizes_wheel[0];
+  for (const seg of prizes_wheel) {
+    const arc = (seg.prob / total) * 2 * Math.PI;
+    if (pointer >= acc && pointer < acc + arc) { winner = seg; break; }
+    acc += arc;
+  }
+  const res = document.getElementById('prizeResult');
+  res.textContent = `🎉 You won: ${winner.label}!`;
+  res.style.display = 'block';
+  showConfetti();
+  const wins = parseInt(document.getElementById('statWins').textContent);
+  document.getElementById('statWins').textContent = wins + 1;
+}
+
+// ---- CONFETTI ----
+function showConfetti() {
+  const colors = ['#f59e0b','#3b82f6','#10b981','#ef4444','#8b5cf6','#ec4899'];
+  for (let i = 0; i < 60; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.top = '-20px';
+    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+    el.style.animationDelay = Math.random() * 1.5 + 's';
+    el.style.animationDuration = (2 + Math.random() * 2) + 's';
+    el.style.transform = `rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+
+// ---- ADMIN ----
+function buildAdminTables() {
+  // Agents
+  const tbody = document.getElementById('agentsBody');
+  if (tbody) {
+    tbody.innerHTML = agents.map(a => `
+      <tr>
+        <td><strong>${a.name}</strong></td>
+        <td style="color:var(--muted)">${a.email}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;background:#e2e8f0;border-radius:99px;height:6px">
+              <div style="width:${Math.min(a.progress/25*100,100)}%;background:var(--primary);height:6px;border-radius:99px"></div>
+            </div>
+            <span style="font-size:0.8rem;color:var(--muted)">${a.progress}/25</span>
+          </div>
+        </td>
+        <td style="color:var(--muted)">${a.active}</td>
+        <td><strong>${a.bonus}</strong></td>
+        <td>${a.status === 'bingo' ? '<span class="badge badge-green">🎉 BINGO</span>' : a.status === 'active' ? '<span class="badge badge-blue">Active</span>' : '<span class="badge badge-red">Inactive</span>'}</td>
+      </tr>
+    `).join('');
+  }
+
+  // Prizes
+  const pbody = document.getElementById('prizesBody');
+  if (pbody) {
+    pbody.innerHTML = prizes.map((p, i) => `
+      <tr>
+        <td><strong>${p.agent}</strong></td>
+        <td>${p.prize}</td>
+        <td>${p.won}</td>
+        <td><span class="badge ${p.type==='Cash'?'badge-green':'badge-blue'}">${p.type}</span></td>
+        <td>${p.fulfilled ? '<span class="badge badge-green">✓ Fulfilled</span>' : '<span class="badge badge-yellow">Pending</span>'}</td>
+        <td><button class="fulfill-btn" ${p.fulfilled?'disabled':''} onclick="fulfillPrize(${i})">${p.fulfilled?'Done':'Mark Fulfilled'}</button></td>
+      </tr>
+    `).join('');
+  }
+
+  // Referrals
+  const rbody = document.getElementById('referralsBody');
+  if (rbody) {
+    rbody.innerHTML = referrals.map(r => `
+      <tr>
+        <td><strong>${r.agent}</strong></td>
+        <td>${r.client}</td>
+        <td>${r.date}</td>
+        <td><span class="badge badge-blue">${r.bonus}</span></td>
+        <td>${r.status === 'approved' ? '<span class="badge badge-green">✓ Approved</span>' : '<span class="badge badge-yellow">Pending</span>'}</td>
+      </tr>
+    `).join('');
+  }
+}
+
+function fulfillPrize(i) {
+  prizes[i].fulfilled = true;
+  buildAdminTables();
+}
+
+let agentsFilter = '';
+function filterAgents(val) {
+  agentsFilter = val.toLowerCase();
+  const rows = document.querySelectorAll('#agentsBody tr');
+  rows.forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(agentsFilter) ? '' : 'none';
+  });
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// Init
+buildBingoGrid();
+buildRecentNumbers();
+</script>
+</body>
+</html>
