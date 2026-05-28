@@ -503,6 +503,70 @@
   .footer-ad .services { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
   .footer-ad .services span { font-size: 0.7rem; color: rgba(255,255,255,0.6); }
 
+  /* ── ACTION MODALS ── */
+  .action-modal {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.8); z-index: 300;
+    align-items: flex-end; justify-content: center;
+    padding-bottom: 0;
+  }
+  .action-modal.show { display: flex; }
+  .action-sheet {
+    background: white;
+    border-radius: 24px 24px 0 0;
+    padding: 28px 24px 36px;
+    width: 100%; max-width: 540px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.3);
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .sheet-handle { width: 40px; height: 4px; background: #e8e8e8; border-radius: 99px; margin: 0 auto 20px; }
+  .action-sheet .sheet-icon { font-size: 2.4rem; margin-bottom: 8px; text-align: center; }
+  .action-sheet h2 { font-size: 1.2rem; font-weight: 900; color: var(--dark); margin-bottom: 6px; text-align: center; }
+  .action-sheet .sheet-desc { font-size: 0.82rem; color: var(--muted); text-align: center; margin-bottom: 20px; line-height: 1.5; }
+
+  .step-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px; background: #f8f8f8; border-radius: 12px;
+    margin-bottom: 10px;
+  }
+  .step-num {
+    background: var(--red); color: white;
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem; font-weight: 800; flex-shrink: 0; margin-top: 1px;
+  }
+  .step-text { font-size: 0.84rem; color: var(--dark); font-weight: 600; line-height: 1.4; }
+  .step-text small { display: block; color: var(--muted); font-weight: 400; font-size: 0.75rem; margin-top: 2px; }
+
+  .link-btn {
+    width: 100%; padding: 14px;
+    border: none; border-radius: 12px;
+    font-size: 0.95rem; font-weight: 800;
+    cursor: pointer; margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all 0.2s;
+  }
+  .link-btn:hover { transform: translateY(-1px); }
+  .link-btn.google { background: #4285f4; color: white; }
+  .link-btn.facebook { background: #1877f2; color: white; }
+  .link-btn.confirm { background: linear-gradient(135deg, var(--red), var(--red-dark)); color: white; }
+  .link-btn.secondary { background: #f0f0f0; color: var(--dark); }
+
+  .form-group { margin-bottom: 14px; }
+  .form-group label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--dark); margin-bottom: 5px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 12px 14px;
+    border: 2px solid #e8e8e8; border-radius: 10px;
+    font-size: 0.9rem; outline: none; font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--red); }
+  .form-group textarea { resize: vertical; min-height: 70px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
   /* ── TRIVIA ── */
   .trivia-overlay {
     display: none; position: fixed; inset: 0;
@@ -720,7 +784,7 @@
       <div class="pb-title">🏠 Free Roof Inspection for Your Clients!</div>
       <div class="pb-sub">Refer a homeowner — they get a free inspection, you get +2 numbers</div>
     </div>
-    <button class="pb-btn" onclick="claimBonus('referral')">Refer Now</button>
+    <button class="pb-btn" onclick="openReferralModal()">Refer Now</button>
   </div>
 
   <div class="page-body">
@@ -782,7 +846,7 @@
       <div class="ad-label">🏠 Rooval Roofing — Trusted Since 2010</div>
       <h3>Does Your Client Need a <span>New Roof?</span></h3>
       <p>Refer them to Rooval Roofing and earn 2 bonus bingo numbers. We handle everything — free inspection, insurance claim support, and a 10-year warranty.</p>
-      <button class="ad-cta" onclick="claimBonus('referral')">Make a Referral → Earn +2 Numbers</button>
+      <button class="ad-cta" onclick="openReferralModal()">Make a Referral → Earn +2 Numbers</button>
     </div>
 
     <!-- Bonus Actions -->
@@ -790,31 +854,31 @@
       <h3>⚡ Earn More Numbers</h3>
       <div class="bonus-sub">Complete actions below to add free numbers to your card</div>
 
-      <div class="bonus-item" id="bonus-review" onclick="claimBonus('review')">
+      <div class="bonus-item" id="bonus-review" onclick="openReviewModal()">
         <div class="b-icon">⭐</div>
         <div class="b-info">
           <div class="b-title">Leave a Google Review</div>
-          <div class="b-desc">Review Rooval Roofing → upload screenshot → earn a free number</div>
+          <div class="b-desc">Tap to open Google → leave a review → come back to claim your number</div>
         </div>
         <div class="b-badge">+1 Number</div>
       </div>
 
-      <div class="bonus-item" id="bonus-referral" onclick="claimBonus('referral')">
+      <div class="bonus-item" id="bonus-referral" onclick="openReferralModal()">
         <div class="b-icon">🏠</div>
         <div class="b-info">
           <div class="b-title">Refer a Homeowner</div>
-          <div class="b-desc">Send a client to Rooval Roofing for a free roof inspection</div>
+          <div class="b-desc">Fill out homeowner info → we handle the rest → you earn +2 numbers</div>
         </div>
         <div class="b-badge">+2 Numbers</div>
       </div>
 
-      <div class="bonus-item done" id="bonus-social">
+      <div class="bonus-item" id="bonus-social" onclick="openFacebookModal()">
         <div class="b-icon">📱</div>
         <div class="b-info">
-          <div class="b-title">Follow Rooval Roofing</div>
-          <div class="b-desc">@RoovalRoofing on Facebook & Instagram</div>
+          <div class="b-title">Follow Rooval Roofing on Facebook</div>
+          <div class="b-desc">Tap to open our Facebook page → follow → come back to claim</div>
         </div>
-        <div class="b-badge done">✓ Done</div>
+        <div class="b-badge" id="social-badge">+1 Number</div>
       </div>
 
       <div class="bonus-item" id="bonus-qr" onclick="openQR()">
@@ -919,6 +983,116 @@
   </div>
 </div>
 
+<!-- GOOGLE REVIEW MODAL -->
+<div class="action-modal" id="reviewModal">
+  <div class="action-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-icon">⭐</div>
+    <h2>Leave a Google Review</h2>
+    <p class="sheet-desc">Share your experience with Rooval Roofing on Google — then come back and confirm to earn your free bingo number!</p>
+
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div class="step-text">Tap the button below to open our Google Review page<small>It will open in a new tab — leave us a quick review!</small></div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-text">Write your review and hit Submit on Google<small>Any honest feedback is appreciated — 5 stars means the world to us! ⭐</small></div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div class="step-text">Come back here and tap "I Left My Review" below<small>You'll answer a quick trivia question, then your number is awarded!</small></div>
+    </div>
+
+    <br>
+    <button class="link-btn google" onclick="window.open(GOOGLE_REVIEW_URL,'_blank')">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.5 30.3 0 24 0 14.7 0 6.7 5.4 2.9 13.3l7.9 6.1C12.6 13 17.9 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.4c-.5 2.8-2.1 5.2-4.5 6.8l7 5.4C43 36.5 46.1 30.9 46.1 24.5z"/><path fill="#FBBC05" d="M10.8 28.6A14.7 14.7 0 0 1 9.5 24c0-1.6.3-3.2.7-4.6L2.3 13.3A23.8 23.8 0 0 0 0 24c0 3.8.9 7.4 2.4 10.6l8.4-6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7-5.4c-2.1 1.4-4.8 2.2-8.9 2.2-6.1 0-11.3-4.1-13.2-9.6l-8.4 6C6.8 42.8 14.8 48 24 48z"/></svg>
+      Open Google Review Page
+    </button>
+    <button class="link-btn confirm" onclick="confirmReview()">✅ I Left My Review — Claim My Number!</button>
+    <button class="link-btn secondary" onclick="closeActionModal('reviewModal')">Not right now</button>
+  </div>
+</div>
+
+<!-- REFERRAL FORM MODAL -->
+<div class="action-modal" id="referralModal">
+  <div class="action-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-icon">🏠</div>
+    <h2>Refer a Homeowner</h2>
+    <p class="sheet-desc">Fill out the homeowner's information below. Rooval Roofing will reach out for a <strong>free roof inspection</strong> — and you'll earn 2 bonus bingo numbers!</p>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>First Name *</label>
+        <input type="text" id="ref-fname" placeholder="John" />
+      </div>
+      <div class="form-group">
+        <label>Last Name *</label>
+        <input type="text" id="ref-lname" placeholder="Smith" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Phone Number *</label>
+      <input type="tel" id="ref-phone" placeholder="(555) 123-4567" />
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="ref-email" placeholder="john@email.com" />
+    </div>
+    <div class="form-group">
+      <label>Home Address</label>
+      <input type="text" id="ref-address" placeholder="123 Main St, City, State" />
+    </div>
+    <div class="form-group">
+      <label>What's the Roofing Issue?</label>
+      <select id="ref-issue">
+        <option value="">Select one...</option>
+        <option>Storm / Hail Damage</option>
+        <option>Roof Leak</option>
+        <option>Full Roof Replacement</option>
+        <option>Insurance Claim Help</option>
+        <option>Routine Inspection</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Additional Notes</label>
+      <textarea id="ref-notes" placeholder="Any other details about the homeowner or their roof situation..."></textarea>
+    </div>
+
+    <button class="link-btn confirm" onclick="submitReferral()">🏠 Submit Referral — Earn +2 Numbers!</button>
+    <button class="link-btn secondary" onclick="closeActionModal('referralModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- FACEBOOK MODAL -->
+<div class="action-modal" id="facebookModal">
+  <div class="action-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-icon">📱</div>
+    <h2>Follow Rooval Roofing</h2>
+    <p class="sheet-desc">Follow us on Facebook & Instagram to stay up to date on promotions, storm alerts, and job openings — and earn a free bingo number!</p>
+
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div class="step-text">Tap "Follow on Facebook" below — it opens in a new tab<small>Click the Follow button on our Facebook page</small></div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-text">Come back and confirm below to earn your number<small>This is a one-time bonus!</small></div>
+    </div>
+
+    <br>
+    <button class="link-btn facebook" onclick="window.open(FACEBOOK_URL,'_blank')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.791-4.697 4.533-4.697 1.313 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+      Follow on Facebook
+    </button>
+    <button class="link-btn confirm" onclick="confirmFollow()">✅ I Followed — Claim My Number!</button>
+    <button class="link-btn secondary" onclick="closeActionModal('facebookModal')">Not right now</button>
+  </div>
+</div>
+
 <!-- TRIVIA MODAL -->
 <div class="trivia-overlay" id="triviaModal">
   <div class="trivia-box">
@@ -963,6 +1137,10 @@
 </div>
 
 <script>
+// ── LINKS — swap these with real URLs ──
+const GOOGLE_REVIEW_URL = 'https://g.page/r/YOUR_GOOGLE_REVIEW_LINK_HERE/review'; // ← paste your Google review link here
+const FACEBOOK_URL      = 'https://www.facebook.com/RoovalRoofing';               // ← paste your Facebook page URL here
+
 // ── TRIVIA DATA ──
 const triviaBank = [
   { q:"What does 'liability insurance' protect you against?", a:1, opts:["Damage to your own property","Claims from others for injury or damage you cause","Your own medical bills","Natural disasters"] },
@@ -1167,31 +1345,11 @@ function showPage(name) {
   if (name==='admin') document.querySelectorAll('.nav-btn')[1].classList.add('active');
 }
 
-// ── BONUS ──
+// ── QR BONUS (still uses direct claim) ──
 function claimBonus(type) {
-  const el = document.getElementById('bonus-'+type);
-  if (!el || el.classList.contains('done')) return;
-  const count = type==='referral' ? 2 : 1;
-
-  // Show trivia first — reward comes after they answer
-  showTrivia(() => {
-    el.classList.add('done');
-    const badge = el.querySelector('.b-badge');
-    if (badge) { badge.textContent = '✓ Done'; badge.classList.add('done'); }
-    const sub = el.querySelector('.b-desc');
-    if (sub) sub.textContent = 'Completed — numbers added!';
-    const cur = parseInt(document.getElementById('statBonus').textContent);
-    document.getElementById('statBonus').textContent = cur + count;
-    if (type==='referral') {
-      const ref = parseInt(document.getElementById('statReferrals').textContent);
-      document.getElementById('statReferrals').textContent = ref + 1;
-    }
-    for (let i=0; i<count; i++) {
-      const n = Math.floor(Math.random()*75)+1;
-      recentCalled.unshift(n); calledNumbers.add(n);
-    }
-    buildRecentNumbers(); buildBingoGrid(); showConfetti();
-  }, type, count);
+  if (type === 'qr') {
+    showTrivia(() => { markBonusDone('qr', 1); }, 'qr', 1);
+  }
 }
 
 // ── QR ──
@@ -1345,6 +1503,85 @@ function switchTab(name,e){
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   e.target.classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
+}
+
+// ── ACTION MODAL HELPERS ──
+function closeActionModal(id) { document.getElementById(id).classList.remove('show'); }
+
+// Google Review
+function openReviewModal() {
+  const el = document.getElementById('bonus-review');
+  if (el.classList.contains('done')) return;
+  document.getElementById('reviewModal').classList.add('show');
+}
+function confirmReview() {
+  closeActionModal('reviewModal');
+  showTrivia(() => {
+    markBonusDone('review', 1);
+  }, 'review', 1);
+}
+
+// Referral Form
+function openReferralModal() {
+  const el = document.getElementById('bonus-referral');
+  if (el.classList.contains('done')) return;
+  document.getElementById('referralModal').classList.add('show');
+}
+function submitReferral() {
+  const fname = document.getElementById('ref-fname').value.trim();
+  const lname = document.getElementById('ref-lname').value.trim();
+  const phone = document.getElementById('ref-phone').value.trim();
+  if (!fname || !lname || !phone) {
+    alert('Please fill in First Name, Last Name, and Phone Number to submit a referral.');
+    return;
+  }
+  closeActionModal('referralModal');
+  showTrivia(() => {
+    markBonusDone('referral', 2);
+    const ref = parseInt(document.getElementById('statReferrals').textContent);
+    document.getElementById('statReferrals').textContent = ref + 1;
+    // Clear form
+    ['ref-fname','ref-lname','ref-phone','ref-email','ref-address','ref-notes'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('ref-issue').selectedIndex = 0;
+  }, 'referral', 2);
+}
+
+// Facebook Follow
+function openFacebookModal() {
+  const el = document.getElementById('bonus-social');
+  if (el.classList.contains('done')) return;
+  document.getElementById('facebookModal').classList.add('show');
+}
+function confirmFollow() {
+  closeActionModal('facebookModal');
+  showTrivia(() => {
+    markBonusDone('social', 1);
+    document.getElementById('social-badge').textContent = '✓ Done';
+    document.getElementById('social-badge').classList.add('done');
+  }, 'social', 1);
+}
+
+// Shared: mark a bonus item done and award numbers
+function markBonusDone(type, count) {
+  const el = document.getElementById('bonus-' + type);
+  if (!el) return;
+  el.classList.add('done');
+  const badge = el.querySelector('.b-badge');
+  if (badge && type !== 'social') { badge.textContent = '✓ Done'; badge.classList.add('done'); }
+  const desc = el.querySelector('.b-desc');
+  if (desc) desc.textContent = 'Completed — numbers added to your card!';
+  const cur = parseInt(document.getElementById('statBonus').textContent);
+  document.getElementById('statBonus').textContent = cur + count;
+  for (let i = 0; i < count; i++) {
+    const n = Math.floor(Math.random() * 75) + 1;
+    recentCalled.unshift(n);
+    calledNumbers.add(n);
+  }
+  buildRecentNumbers();
+  buildBingoGrid();
+  showConfetti();
 }
 
 buildBingoGrid(); buildRecentNumbers();
