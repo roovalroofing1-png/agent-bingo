@@ -3,668 +3,858 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AgentBingo — Insurance Agent Loyalty</title>
+<title>Rooval Roofing Rewards — Agent Bingo</title>
 <style>
   :root {
-    --primary: #1a3a6b;
-    --accent: #f59e0b;
-    --green: #10b981;
-    --red: #ef4444;
-    --bg: #f0f4ff;
-    --card: #ffffff;
-    --text: #1e293b;
-    --muted: #64748b;
+    --red: #c0392b;
+    --red-dark: #922b21;
+    --red-light: #e74c3c;
+    --gold: #f39c12;
+    --gold-light: #f9ca24;
+    --dark: #1a1a2e;
+    --slate: #2c3e50;
+    --bg: #f5f5f0;
+    --white: #ffffff;
+    --text: #1a1a2e;
+    --muted: #7f8c8d;
+    --green: #27ae60;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  /* NAV */
+  /* ── LOGO ── */
+  .logo-wrap { display: flex; align-items: center; gap: 10px; }
+  .roof-icon {
+    width: 38px; height: 38px;
+    position: relative; display: flex; flex-direction: column; align-items: center;
+  }
+  .roof-triangle {
+    width: 0; height: 0;
+    border-left: 19px solid transparent;
+    border-right: 19px solid transparent;
+    border-bottom: 18px solid var(--gold);
+  }
+  .roof-body {
+    width: 28px; height: 12px;
+    background: var(--gold-light);
+    border-radius: 0 0 3px 3px;
+  }
+  .logo-text { line-height: 1; }
+  .logo-text .r1 { font-size: 1.2rem; font-weight: 900; color: var(--white); letter-spacing: -0.5px; }
+  .logo-text .r2 { font-size: 0.65rem; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* ── NAV ── */
   nav {
-    background: var(--primary);
-    color: white;
-    padding: 0 24px;
-    height: 60px;
+    background: linear-gradient(135deg, var(--red-dark) 0%, var(--red) 100%);
+    padding: 0 20px;
+    height: 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.3);
+    position: sticky; top: 0; z-index: 100;
   }
-  nav .logo { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
-  nav .logo span { color: var(--accent); }
-  nav .nav-links { display: flex; gap: 8px; }
-  nav .nav-btn {
-    background: transparent;
-    border: 1.5px solid rgba(255,255,255,0.4);
+  .nav-right { display: flex; align-items: center; gap: 8px; }
+  .nav-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.3);
     color: white;
-    padding: 6px 16px;
+    padding: 7px 16px;
     border-radius: 20px;
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 600;
     transition: all 0.2s;
   }
-  nav .nav-btn:hover, nav .nav-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #000;
-    font-weight: 600;
+  .nav-btn:hover, .nav-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--dark);
+  }
+  .nav-phone {
+    color: var(--gold);
+    font-weight: 800;
+    font-size: 0.88rem;
+    display: flex; align-items: center; gap: 5px;
   }
 
-  /* PAGES */
-  .page { display: none; padding: 32px 24px; max-width: 1100px; margin: 0 auto; }
-  .page.active { display: block; }
+  /* ── HERO BANNER ── */
+  .hero-banner {
+    background: linear-gradient(135deg, var(--dark) 0%, var(--slate) 60%, var(--red-dark) 100%);
+    color: white;
+    text-align: center;
+    padding: 32px 20px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-banner::before {
+    content: '🏠';
+    position: absolute; font-size: 8rem; opacity: 0.05;
+    top: -10px; right: -10px;
+  }
+  .hero-banner::after {
+    content: '🏠';
+    position: absolute; font-size: 6rem; opacity: 0.05;
+    bottom: -10px; left: -10px;
+  }
+  .hero-banner .tagline { font-size: 0.8rem; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+  .hero-banner h1 { font-size: 1.8rem; font-weight: 900; line-height: 1.1; margin-bottom: 8px; }
+  .hero-banner h1 span { color: var(--gold); }
+  .hero-banner p { font-size: 0.9rem; color: rgba(255,255,255,0.8); max-width: 360px; margin: 0 auto 16px; }
+  .hero-cta {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--dark);
+    font-weight: 800;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(243,156,18,0.4);
+    transition: all 0.2s;
+  }
+  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(243,156,18,0.5); }
 
-  /* LOGIN PAGE */
-  .login-wrap {
+  /* ── AD STRIP ── */
+  .ad-strip {
+    background: var(--red);
+    color: white;
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: calc(100vh - 60px);
-    background: linear-gradient(135deg, #1a3a6b 0%, #2563eb 100%);
-    margin: -32px -24px;
-    padding: 32px 24px;
+    gap: 12px;
+    flex-wrap: wrap;
   }
+  .ad-strip .pill {
+    background: var(--gold);
+    color: var(--dark);
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 0.78rem;
+  }
+
+  /* ── PAGES ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── LOGIN PAGE ── */
+  .login-page {
+    min-height: calc(100vh - 64px);
+    background: linear-gradient(160deg, var(--dark) 0%, var(--slate) 50%, var(--red-dark) 100%);
+    padding: 0;
+  }
+  .login-hero {
+    text-align: center;
+    padding: 36px 24px 24px;
+    color: white;
+  }
+  .login-hero .badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--dark);
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 4px 14px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .login-hero h1 { font-size: 2.2rem; font-weight: 900; line-height: 1.1; margin-bottom: 8px; }
+  .login-hero h1 span { color: var(--gold); }
+  .login-hero p { color: rgba(255,255,255,0.75); font-size: 0.92rem; max-width: 320px; margin: 0 auto 24px; }
+
   .login-card {
     background: white;
+    margin: 0 16px 20px;
     border-radius: 20px;
-    padding: 48px 40px;
-    width: 100%;
-    max-width: 420px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    text-align: center;
+    padding: 28px 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   }
-  .login-card .trophy { font-size: 3rem; margin-bottom: 12px; }
-  .login-card h1 { font-size: 1.8rem; color: var(--primary); font-weight: 800; }
-  .login-card p { color: var(--muted); margin: 8px 0 28px; font-size: 0.95rem; }
+  .login-card h2 { font-size: 1.15rem; color: var(--red); font-weight: 800; margin-bottom: 6px; }
+  .login-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 18px; }
   .login-card input {
     width: 100%;
-    padding: 14px 18px;
-    border: 2px solid #e2e8f0;
+    padding: 14px 16px;
+    border: 2px solid #e8e8e8;
     border-radius: 12px;
     font-size: 1rem;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     outline: none;
     transition: border-color 0.2s;
   }
-  .login-card input:focus { border-color: var(--primary); }
-  .btn-primary {
+  .login-card input:focus { border-color: var(--red); }
+  .btn-red {
     width: 100%;
-    padding: 14px;
-    background: var(--primary);
+    padding: 15px;
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
     color: white;
     border: none;
     border-radius: 12px;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
     transition: all 0.2s;
+    letter-spacing: 0.3px;
   }
-  .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
-  .login-card .demo-hint {
-    margin-top: 16px;
-    font-size: 0.8rem;
-    color: var(--muted);
-    background: #f8fafc;
-    padding: 10px;
-    border-radius: 8px;
+  .btn-red:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(192,57,43,0.4); }
+  .demo-hint { margin-top: 12px; font-size: 0.75rem; color: var(--muted); background: #f8f8f8; padding: 10px; border-radius: 8px; text-align: center; }
+
+  .service-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 16px 20px;
+  }
+  .svc-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 16px 12px;
+    text-align: center;
+    color: white;
+  }
+  .svc-card .icon { font-size: 1.8rem; margin-bottom: 6px; }
+  .svc-card .title { font-size: 0.82rem; font-weight: 700; margin-bottom: 3px; }
+  .svc-card .sub { font-size: 0.7rem; color: rgba(255,255,255,0.6); }
+
+  .trust-bar {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 16px 20px 24px;
+    flex-wrap: wrap;
+  }
+  .trust-item { color: rgba(255,255,255,0.7); font-size: 0.75rem; display: flex; align-items: center; gap: 5px; }
+  .trust-item span { color: var(--gold); }
+
+  /* ── AGENT CARD PAGE ── */
+  .promo-banner {
+    background: linear-gradient(135deg, var(--red-dark), var(--red));
+    color: white;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .promo-banner .pb-text .pb-title { font-weight: 800; font-size: 0.92rem; }
+  .promo-banner .pb-text .pb-sub { font-size: 0.75rem; color: rgba(255,255,255,0.8); }
+  .promo-banner .pb-btn {
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
   }
 
-  /* BINGO CARD PAGE */
-  .agent-header {
+  .page-body { padding: 16px; max-width: 600px; margin: 0 auto; }
+
+  .welcome-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
-    gap: 16px;
+    margin-bottom: 14px;
+    gap: 10px;
   }
-  .agent-header h2 { font-size: 1.5rem; color: var(--primary); }
-  .agent-header .week-badge {
-    background: var(--primary);
-    color: white;
-    padding: 6px 16px;
+  .welcome-row h2 { font-size: 1.15rem; color: var(--dark); font-weight: 800; }
+  .week-chip {
+    background: var(--dark);
+    color: var(--gold);
+    padding: 5px 14px;
     border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
   }
 
+  /* SPIN CTA — big and prominent */
+  .spin-cta-card {
+    background: linear-gradient(135deg, var(--gold) 0%, #e67e22 100%);
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    box-shadow: 0 6px 20px rgba(243,156,18,0.35);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .spin-cta-card:hover { transform: translateY(-2px); }
+  .spin-cta-card .sc-text .sc-title { font-size: 1rem; font-weight: 900; color: var(--dark); }
+  .spin-cta-card .sc-text .sc-sub { font-size: 0.78rem; color: rgba(0,0,0,0.6); margin-top: 2px; }
+  .spin-cta-card .sc-btn {
+    background: var(--dark);
+    color: var(--gold);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* STATS */
   .stats-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 16px;
-    margin-bottom: 28px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
   }
   .stat-card {
     background: white;
-    border-radius: 14px;
-    padding: 20px;
+    border-radius: 12px;
+    padding: 14px 10px;
     text-align: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    border-top: 4px solid var(--primary);
+    border-top: 3px solid var(--red);
   }
-  .stat-card .num { font-size: 2rem; font-weight: 800; color: var(--primary); }
-  .stat-card .lbl { font-size: 0.78rem; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-  .main-grid { display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
-  @media(max-width: 768px) { .main-grid { grid-template-columns: 1fr; } }
+  .stat-card .num { font-size: 1.6rem; font-weight: 900; color: var(--red); }
+  .stat-card .lbl { font-size: 0.68rem; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.4px; }
 
   /* BINGO CARD */
-  .bingo-card-wrap {
+  .bingo-wrap {
     background: white;
-    border-radius: 18px;
-    padding: 24px;
+    border-radius: 16px;
+    padding: 18px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    margin-bottom: 14px;
+    border: 2px solid #f0f0f0;
   }
-  .bingo-card-wrap h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 16px; font-weight: 700; }
+  .bingo-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .bingo-top h3 { font-size: 0.95rem; font-weight: 800; color: var(--dark); }
+  .progress-pill {
+    background: #fff3cd;
+    color: #856404;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
   .bingo-header {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 6px;
-    margin-bottom: 6px;
+    display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; margin-bottom: 5px;
   }
   .bingo-header div {
     text-align: center;
-    font-weight: 800;
-    font-size: 1.2rem;
-    color: var(--primary);
-    padding: 8px;
-    background: #eef2ff;
-    border-radius: 8px;
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--red);
+    padding: 6px 4px;
+    background: #fef2f2;
+    border-radius: 6px;
   }
-  .bingo-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 6px;
-  }
+  .bingo-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; }
   .bingo-cell {
     aspect-ratio: 1;
-    border-radius: 10px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: default;
-    border: 2px solid #e2e8f0;
-    background: #f8fafc;
+    font-size: 1rem;
+    font-weight: 800;
+    border: 2px solid #e8e8e8;
+    background: #fafafa;
     color: var(--text);
     transition: all 0.3s;
-    position: relative;
   }
   .bingo-cell.called {
-    background: var(--primary);
-    border-color: var(--primary);
+    background: var(--dark);
+    border-color: var(--dark);
     color: white;
-    box-shadow: 0 4px 12px rgba(26,58,107,0.3);
+    box-shadow: 0 3px 8px rgba(26,26,46,0.25);
   }
   .bingo-cell.free {
-    background: var(--accent);
-    border-color: var(--accent);
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    border-color: var(--red);
     color: white;
-    font-size: 0.7rem;
+    font-size: 0.62rem;
+    font-weight: 800;
     text-align: center;
     line-height: 1.2;
   }
   .bingo-cell.bingo-win {
-    background: var(--green);
-    border-color: var(--green);
+    background: linear-gradient(135deg, var(--gold), #e67e22);
+    border-color: var(--gold);
     color: white;
-    animation: pulse 0.6s ease infinite alternate;
+    animation: roofPulse 0.7s ease infinite alternate;
+    box-shadow: 0 4px 14px rgba(243,156,18,0.5);
   }
-  @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.08); } }
+  @keyframes roofPulse { from { transform: scale(1); } to { transform: scale(1.07); } }
 
-  /* SIDE PANEL */
-  .side-panel { display: flex; flex-direction: column; gap: 16px; }
-
-  .bonus-card {
+  /* RECENT NUMBERS */
+  .recent-wrap {
     background: white;
-    border-radius: 18px;
-    padding: 20px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
-  .bonus-card h3 { font-size: 1rem; color: var(--primary); margin-bottom: 14px; font-weight: 700; }
+  .recent-wrap h4 { font-size: 0.82rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
+  .number-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--red);
+    color: white;
+    border-radius: 50%;
+    width: 34px; height: 34px;
+    font-weight: 800;
+    font-size: 0.78rem;
+    margin: 3px;
+  }
+  .next-drop { font-size: 0.72rem; color: var(--muted); margin-top: 8px; }
+
+  /* BONUS ACTIONS */
+  .bonus-wrap {
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    margin-bottom: 14px;
+  }
+  .bonus-wrap h3 { font-size: 0.95rem; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
+  .bonus-wrap .bonus-sub { font-size: 0.75rem; color: var(--muted); margin-bottom: 14px; }
   .bonus-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px;
+    padding: 13px 12px;
     border-radius: 10px;
-    background: #f8fafc;
+    background: #fafafa;
     margin-bottom: 8px;
     cursor: pointer;
+    border: 2px solid transparent;
     transition: all 0.2s;
-    border: 1.5px solid transparent;
   }
-  .bonus-item:hover { border-color: var(--accent); background: #fffbeb; }
-  .bonus-item.done { opacity: 0.5; cursor: default; }
-  .bonus-item.done:hover { border-color: transparent; background: #f8fafc; }
-  .bonus-icon { font-size: 1.4rem; }
-  .bonus-info .bonus-title { font-size: 0.88rem; font-weight: 600; }
-  .bonus-info .bonus-sub { font-size: 0.75rem; color: var(--muted); }
-  .bonus-badge {
+  .bonus-item:hover { border-color: var(--gold); background: #fffbeb; }
+  .bonus-item.done { opacity: 0.55; cursor: default; }
+  .bonus-item.done:hover { border-color: transparent; background: #fafafa; }
+  .b-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .b-info .b-title { font-size: 0.85rem; font-weight: 700; color: var(--dark); }
+  .b-info .b-desc { font-size: 0.72rem; color: var(--muted); margin-top: 1px; }
+  .b-badge {
     margin-left: auto;
-    background: var(--accent);
+    background: var(--red);
     color: white;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 3px 8px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 4px 10px;
     border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
-  .bonus-badge.done-badge { background: var(--green); }
+  .b-badge.done { background: var(--green); }
 
-  .recent-card {
-    background: white;
-    border-radius: 18px;
+  /* ROOVAL AD CARD */
+  .rooval-ad {
+    background: linear-gradient(135deg, var(--dark) 0%, var(--slate) 100%);
+    border-radius: 16px;
     padding: 20px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-  }
-  .recent-card h3 { font-size: 1rem; color: var(--primary); margin-bottom: 14px; font-weight: 700; }
-  .number-chip {
-    display: inline-block;
-    background: var(--primary);
     color: white;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    line-height: 36px;
-    text-align: center;
-    font-weight: 700;
-    font-size: 0.85rem;
-    margin: 3px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .rooval-ad::after { content: '🏠'; position: absolute; font-size: 5rem; opacity: 0.07; bottom: -10px; right: 10px; }
+  .rooval-ad .ad-label { font-size: 0.65rem; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+  .rooval-ad h3 { font-size: 1.05rem; font-weight: 900; margin-bottom: 6px; line-height: 1.2; }
+  .rooval-ad h3 span { color: var(--gold); }
+  .rooval-ad p { font-size: 0.78rem; color: rgba(255,255,255,0.75); margin-bottom: 14px; line-height: 1.5; }
+  .ad-cta {
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 0.82rem;
+    cursor: pointer;
   }
 
-  /* WIN MODAL */
+  /* BOTTOM AD FOOTER */
+  .footer-ad {
+    background: var(--red-dark);
+    color: white;
+    text-align: center;
+    padding: 20px 16px;
+    margin-top: 8px;
+  }
+  .footer-ad .f-logo { font-size: 1.2rem; font-weight: 900; margin-bottom: 4px; }
+  .footer-ad .f-logo span { color: var(--gold); }
+  .footer-ad p { font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-bottom: 8px; }
+  .footer-ad .f-phone { color: var(--gold); font-weight: 800; font-size: 1rem; }
+  .footer-ad .services { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+  .footer-ad .services span { font-size: 0.7rem; color: rgba(255,255,255,0.6); }
+
+  /* ── MODALS ── */
   .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75); z-index: 200;
+    align-items: center; justify-content: center;
   }
   .modal-overlay.show { display: flex; }
   .modal-box {
-    background: white;
-    border-radius: 24px;
-    padding: 40px;
-    max-width: 480px;
-    width: 90%;
-    text-align: center;
-    position: relative;
+    background: white; border-radius: 22px; padding: 32px 28px;
+    max-width: 420px; width: 92%; text-align: center; position: relative;
     box-shadow: 0 30px 80px rgba(0,0,0,0.4);
   }
-  .modal-box h2 { font-size: 2rem; color: var(--primary); margin-bottom: 8px; }
-  .modal-box p { color: var(--muted); margin-bottom: 24px; }
+  .modal-box .m-logo { font-size: 0.7rem; color: var(--red); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .modal-box h2 { font-size: 1.6rem; color: var(--dark); font-weight: 900; margin-bottom: 6px; }
+  .modal-box p { color: var(--muted); font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5; }
+  .close-modal { position: absolute; top: 14px; right: 14px; background: #f1f5f9; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; }
 
-  /* PRIZE WHEEL */
-  .wheel-wrap { position: relative; display: inline-block; margin-bottom: 20px; }
-  #prizeWheel { border-radius: 50%; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
-  .wheel-pointer {
-    position: absolute;
-    top: -16px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 2rem;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-  }
+  /* WHEEL */
+  .wheel-wrap { position: relative; display: inline-block; margin-bottom: 16px; }
+  #prizeWheel { border-radius: 50%; box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+  .wheel-pointer { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-size: 1.8rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); }
   .spin-btn {
-    padding: 14px 40px;
-    background: var(--accent);
-    color: #000;
-    border: none;
-    border-radius: 30px;
-    font-size: 1.1rem;
-    font-weight: 800;
-    cursor: pointer;
+    padding: 13px 36px;
+    background: linear-gradient(135deg, var(--gold), #e67e22);
+    color: var(--dark);
+    border: none; border-radius: 30px;
+    font-size: 1rem; font-weight: 900; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(243,156,18,0.4);
     transition: all 0.2s;
-    box-shadow: 0 4px 16px rgba(245,158,11,0.4);
   }
   .spin-btn:hover { transform: scale(1.05); }
   .spin-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
-  .prize-result {
-    margin-top: 20px;
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--green);
-    display: none;
-  }
-  .close-modal {
-    position: absolute;
-    top: 16px; right: 16px;
-    background: #f1f5f9;
-    border: none;
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 1rem;
-  }
+  .prize-result { margin-top: 16px; font-size: 1rem; font-weight: 700; display: none; padding: 12px; border-radius: 10px; background: #f8f8f8; }
 
   /* ADMIN PAGE */
-  .admin-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .admin-page { padding: 16px; max-width: 900px; margin: 0 auto; }
+  .admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
   .tab-btn {
-    padding: 8px 20px;
-    border-radius: 20px;
-    border: 1.5px solid #e2e8f0;
-    background: white;
-    cursor: pointer;
-    font-size: 0.88rem;
-    font-weight: 600;
-    transition: all 0.2s;
-    color: var(--muted);
+    padding: 8px 18px; border-radius: 20px; border: 1.5px solid #e2e8e0;
+    background: white; cursor: pointer; font-size: 0.82rem; font-weight: 600;
+    transition: all 0.2s; color: var(--muted);
   }
-  .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+  .tab-btn.active { background: var(--red); color: white; border-color: var(--red); }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
-
   table { width: 100%; border-collapse: collapse; background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-  th { background: var(--primary); color: white; padding: 14px 16px; text-align: left; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.5px; }
-  td { padding: 13px 16px; font-size: 0.88rem; border-bottom: 1px solid #f1f5f9; }
+  th { background: var(--red-dark); color: white; padding: 13px 14px; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 12px 14px; font-size: 0.84rem; border-bottom: 1px solid #f5f5f0; }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #f8fafc; }
-
-  .badge {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-  }
+  tr:hover td { background: #fef9f9; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; }
   .badge-green { background: #d1fae5; color: #065f46; }
   .badge-yellow { background: #fef3c7; color: #92400e; }
   .badge-blue { background: #dbeafe; color: #1e40af; }
   .badge-red { background: #fee2e2; color: #991b1b; }
-
-  .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
-  .admin-stat {
-    background: white;
-    border-radius: 14px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    border-left: 5px solid var(--primary);
-  }
-  .admin-stat .num { font-size: 2.2rem; font-weight: 800; color: var(--primary); }
-  .admin-stat .lbl { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
-  .admin-stat.accent { border-left-color: var(--accent); }
-  .admin-stat.accent .num { color: var(--accent); }
-  .admin-stat.green { border-left-color: var(--green); }
-  .admin-stat.green .num { color: var(--green); }
-
-  .fulfill-btn {
-    padding: 5px 14px;
-    background: var(--green);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-  }
+  .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .admin-stat { background: white; border-radius: 12px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--red); }
+  .admin-stat .num { font-size: 2rem; font-weight: 900; color: var(--red); }
+  .admin-stat .lbl { font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
+  .fulfill-btn { padding: 5px 14px; background: var(--green); color: white; border: none; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
   .fulfill-btn:disabled { background: #d1fae5; color: #065f46; cursor: default; }
+  .search-bar { width: 100%; padding: 12px 16px; border: 2px solid #e8e8e8; border-radius: 10px; font-size: 0.88rem; outline: none; margin-bottom: 14px; }
+  .search-bar:focus { border-color: var(--red); }
 
-  .search-bar {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    outline: none;
-    margin-bottom: 16px;
-  }
-  .search-bar:focus { border-color: var(--primary); }
-
-  /* QR SCANNER MOCK */
-  .qr-scan-area {
-    border: 3px dashed #e2e8f0;
-    border-radius: 16px;
-    padding: 32px;
-    text-align: center;
-    margin-bottom: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .qr-scan-area:hover { border-color: var(--accent); background: #fffbeb; }
-  .qr-scan-area .qr-icon { font-size: 3rem; margin-bottom: 8px; }
+  /* QR MODAL */
+  .qr-scan-area { border: 3px dashed #e2e8e0; border-radius: 14px; padding: 28px; text-align: center; margin-bottom: 14px; cursor: pointer; transition: all 0.2s; }
+  .qr-scan-area:hover { border-color: var(--gold); background: #fffbeb; }
 
   /* CONFETTI */
-  .confetti-piece {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    border-radius: 2px;
-    animation: fall 3s ease-in forwards;
-    pointer-events: none;
-    z-index: 9999;
-  }
-  @keyframes fall {
-    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-  }
+  .confetti-piece { position: fixed; width: 10px; height: 10px; border-radius: 2px; animation: fall 3s ease-in forwards; pointer-events: none; z-index: 9999; }
+  @keyframes fall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
 
-  .logout-btn {
-    background: rgba(255,255,255,0.15);
-    border: 1.5px solid rgba(255,255,255,0.3);
-    color: white;
-    padding: 6px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 0.82rem;
-  }
+  .logout-btn { background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.25); color: white; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.78rem; font-weight: 600; }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-  <div class="logo">Agent<span>Bingo</span></div>
-  <div class="nav-links" id="navLinks" style="display:none">
+  <div class="logo-wrap">
+    <div class="roof-icon">
+      <div class="roof-triangle"></div>
+      <div class="roof-body"></div>
+    </div>
+    <div class="logo-text">
+      <div class="r1">Rooval Roofing</div>
+      <div class="r2">Agent Rewards</div>
+    </div>
+  </div>
+  <div class="nav-right" id="navLinks" style="display:none">
     <button class="nav-btn active" onclick="showPage('bingo')">My Card</button>
     <button class="nav-btn" onclick="showPage('admin')">Admin</button>
     <button class="logout-btn" onclick="logout()">Logout</button>
   </div>
+  <div id="navPhone" class="nav-phone">📞 (555) 766-2582</div>
 </nav>
 
-<!-- LOGIN PAGE -->
+<!-- ════════════════════════════════ LOGIN PAGE ════════════════════════════════ -->
 <div class="page active" id="page-login">
-  <div class="login-wrap">
+  <div class="login-page">
+
+    <div class="login-hero">
+      <div class="badge">🏆 Agent Rewards Program</div>
+      <h1>Win Big With<br><span>Rooval Roofing</span></h1>
+      <p>Play weekly bingo, earn bonus numbers, and spin the wheel for real prizes — just for being an amazing agent!</p>
+    </div>
+
     <div class="login-card">
-      <div class="trophy">🏆</div>
-      <h1>AgentBingo</h1>
-      <p>Log in to view your bingo card and track your rewards</p>
-      <input type="text" id="loginInput" placeholder="Enter your email or agent code" />
-      <button class="btn-primary" onclick="doLogin()">Sign In</button>
-      <div class="demo-hint">
-        <strong>Demo:</strong> Type anything and press Sign In — or try <strong>admin</strong> for the admin view
+      <h2>🔑 Agent Sign In</h2>
+      <p>Enter your agent code or email to access your rewards card</p>
+      <input type="text" id="loginInput" placeholder="Your email or agent code" />
+      <button class="btn-red" onclick="doLogin()">Access My Bingo Card →</button>
+      <div class="demo-hint">Demo: type anything to log in as agent · type <strong>admin</strong> for the dashboard</div>
+    </div>
+
+    <div class="service-cards">
+      <div class="svc-card">
+        <div class="icon">🏠</div>
+        <div class="title">Roof Replacement</div>
+        <div class="sub">Full residential & commercial</div>
+      </div>
+      <div class="svc-card">
+        <div class="icon">🔧</div>
+        <div class="title">Roof Repair</div>
+        <div class="sub">Same-day emergency service</div>
+      </div>
+      <div class="svc-card">
+        <div class="icon">🔍</div>
+        <div class="title">Free Inspections</div>
+        <div class="sub">No charge, no obligation</div>
+      </div>
+      <div class="svc-card">
+        <div class="icon">⛈️</div>
+        <div class="title">Storm Damage</div>
+        <div class="sub">Insurance claim experts</div>
       </div>
     </div>
+
+    <div class="trust-bar">
+      <div class="trust-item"><span>✓</span> Licensed & Insured</div>
+      <div class="trust-item"><span>✓</span> 5-Star Rated</div>
+      <div class="trust-item"><span>✓</span> 10-Year Warranty</div>
+      <div class="trust-item"><span>✓</span> Free Estimates</div>
+    </div>
+
   </div>
 </div>
 
-<!-- BINGO CARD PAGE -->
+<!-- ════════════════════════════════ BINGO PAGE ════════════════════════════════ -->
 <div class="page" id="page-bingo">
-  <div class="agent-header">
-    <div>
-      <h2 id="agentGreeting">Welcome back, Agent!</h2>
-      <p style="color:var(--muted);font-size:0.88rem">Keep playing to win prizes every week 🎯</p>
+
+  <!-- Promo banner -->
+  <div class="promo-banner">
+    <div class="pb-text">
+      <div class="pb-title">🏠 Free Roof Inspection for Your Clients!</div>
+      <div class="pb-sub">Refer a homeowner — they get a free inspection, you get +2 numbers</div>
     </div>
-    <div class="week-badge">📅 Week 23 — May 2026</div>
+    <button class="pb-btn" onclick="claimBonus('referral')">Refer Now</button>
   </div>
 
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="num" id="statNumbers">14</div>
-      <div class="lbl">Numbers Called</div>
+  <div class="page-body">
+
+    <div class="welcome-row">
+      <div>
+        <h2 id="agentGreeting">Welcome back! 👋</h2>
+        <p style="font-size:0.75rem;color:var(--muted)">Rooval Roofing Agent Rewards</p>
+      </div>
+      <div class="week-chip">📅 Week 23</div>
     </div>
-    <div class="stat-card">
-      <div class="num" id="statBonus">3</div>
-      <div class="lbl">Bonus Numbers</div>
+
+    <!-- WEEKLY SPIN — front and center -->
+    <div class="spin-cta-card" onclick="openWheel()">
+      <div class="sc-text">
+        <div class="sc-title">🎡 Weekly Spin Ready!</div>
+        <div class="sc-sub">Land on a number — if it's on your card it gets marked!</div>
+      </div>
+      <button class="sc-btn" id="spinTriggerBtn">SPIN NOW</button>
     </div>
-    <div class="stat-card">
-      <div class="num" id="statReferrals">2</div>
-      <div class="lbl">Referrals Made</div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="num" id="statNumbers">14</div>
+        <div class="lbl">Numbers Called</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="statBonus">3</div>
+        <div class="lbl">Bonus Earned</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" id="statReferrals">2</div>
+        <div class="lbl">Referrals</div>
+      </div>
     </div>
-    <div class="stat-card">
-      <div class="num" id="statWins">1</div>
-      <div class="lbl">Prizes Won</div>
+
+    <!-- Bingo Card -->
+    <div class="bingo-wrap">
+      <div class="bingo-top">
+        <h3>🎱 Your Rooval Bingo Card</h3>
+        <div class="progress-pill" id="progressPill">⚡ 2 away from BINGO!</div>
+      </div>
+      <div class="bingo-header">
+        <div>B</div><div>I</div><div>N</div><div>G</div><div>O</div>
+      </div>
+      <div class="bingo-grid" id="bingoGrid"></div>
     </div>
+
+    <!-- Recently Called -->
+    <div class="recent-wrap">
+      <h4>📋 Recently Called Numbers</h4>
+      <div id="recentNumbers"></div>
+      <div class="next-drop">🕗 Next number drops Monday at 8:00 AM</div>
+    </div>
+
+    <!-- Rooval Ad Card -->
+    <div class="rooval-ad">
+      <div class="ad-label">🏠 Rooval Roofing — Trusted Since 2010</div>
+      <h3>Does Your Client Need a <span>New Roof?</span></h3>
+      <p>Refer them to Rooval Roofing and earn 2 bonus bingo numbers. We handle everything — free inspection, insurance claim support, and a 10-year warranty.</p>
+      <button class="ad-cta" onclick="claimBonus('referral')">Make a Referral → Earn +2 Numbers</button>
+    </div>
+
+    <!-- Bonus Actions -->
+    <div class="bonus-wrap">
+      <h3>⚡ Earn More Numbers</h3>
+      <div class="bonus-sub">Complete actions below to add free numbers to your card</div>
+
+      <div class="bonus-item" id="bonus-review" onclick="claimBonus('review')">
+        <div class="b-icon">⭐</div>
+        <div class="b-info">
+          <div class="b-title">Leave a Google Review</div>
+          <div class="b-desc">Review Rooval Roofing → upload screenshot → earn a free number</div>
+        </div>
+        <div class="b-badge">+1 Number</div>
+      </div>
+
+      <div class="bonus-item" id="bonus-referral" onclick="claimBonus('referral')">
+        <div class="b-icon">🏠</div>
+        <div class="b-info">
+          <div class="b-title">Refer a Homeowner</div>
+          <div class="b-desc">Send a client to Rooval Roofing for a free roof inspection</div>
+        </div>
+        <div class="b-badge">+2 Numbers</div>
+      </div>
+
+      <div class="bonus-item done" id="bonus-social">
+        <div class="b-icon">📱</div>
+        <div class="b-info">
+          <div class="b-title">Follow Rooval Roofing</div>
+          <div class="b-desc">@RoovalRoofing on Facebook & Instagram</div>
+        </div>
+        <div class="b-badge done">✓ Done</div>
+      </div>
+
+      <div class="bonus-item" id="bonus-qr" onclick="openQR()">
+        <div class="b-icon">📷</div>
+        <div class="b-info">
+          <div class="b-title">Scan Event QR Code</div>
+          <div class="b-desc">Scan the code at Rooval Roofing events & job sites</div>
+        </div>
+        <div class="b-badge">+1 Number</div>
+      </div>
+    </div>
+
+    <!-- Second Ad -->
+    <div class="rooval-ad" style="background:linear-gradient(135deg,var(--red-dark),#7b241c)">
+      <div class="ad-label">⛈️ Storm Season is Here</div>
+      <h3>Got a Client With <span>Storm Damage?</span></h3>
+      <p>Rooval Roofing works directly with insurance companies. Fast approvals, quality work, no stress for your client. Refer them today.</p>
+      <button class="ad-cta" onclick="alert('Opening referral form...')">Submit Storm Referral</button>
+    </div>
+
   </div>
 
-  <div class="main-grid">
-    <div>
-      <div class="bingo-card-wrap">
-        <h3>🎱 Your Bingo Card</h3>
-        <div class="bingo-header">
-          <div>B</div><div>I</div><div>N</div><div>G</div><div>O</div>
-        </div>
-        <div class="bingo-grid" id="bingoGrid"></div>
-        <div style="margin-top:16px;padding:12px;background:#fffbeb;border-radius:10px;font-size:0.82rem;color:#92400e;text-align:center;font-weight:600" id="winHint">
-          🎡 Your weekly spin is ready! Spin to get a bonus number — it may or may not land on your card!
-        </div>
-        <button class="btn-primary" style="margin-top:12px;background:var(--accent);color:#000" onclick="openWheel()" id="spinTrigger">🎡 Weekly Spin — Get a Bonus Number!</button>
-      </div>
-    </div>
-
-    <div class="side-panel">
-      <div class="bonus-card">
-        <h3>⚡ Earn Bonus Numbers</h3>
-        <div class="bonus-item" id="bonus-review" onclick="claimBonus('review')">
-          <div class="bonus-icon">⭐</div>
-          <div class="bonus-info">
-            <div class="bonus-title">Leave a Google Review</div>
-            <div class="bonus-sub">Scan QR or click to complete</div>
-          </div>
-          <div class="bonus-badge">+1 #</div>
-        </div>
-        <div class="bonus-item" id="bonus-referral" onclick="claimBonus('referral')">
-          <div class="bonus-icon">👥</div>
-          <div class="bonus-info">
-            <div class="bonus-title">Make a Referral</div>
-            <div class="bonus-sub">Submit a client referral</div>
-          </div>
-          <div class="bonus-badge">+2 #</div>
-        </div>
-        <div class="bonus-item done" id="bonus-social">
-          <div class="bonus-icon">📱</div>
-          <div class="bonus-info">
-            <div class="bonus-title">Follow on Social Media</div>
-            <div class="bonus-sub">Already completed!</div>
-          </div>
-          <div class="bonus-badge done-badge">✓ Done</div>
-        </div>
-        <div class="bonus-item" id="bonus-qr" onclick="openQR()">
-          <div class="bonus-icon">📷</div>
-          <div class="bonus-info">
-            <div class="bonus-title">Scan Event QR Code</div>
-            <div class="bonus-sub">At agency events</div>
-          </div>
-          <div class="bonus-badge">+1 #</div>
-        </div>
-      </div>
-
-      <div class="recent-card">
-        <h3>📋 Recently Called Numbers</h3>
-        <div id="recentNumbers"></div>
-        <p style="font-size:0.78rem;color:var(--muted);margin-top:10px">Next number drops Monday at 8 AM</p>
-      </div>
+  <!-- Footer Ad -->
+  <div class="footer-ad">
+    <div class="f-logo">Rooval <span>Roofing</span></div>
+    <p>Protecting homes across the area — one roof at a time</p>
+    <div class="f-phone">📞 (555) 766-2582</div>
+    <div class="services">
+      <span>✓ Residential</span>
+      <span>✓ Commercial</span>
+      <span>✓ Storm Damage</span>
+      <span>✓ Free Inspections</span>
+      <span>✓ Insurance Claims</span>
     </div>
   </div>
 </div>
 
-<!-- ADMIN PAGE -->
+<!-- ════════════════════════════════ ADMIN PAGE ════════════════════════════════ -->
 <div class="page" id="page-admin">
-  <h2 style="color:var(--primary);margin-bottom:6px">Admin Dashboard</h2>
-  <p style="color:var(--muted);margin-bottom:24px;font-size:0.9rem">Manage agents, track referrals, and fulfill prizes</p>
+  <div class="admin-page">
+    <h2 style="color:var(--red);margin-bottom:4px;font-size:1.4rem;font-weight:900">Admin Dashboard</h2>
+    <p style="color:var(--muted);margin-bottom:20px;font-size:0.85rem">Rooval Roofing — Agent Rewards Management</p>
 
-  <div class="admin-stats">
-    <div class="admin-stat">
-      <div class="num">42</div>
-      <div class="lbl">Active Agents</div>
+    <div class="admin-stats">
+      <div class="admin-stat"><div class="num">42</div><div class="lbl">Active Agents</div></div>
+      <div class="admin-stat" style="border-left-color:var(--gold)"><div class="num" style="color:var(--gold)">$180</div><div class="lbl">Prizes Pending</div></div>
+      <div class="admin-stat" style="border-left-color:var(--green)"><div class="num" style="color:var(--green)">18</div><div class="lbl">Referrals This Week</div></div>
+      <div class="admin-stat" style="border-left-color:#8b5cf6"><div class="num" style="color:#8b5cf6">7</div><div class="lbl">Bingos This Month</div></div>
     </div>
-    <div class="admin-stat accent">
-      <div class="num">$180</div>
-      <div class="lbl">Prizes Pending</div>
+
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="switchTab('agents',event)">Agents</button>
+      <button class="tab-btn" onclick="switchTab('prizes',event)">Prize Fulfillment</button>
+      <button class="tab-btn" onclick="switchTab('referrals',event)">Referrals</button>
+      <button class="tab-btn" onclick="switchTab('email',event)">Email Schedule</button>
     </div>
-    <div class="admin-stat green">
-      <div class="num">18</div>
-      <div class="lbl">Referrals This Week</div>
+
+    <div class="tab-content active" id="tab-agents">
+      <input class="search-bar" placeholder="🔍 Search agents..." oninput="filterAgents(this.value)">
+      <table><thead><tr><th>Agent</th><th>Email</th><th>Progress</th><th>Last Active</th><th>Status</th></tr></thead>
+      <tbody id="agentsBody"></tbody></table>
     </div>
-    <div class="admin-stat" style="border-left-color:#8b5cf6">
-      <div class="num" style="color:#8b5cf6">7</div>
-      <div class="lbl">Bingos This Month</div>
+
+    <div class="tab-content" id="tab-prizes">
+      <table><thead><tr><th>Agent</th><th>Prize</th><th>Won On</th><th>Type</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="prizesBody"></tbody></table>
     </div>
-  </div>
 
-  <div class="admin-tabs">
-    <button class="tab-btn active" onclick="switchTab('agents')">Agents</button>
-    <button class="tab-btn" onclick="switchTab('prizes')">Prize Fulfillment</button>
-    <button class="tab-btn" onclick="switchTab('referrals')">Referrals</button>
-    <button class="tab-btn" onclick="switchTab('email')">Email Schedule</button>
-  </div>
+    <div class="tab-content" id="tab-referrals">
+      <table><thead><tr><th>Agent</th><th>Client</th><th>Date</th><th>Bonus</th><th>Status</th></tr></thead>
+      <tbody id="referralsBody"></tbody></table>
+    </div>
 
-  <div class="tab-content active" id="tab-agents">
-    <input class="search-bar" placeholder="🔍 Search agents by name or email..." oninput="filterAgents(this.value)">
-    <table id="agentsTable">
-      <thead>
-        <tr><th>Agent</th><th>Email</th><th>Progress</th><th>Last Active</th><th>Bonus #s</th><th>Status</th></tr>
-      </thead>
-      <tbody id="agentsBody"></tbody>
-    </table>
-  </div>
-
-  <div class="tab-content" id="tab-prizes">
-    <table>
-      <thead>
-        <tr><th>Agent</th><th>Prize</th><th>Won On</th><th>Type</th><th>Status</th><th>Action</th></tr>
-      </thead>
-      <tbody id="prizesBody"></tbody>
-    </table>
-  </div>
-
-  <div class="tab-content" id="tab-referrals">
-    <table>
-      <thead>
-        <tr><th>Referring Agent</th><th>Client Name</th><th>Date</th><th>Bonus Given</th><th>Status</th></tr>
-      </thead>
-      <tbody id="referralsBody"></tbody>
-    </table>
-  </div>
-
-  <div class="tab-content" id="tab-email">
-    <div style="background:white;border-radius:18px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.08)">
-      <h3 style="color:var(--primary);margin-bottom:20px">📧 Email Automation Schedule</h3>
-      <div style="display:grid;gap:14px">
-        <div style="display:flex;align-items:center;gap:16px;padding:16px;background:#f8fafc;border-radius:12px;border-left:4px solid var(--primary)">
-          <div style="font-size:1.8rem">📬</div>
-          <div>
-            <div style="font-weight:700;margin-bottom:2px">Weekly Bingo Number Drop</div>
-            <div style="font-size:0.82rem;color:var(--muted)">Every Monday at 8:00 AM — Sends new number to all active agents</div>
+    <div class="tab-content" id="tab-email">
+      <div style="background:white;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
+        <h3 style="color:var(--red);margin-bottom:18px;font-weight:800">📧 Email Automation</h3>
+        <div style="display:grid;gap:12px">
+          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#fafafa;border-radius:10px;border-left:4px solid var(--red)">
+            <div style="font-size:1.6rem">📬</div>
+            <div><div style="font-weight:700;margin-bottom:2px;font-size:0.9rem">Weekly Bingo Number Drop</div><div style="font-size:0.78rem;color:var(--muted)">Every Monday at 8:00 AM — new number sent to all active agents</div></div>
+            <div style="margin-left:auto"><span class="badge badge-green">● Active</span></div>
           </div>
-          <div style="margin-left:auto"><span class="badge badge-green">● Active</span></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:16px;padding:16px;background:#f8fafc;border-radius:12px;border-left:4px solid var(--green)">
-          <div style="font-size:1.8rem">🎉</div>
-          <div>
-            <div style="font-weight:700;margin-bottom:2px">Bingo Win Notification</div>
-            <div style="font-size:0.82rem;color:var(--muted)">Triggered instantly when agent gets 5-in-a-row or full card</div>
+          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#fafafa;border-radius:10px;border-left:4px solid var(--green)">
+            <div style="font-size:1.6rem">🎉</div>
+            <div><div style="font-weight:700;margin-bottom:2px;font-size:0.9rem">BINGO Win Notification</div><div style="font-size:0.78rem;color:var(--muted)">Instant email when agent gets 5-in-a-row or full card</div></div>
+            <div style="margin-left:auto"><span class="badge badge-green">● Active</span></div>
           </div>
-          <div style="margin-left:auto"><span class="badge badge-green">● Active</span></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:16px;padding:16px;background:#f8fafc;border-radius:12px;border-left:4px solid var(--accent)">
-          <div style="font-size:1.8rem">⏰</div>
-          <div>
-            <div style="font-weight:700;margin-bottom:2px">Re-engagement Reminder</div>
-            <div style="font-size:0.82rem;color:var(--muted)">Sent after 2 weeks of inactivity — nudge to complete bonus actions</div>
+          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#fafafa;border-radius:10px;border-left:4px solid var(--gold)">
+            <div style="font-size:1.6rem">⏰</div>
+            <div><div style="font-weight:700;margin-bottom:2px;font-size:0.9rem">Weekly Spin Reminder</div><div style="font-size:0.78rem;color:var(--muted)">Friday reminder email if agent hasn't used their weekly spin</div></div>
+            <div style="margin-left:auto"><span class="badge badge-yellow">● Scheduled</span></div>
           </div>
-          <div style="margin-left:auto"><span class="badge badge-yellow">● Scheduled</span></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:16px;padding:16px;background:#f8fafc;border-radius:12px;border-left:4px solid #8b5cf6">
-          <div style="font-size:1.8rem">🎁</div>
-          <div>
-            <div style="font-weight:700;margin-bottom:2px">Prize Fulfillment Confirmation</div>
-            <div style="font-size:0.82rem;color:var(--muted)">Sent when admin marks a prize as fulfilled</div>
+          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#fafafa;border-radius:10px;border-left:4px solid #8b5cf6">
+            <div style="font-size:1.6rem">🏠</div>
+            <div><div style="font-weight:700;margin-bottom:2px;font-size:0.9rem">Rooval Roofing Referral Follow-Up</div><div style="font-size:0.78rem;color:var(--muted)">48hr follow-up when a referral is submitted — keeps agents engaged</div></div>
+            <div style="margin-left:auto"><span class="badge badge-green">● Active</span></div>
           </div>
-          <div style="margin-left:auto"><span class="badge badge-green">● Active</span></div>
         </div>
+        <button class="btn-red" style="margin-top:18px;max-width:220px;padding:12px" onclick="alert('Test number sent to all 42 agents!')">📤 Send Number Now (Test)</button>
       </div>
-      <button class="btn-primary" style="margin-top:20px;max-width:260px" onclick="alert('Number sent to all 42 agents!')">📤 Send Number Now (Test)</button>
     </div>
   </div>
 </div>
@@ -673,60 +863,56 @@
 <div class="modal-overlay" id="qrModal">
   <div class="modal-box">
     <button class="close-modal" onclick="closeQR()">✕</button>
+    <div class="m-logo">🏠 Rooval Roofing — Event Check-In</div>
     <h2>📷 Scan QR Code</h2>
-    <p>Point your camera at an event QR code to earn a bonus number</p>
+    <p>Scan the QR code at any Rooval Roofing event or job site to earn a free bonus number on your card!</p>
     <div class="qr-scan-area" onclick="simulateQRScan()">
-      <div class="qr-icon">▦</div>
-      <p style="font-weight:600;color:var(--primary)">Click to Simulate Scan</p>
-      <p style="font-size:0.8rem;color:var(--muted);margin-top:4px">(In production: uses device camera)</p>
+      <div style="font-size:3rem;margin-bottom:8px">▦</div>
+      <p style="font-weight:700;color:var(--red)">Click to Simulate Scan</p>
+      <p style="font-size:0.75rem;color:var(--muted);margin-top:4px">In production: uses device camera</p>
     </div>
   </div>
 </div>
 
-<!-- PRIZE WHEEL MODAL -->
+<!-- WHEEL MODAL -->
 <div class="modal-overlay" id="wheelModal">
   <div class="modal-box">
     <button class="close-modal" onclick="closeWheel()">✕</button>
+    <div class="m-logo">🏠 Rooval Roofing Rewards</div>
     <h2>🎡 Weekly Spin!</h2>
-    <p>Spin to land on a bonus number — if it's on your card, it gets marked!</p>
+    <p>Spin the wheel to land on a bonus number. If that number is on your bingo card — it gets marked!</p>
     <div class="wheel-wrap">
       <div class="wheel-pointer">▼</div>
-      <canvas id="prizeWheel" width="280" height="280"></canvas>
-    </div>
-    <br>
+      <canvas id="prizeWheel" width="270" height="270"></canvas>
+    </div><br>
     <button class="spin-btn" id="spinBtn" onclick="spinWheel()">🎲 SPIN!</button>
     <div class="prize-result" id="prizeResult"></div>
   </div>
 </div>
 
 <script>
-// ---- DATA ----
-const agents = [
-  { name: 'Sarah Johnson', email: 'sarah.j@agency.com', progress: 14, bonus: 3, active: '2 hours ago', status: 'active' },
-  { name: 'Mike Torres', email: 'mtorres@agency.com', progress: 11, bonus: 1, active: 'Yesterday', status: 'active' },
-  { name: 'Lisa Chen', email: 'lchen@agency.com', progress: 18, bonus: 4, active: '1 hour ago', status: 'bingo' },
-  { name: 'James Park', email: 'jpark@agency.com', progress: 6, bonus: 0, active: '5 days ago', status: 'inactive' },
-  { name: 'Amy Williams', email: 'awilliams@agency.com', progress: 9, bonus: 2, active: 'Today', status: 'active' },
-  { name: 'David Brown', email: 'dbrown@agency.com', progress: 21, bonus: 5, active: '30 min ago', status: 'bingo' },
-  { name: 'Rachel Kim', email: 'rkim@agency.com', progress: 3, bonus: 0, active: '2 weeks ago', status: 'inactive' },
+// ── DATA ──
+const agentsData = [
+  { name:'Sarah Johnson', email:'sarah.j@agency.com', progress:14, bonus:3, active:'2 hours ago', status:'active' },
+  { name:'Mike Torres', email:'mtorres@agency.com', progress:11, bonus:1, active:'Yesterday', status:'active' },
+  { name:'Lisa Chen', email:'lchen@agency.com', progress:18, bonus:4, active:'1 hour ago', status:'bingo' },
+  { name:'James Park', email:'jpark@agency.com', progress:6, bonus:0, active:'5 days ago', status:'inactive' },
+  { name:'Amy Williams', email:'awilliams@agency.com', progress:9, bonus:2, active:'Today', status:'active' },
+  { name:'David Brown', email:'dbrown@agency.com', progress:21, bonus:5, active:'30 min ago', status:'bingo' },
+];
+const prizesData = [
+  { agent:'Lisa Chen', prize:'$25 Gift Card', won:'May 26', type:'Gift Card', fulfilled:false },
+  { agent:'David Brown', prize:'$50 Cash', won:'May 25', type:'Cash', fulfilled:false },
+  { agent:'Sarah Johnson', prize:'$10 Gift Card', won:'May 18', type:'Gift Card', fulfilled:true },
+  { agent:'Mike Torres', prize:'$5 Cash', won:'May 10', type:'Cash', fulfilled:true },
+];
+const referralsData = [
+  { agent:'Sarah Johnson', client:'Tom Henderson', date:'May 27', bonus:'+2 numbers', status:'approved' },
+  { agent:'Amy Williams', client:'Karen Liu', date:'May 26', bonus:'+2 numbers', status:'pending' },
+  { agent:'David Brown', client:'Frank Adams', date:'May 25', bonus:'+2 numbers', status:'approved' },
+  { agent:'Sarah Johnson', client:'Maria Santos', date:'May 20', bonus:'+2 numbers', status:'approved' },
 ];
 
-const prizes = [
-  { agent: 'Lisa Chen', prize: '$25 Gift Card', won: 'May 26', type: 'Gift Card', fulfilled: false },
-  { agent: 'David Brown', prize: '$50 Cash', won: 'May 25', type: 'Cash', fulfilled: false },
-  { agent: 'Sarah Johnson', prize: '$10 Gift Card', won: 'May 18', type: 'Gift Card', fulfilled: true },
-  { agent: 'Mike Torres', prize: '$5 Cash', won: 'May 10', type: 'Cash', fulfilled: true },
-];
-
-const referrals = [
-  { agent: 'Sarah Johnson', client: 'Tom Henderson', date: 'May 27', bonus: '+2 numbers', status: 'approved' },
-  { agent: 'Amy Williams', client: 'Karen Liu', date: 'May 26', bonus: '+2 numbers', status: 'pending' },
-  { agent: 'David Brown', client: 'Frank Adams', date: 'May 25', bonus: '+2 numbers', status: 'approved' },
-  { agent: 'Sarah Johnson', client: 'Maria Santos', date: 'May 20', bonus: '+2 numbers', status: 'approved' },
-  { agent: 'Mike Torres', client: 'John Carey', date: 'May 18', bonus: '+2 numbers', status: 'pending' },
-];
-
-// Bingo card numbers
 const cardNumbers = [
   [5, 19, 33, 47, 63],
   [11, 22, 38, 52, 70],
@@ -734,14 +920,11 @@ const cardNumbers = [
   [3, 28, 44, 58, 72],
   [14, 25, 40, 60, 68]
 ];
-
 const calledNumbers = new Set([5, 19, 33, 47, 63, 22, 38, 16, 55, 44, 25, 40, 14, 60]);
-const recentCalled = [60, 55, 40, 33, 22, 14, 19];
+const winCells = new Set(['0-0','0-1','0-2','0-3','0-4']);
+let recentCalled = [60, 55, 40, 33, 22, 14, 19];
 
-// Win row: row 0 (B column top row) is fully called
-const winCells = new Set(['0-0','0-1','0-2','0-3','0-4']); // row 0 all called
-
-// ---- BINGO GRID ----
+// ── BINGO ──
 function buildBingoGrid() {
   const grid = document.getElementById('bingoGrid');
   grid.innerHTML = '';
@@ -751,10 +934,10 @@ function buildBingoGrid() {
       cell.className = 'bingo-cell';
       const key = `${ri}-${ci}`;
       if (num === 'FREE') {
-        cell.classList.add('called', 'free');
-        cell.textContent = 'FREE';
+        cell.classList.add('called','free');
+        cell.innerHTML = '🏠<br>FREE';
       } else if (winCells.has(key)) {
-        cell.classList.add('called', 'bingo-win');
+        cell.classList.add('called','bingo-win');
         cell.textContent = num;
       } else if (calledNumbers.has(num)) {
         cell.classList.add('called');
@@ -768,297 +951,218 @@ function buildBingoGrid() {
 }
 
 function buildRecentNumbers() {
-  const el = document.getElementById('recentNumbers');
-  el.innerHTML = recentCalled.map(n => `<span class="number-chip">${n}</span>`).join('');
+  document.getElementById('recentNumbers').innerHTML =
+    recentCalled.map(n => `<span class="number-chip">${n}</span>`).join('');
 }
 
-// ---- LOGIN ----
+// ── LOGIN ──
 function doLogin() {
   const val = document.getElementById('loginInput').value.trim();
-  if (!val) { alert('Please enter your email or agent code'); return; }
+  if (!val) { alert('Please enter your agent code or email'); return; }
   if (val.toLowerCase() === 'admin') {
-    showPage('admin');
+    showPage('admin'); buildAdminTables();
     document.getElementById('navLinks').style.display = 'flex';
+    document.getElementById('navPhone').style.display = 'none';
     return;
   }
-  const name = val.includes('@') ? val.split('@')[0].replace(/\./g,' ').replace(/\b\w/g, c => c.toUpperCase()) : 'Agent ' + val;
+  const name = val.includes('@')
+    ? val.split('@')[0].replace(/\./g,' ').replace(/\b\w/g,c=>c.toUpperCase())
+    : val.charAt(0).toUpperCase() + val.slice(1);
   document.getElementById('agentGreeting').textContent = `Welcome back, ${name}! 👋`;
   showPage('bingo');
   document.getElementById('navLinks').style.display = 'flex';
+  document.getElementById('navPhone').style.display = 'none';
   buildBingoGrid();
   buildRecentNumbers();
-  buildAdminTables();
 }
 
 function logout() {
   document.getElementById('navLinks').style.display = 'none';
+  document.getElementById('navPhone').style.display = 'flex';
   document.getElementById('loginInput').value = '';
   showPage('login');
 }
 
-// ---- PAGES ----
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
+  document.getElementById('page-'+name).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  const btns = document.querySelectorAll('.nav-btn');
-  if (name === 'bingo') btns[0].classList.add('active');
-  if (name === 'admin') { btns[1].classList.add('active'); buildAdminTables(); }
+  if (name==='bingo') document.querySelectorAll('.nav-btn')[0].classList.add('active');
+  if (name==='admin') document.querySelectorAll('.nav-btn')[1].classList.add('active');
 }
 
-// ---- BONUS ----
+// ── BONUS ──
 function claimBonus(type) {
-  const el = document.getElementById('bonus-' + type);
-  if (el.classList.contains('done')) return;
+  const el = document.getElementById('bonus-'+type);
+  if (!el || el.classList.contains('done')) return;
   el.classList.add('done');
-  const badge = el.querySelector('.bonus-badge');
-  badge.textContent = '✓ Done';
-  badge.classList.add('done-badge');
-  el.querySelector('.bonus-sub').textContent = 'Completed!';
-  const bonus = type === 'referral' ? 2 : 1;
+  const badge = el.querySelector('.b-badge');
+  if (badge) { badge.textContent = '✓ Done'; badge.classList.add('done'); }
+  const sub = el.querySelector('.b-desc');
+  if (sub) sub.textContent = 'Completed — numbers added!';
+  const count = type==='referral'?2:1;
   const cur = parseInt(document.getElementById('statBonus').textContent);
-  document.getElementById('statBonus').textContent = cur + bonus;
-  // Add a number to recent
-  const newNum = Math.floor(Math.random() * 75) + 1;
-  recentCalled.unshift(newNum);
-  calledNumbers.add(newNum);
-  buildRecentNumbers();
-  buildBingoGrid();
-  showConfetti();
-  alert(`🎉 Bonus earned! You got ${bonus} new number${bonus>1?'s':''}!`);
+  document.getElementById('statBonus').textContent = cur + count;
+  const ref = parseInt(document.getElementById('statReferrals').textContent);
+  if (type==='referral') document.getElementById('statReferrals').textContent = ref + 1;
+  for (let i=0;i<count;i++) {
+    const n = Math.floor(Math.random()*75)+1;
+    recentCalled.unshift(n); calledNumbers.add(n);
+  }
+  buildRecentNumbers(); buildBingoGrid(); showConfetti();
+  alert(`🎉 Nice work! You earned ${count} free number${count>1?'s':''}!\n\nThank you for supporting Rooval Roofing! 🏠`);
 }
 
-// ---- QR MODAL ----
+// ── QR ──
 function openQR() { document.getElementById('qrModal').classList.add('show'); }
 function closeQR() { document.getElementById('qrModal').classList.remove('show'); }
-function simulateQRScan() {
-  closeQR();
-  claimBonus('qr');
-}
+function simulateQRScan() { closeQR(); claimBonus('qr'); }
 
-// ---- PRIZE WHEEL ----
-const prizes_wheel = [
-  { label: 'B-7',  color: '#3b82f6', num: 7  },
-  { label: 'I-22', color: '#8b5cf6', num: 22 },
-  { label: 'N-33', color: '#10b981', num: 33 },
-  { label: 'G-52', color: '#f59e0b', num: 52 },
-  { label: 'O-68', color: '#ef4444', num: 68 },
-  { label: 'B-11', color: '#ec4899', num: 11 },
-  { label: 'I-19', color: '#1a3a6b', num: 19 },
-  { label: 'N-40', color: '#0891b2', num: 40 },
+// ── WHEEL ──
+const wheelSegs = [
+  { label:'B-7',  color:'#c0392b', num:7  },
+  { label:'I-22', color:'#922b21', num:22 },
+  { label:'N-33', color:'#e67e22', num:33 },
+  { label:'G-52', color:'#1a1a2e', num:52 },
+  { label:'O-68', color:'#2c3e50', num:68 },
+  { label:'B-11', color:'#c0392b', num:11 },
+  { label:'I-19', color:'#7b241c', num:19 },
+  { label:'N-40', color:'#e67e22', num:40 },
 ];
-const total = prizes_wheel.reduce((a,b) => a + b.prob, 0);
-let spinning = false;
-let currentAngle = 0;
+let spinning=false, currentAngle=0;
 
 function drawWheel(angle) {
-  const canvas = document.getElementById('prizeWheel');
-  const ctx = canvas.getContext('2d');
-  const cx = 140, cy = 140, r = 130;
-  ctx.clearRect(0, 0, 280, 280);
-  const segArc = (2 * Math.PI) / prizes_wheel.length;
-  let start = angle;
-  prizes_wheel.forEach(seg => {
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, start, start + segArc);
-    ctx.fillStyle = seg.color;
-    ctx.fill();
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    // Label
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.rotate(start + segArc / 2);
-    ctx.textAlign = 'right';
-    ctx.fillStyle = 'white';
-    ctx.font = 'bold 13px Segoe UI';
-    ctx.fillText(seg.label, r - 10, 5);
-    ctx.restore();
-    start += segArc;
+  const canvas=document.getElementById('prizeWheel');
+  const ctx=canvas.getContext('2d');
+  const cx=135,cy=135,r=128;
+  ctx.clearRect(0,0,270,270);
+  const arc=(2*Math.PI)/wheelSegs.length;
+  let start=angle;
+  wheelSegs.forEach(seg=>{
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,start,start+arc);
+    ctx.fillStyle=seg.color; ctx.fill();
+    ctx.strokeStyle='white'; ctx.lineWidth=2; ctx.stroke();
+    ctx.save(); ctx.translate(cx,cy); ctx.rotate(start+arc/2);
+    ctx.textAlign='right'; ctx.fillStyle='white';
+    ctx.font='bold 13px Segoe UI'; ctx.fillText(seg.label,r-10,5);
+    ctx.restore(); start+=arc;
   });
-  // Center circle
-  ctx.beginPath();
-  ctx.arc(cx, cy, 20, 0, 2 * Math.PI);
-  ctx.fillStyle = 'white';
-  ctx.fill();
-  ctx.strokeStyle = '#e2e8f0';
-  ctx.lineWidth = 2;
-  ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx,cy,22,0,2*Math.PI);
+  ctx.fillStyle='white'; ctx.fill();
+  ctx.strokeStyle='#e8e8e8'; ctx.lineWidth=2; ctx.stroke();
+  // Roof logo in center
+  ctx.fillStyle=`#c0392b`; ctx.font='bold 11px Segoe UI'; ctx.textAlign='center';
+  ctx.fillText('🏠',cx,cy+4);
 }
 
 function openWheel() {
   document.getElementById('wheelModal').classList.add('show');
-  document.getElementById('spinBtn').disabled = false;
-  document.getElementById('prizeResult').style.display = 'none';
+  document.getElementById('spinBtn').disabled=false;
+  document.getElementById('spinBtn').textContent='🎲 SPIN!';
+  document.getElementById('prizeResult').style.display='none';
   drawWheel(currentAngle);
 }
 function closeWheel() { document.getElementById('wheelModal').classList.remove('show'); }
 
 function spinWheel() {
-  if (spinning) return;
-  spinning = true;
-  document.getElementById('spinBtn').disabled = true;
-  document.getElementById('prizeResult').style.display = 'none';
-
-  const spinDeg = 1800 + Math.random() * 1440;
-  const spinRad = spinDeg * Math.PI / 180;
-  const duration = 4000;
-  const start = performance.now();
-  const startAngle = currentAngle;
-
+  if(spinning) return;
+  spinning=true;
+  document.getElementById('spinBtn').disabled=true;
+  document.getElementById('prizeResult').style.display='none';
+  const spinRad=(1800+Math.random()*1440)*Math.PI/180;
+  const duration=4000, start=performance.now(), startAngle=currentAngle;
   function animate(now) {
-    const elapsed = now - start;
-    const t = Math.min(elapsed / duration, 1);
-    const ease = 1 - Math.pow(1 - t, 4);
-    const angle = startAngle + spinRad * ease;
-    drawWheel(angle);
-    if (t < 1) {
-      requestAnimationFrame(animate);
-    } else {
-      currentAngle = angle % (2 * Math.PI);
-      spinning = false;
-      determineWinner(currentAngle);
-    }
+    const t=Math.min((now-start)/duration,1);
+    const ease=1-Math.pow(1-t,4);
+    drawWheel(startAngle+spinRad*ease);
+    if(t<1) { requestAnimationFrame(animate); }
+    else { currentAngle=(startAngle+spinRad)%(2*Math.PI); spinning=false; determineWinner(currentAngle); }
   }
   requestAnimationFrame(animate);
 }
 
 function determineWinner(angle) {
-  const pointer = (Math.PI * 1.5 - angle + Math.PI * 20) % (Math.PI * 2);
-  const segArc = (2 * Math.PI) / prizes_wheel.length;
-  let acc = 0;
-  let winner = prizes_wheel[0];
-  for (const seg of prizes_wheel) {
-    if (pointer >= acc && pointer < acc + segArc) { winner = seg; break; }
-    acc += segArc;
-  }
-
-  // Add the number to called list
-  recentCalled.unshift(winner.num);
-  calledNumbers.add(winner.num);
+  const arc=(2*Math.PI)/wheelSegs.length;
+  const pointer=(Math.PI*1.5-angle+Math.PI*20)%(2*Math.PI);
+  let acc=0, winner=wheelSegs[0];
+  for(const seg of wheelSegs){ if(pointer>=acc&&pointer<acc+arc){winner=seg;break;} acc+=arc; }
+  recentCalled.unshift(winner.num); calledNumbers.add(winner.num);
   buildRecentNumbers();
-
-  // Check if it's on their card
-  let onCard = false;
-  cardNumbers.forEach(row => { if (row.includes(winner.num)) onCard = true; });
-  if (onCard) buildBingoGrid();
-
-  const res = document.getElementById('prizeResult');
-  if (onCard) {
-    res.innerHTML = `🎉 Number <strong>${winner.label}</strong> — it's on your card! ✅`;
-    res.style.color = 'var(--green)';
-    showConfetti();
+  let onCard=false;
+  cardNumbers.forEach(row=>{ if(row.includes(winner.num)) onCard=true; });
+  if(onCard) buildBingoGrid();
+  const res=document.getElementById('prizeResult');
+  if(onCard){
+    res.innerHTML=`🎉 <strong>${winner.label}</strong> — It's on your card! ✅<br><small style="color:var(--muted)">Number marked on your Rooval Bingo card!</small>`;
+    res.style.background='#d1fae5'; showConfetti();
   } else {
-    res.innerHTML = `🎲 Number <strong>${winner.label}</strong> — not on your card this time. Better luck next week!`;
-    res.style.color = 'var(--muted)';
+    res.innerHTML=`🎲 <strong>${winner.label}</strong> — Not on your card this time!<br><small style="color:var(--muted)">Keep earning bonus numbers — better luck next spin! 🏠</small>`;
+    res.style.background='#f8f8f8';
   }
-  res.style.display = 'block';
-
-  // Disable spin until next week (demo: just disable button)
-  document.getElementById('spinBtn').disabled = true;
-  document.getElementById('spinBtn').textContent = '✓ Used this week';
-
-  const bonus = parseInt(document.getElementById('statBonus').textContent);
-  document.getElementById('statBonus').textContent = bonus + 1;
+  res.style.display='block';
+  document.getElementById('spinBtn').disabled=true;
+  document.getElementById('spinBtn').textContent='✓ Used this week';
+  document.getElementById('spinTriggerBtn').textContent='✓ Used This Week';
+  const b=parseInt(document.getElementById('statBonus').textContent);
+  document.getElementById('statBonus').textContent=b+1;
 }
 
-// ---- CONFETTI ----
-function showConfetti() {
-  const colors = ['#f59e0b','#3b82f6','#10b981','#ef4444','#8b5cf6','#ec4899'];
-  for (let i = 0; i < 60; i++) {
-    const el = document.createElement('div');
-    el.className = 'confetti-piece';
-    el.style.left = Math.random() * 100 + 'vw';
-    el.style.top = '-20px';
-    el.style.background = colors[Math.floor(Math.random() * colors.length)];
-    el.style.animationDelay = Math.random() * 1.5 + 's';
-    el.style.animationDuration = (2 + Math.random() * 2) + 's';
-    el.style.transform = `rotate(${Math.random()*360}deg)`;
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 4000);
+// ── CONFETTI ──
+function showConfetti(){
+  const colors=['#c0392b','#f39c12','#f9ca24','#27ae60','#2c3e50','#e67e22'];
+  for(let i=0;i<60;i++){
+    const el=document.createElement('div'); el.className='confetti-piece';
+    el.style.left=Math.random()*100+'vw'; el.style.top='-20px';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDelay=Math.random()*1.5+'s';
+    el.style.animationDuration=(2+Math.random()*2)+'s';
+    document.body.appendChild(el); setTimeout(()=>el.remove(),4000);
   }
 }
 
-// ---- ADMIN ----
-function buildAdminTables() {
-  // Agents
-  const tbody = document.getElementById('agentsBody');
-  if (tbody) {
-    tbody.innerHTML = agents.map(a => `
-      <tr>
-        <td><strong>${a.name}</strong></td>
-        <td style="color:var(--muted)">${a.email}</td>
-        <td>
-          <div style="display:flex;align-items:center;gap:8px">
-            <div style="flex:1;background:#e2e8f0;border-radius:99px;height:6px">
-              <div style="width:${Math.min(a.progress/25*100,100)}%;background:var(--primary);height:6px;border-radius:99px"></div>
-            </div>
-            <span style="font-size:0.8rem;color:var(--muted)">${a.progress}/25</span>
-          </div>
-        </td>
-        <td style="color:var(--muted)">${a.active}</td>
-        <td><strong>${a.bonus}</strong></td>
-        <td>${a.status === 'bingo' ? '<span class="badge badge-green">🎉 BINGO</span>' : a.status === 'active' ? '<span class="badge badge-blue">Active</span>' : '<span class="badge badge-red">Inactive</span>'}</td>
-      </tr>
-    `).join('');
-  }
+// ── ADMIN ──
+function buildAdminTables(){
+  const ab=document.getElementById('agentsBody');
+  if(ab) ab.innerHTML=agentsData.map(a=>`<tr>
+    <td><strong>${a.name}</strong></td><td style="color:var(--muted)">${a.email}</td>
+    <td><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;background:#e8e8e8;border-radius:99px;height:5px"><div style="width:${Math.min(a.progress/25*100,100)}%;background:var(--red);height:5px;border-radius:99px"></div></div><span style="font-size:0.78rem;color:var(--muted)">${a.progress}/25</span></div></td>
+    <td style="color:var(--muted)">${a.active}</td>
+    <td>${a.status==='bingo'?'<span class="badge badge-green">🎉 BINGO</span>':a.status==='active'?'<span class="badge badge-blue">Active</span>':'<span class="badge badge-red">Inactive</span>'}</td>
+  </tr>`).join('');
 
-  // Prizes
-  const pbody = document.getElementById('prizesBody');
-  if (pbody) {
-    pbody.innerHTML = prizes.map((p, i) => `
-      <tr>
-        <td><strong>${p.agent}</strong></td>
-        <td>${p.prize}</td>
-        <td>${p.won}</td>
-        <td><span class="badge ${p.type==='Cash'?'badge-green':'badge-blue'}">${p.type}</span></td>
-        <td>${p.fulfilled ? '<span class="badge badge-green">✓ Fulfilled</span>' : '<span class="badge badge-yellow">Pending</span>'}</td>
-        <td><button class="fulfill-btn" ${p.fulfilled?'disabled':''} onclick="fulfillPrize(${i})">${p.fulfilled?'Done':'Mark Fulfilled'}</button></td>
-      </tr>
-    `).join('');
-  }
+  const pb=document.getElementById('prizesBody');
+  if(pb) pb.innerHTML=prizesData.map((p,i)=>`<tr>
+    <td><strong>${p.agent}</strong></td><td>${p.prize}</td><td>${p.won}</td>
+    <td><span class="badge ${p.type==='Cash'?'badge-green':'badge-blue'}">${p.type}</span></td>
+    <td>${p.fulfilled?'<span class="badge badge-green">✓ Done</span>':'<span class="badge badge-yellow">Pending</span>'}</td>
+    <td><button class="fulfill-btn" ${p.fulfilled?'disabled':''} onclick="fulfillPrize(${i})">${p.fulfilled?'Done':'Mark Fulfilled'}</button></td>
+  </tr>`).join('');
 
-  // Referrals
-  const rbody = document.getElementById('referralsBody');
-  if (rbody) {
-    rbody.innerHTML = referrals.map(r => `
-      <tr>
-        <td><strong>${r.agent}</strong></td>
-        <td>${r.client}</td>
-        <td>${r.date}</td>
-        <td><span class="badge badge-blue">${r.bonus}</span></td>
-        <td>${r.status === 'approved' ? '<span class="badge badge-green">✓ Approved</span>' : '<span class="badge badge-yellow">Pending</span>'}</td>
-      </tr>
-    `).join('');
-  }
+  const rb=document.getElementById('referralsBody');
+  if(rb) rb.innerHTML=referralsData.map(r=>`<tr>
+    <td><strong>${r.agent}</strong></td><td>${r.client}</td><td>${r.date}</td>
+    <td><span class="badge badge-blue">${r.bonus}</span></td>
+    <td>${r.status==='approved'?'<span class="badge badge-green">✓ Approved</span>':'<span class="badge badge-yellow">Pending</span>'}</td>
+  </tr>`).join('');
 }
 
-function fulfillPrize(i) {
-  prizes[i].fulfilled = true;
-  buildAdminTables();
-}
+function fulfillPrize(i){ prizesData[i].fulfilled=true; buildAdminTables(); }
 
-let agentsFilter = '';
-function filterAgents(val) {
-  agentsFilter = val.toLowerCase();
-  const rows = document.querySelectorAll('#agentsBody tr');
-  rows.forEach(row => {
-    row.style.display = row.textContent.toLowerCase().includes(agentsFilter) ? '' : 'none';
+function filterAgents(val){
+  document.querySelectorAll('#agentsBody tr').forEach(row=>{
+    row.style.display=row.textContent.toLowerCase().includes(val.toLowerCase())?'':'none';
   });
 }
 
-function switchTab(name) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('tab-' + name).classList.add('active');
+function switchTab(name,e){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
 }
 
-// Init
-buildBingoGrid();
-buildRecentNumbers();
+buildBingoGrid(); buildRecentNumbers();
 </script>
 </body>
 </html>
