@@ -5,799 +5,428 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rooval Roofing Rewards — Agent Bingo</title>
 <style>
-  :root {
-    --red: #c0392b;
-    --red-dark: #922b21;
-    --red-light: #e74c3c;
-    --gold: #f39c12;
-    --gold-light: #f9ca24;
-    --dark: #1a1a2e;
-    --slate: #2c3e50;
-    --bg: #f5f5f0;
-    --white: #ffffff;
-    --text: #1a1a2e;
-    --muted: #7f8c8d;
-    --green: #27ae60;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+:root {
+  --red:#c0392b; --red-dark:#922b21; --red-light:#e74c3c;
+  --gold:#f39c12; --gold-light:#f9ca24;
+  --dark:#1a1a2e; --slate:#2c3e50;
+  --green:#27ae60; --green-light:#2ecc71;
+  --purple:#8e44ad; --blue:#2980b9;
+  --bg:#f4f4f0; --white:#fff; --text:#1a1a2e; --muted:#7f8c8d;
+  --bronze:#cd7f32; --silver:#aaa9ad; --gold-tier:#ffd700; --platinum:#e5e4e2;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-  /* ── LOGO ── */
-  .logo-wrap { display: flex; align-items: center; gap: 10px; }
-  .roof-icon {
-    width: 38px; height: 38px;
-    position: relative; display: flex; flex-direction: column; align-items: center;
-  }
-  .roof-triangle {
-    width: 0; height: 0;
-    border-left: 19px solid transparent;
-    border-right: 19px solid transparent;
-    border-bottom: 18px solid var(--gold);
-  }
-  .roof-body {
-    width: 28px; height: 12px;
-    background: var(--gold-light);
-    border-radius: 0 0 3px 3px;
-  }
-  .logo-text { line-height: 1; }
-  .logo-text .r1 { font-size: 1.2rem; font-weight: 900; color: var(--white); letter-spacing: -0.5px; }
-  .logo-text .r2 { font-size: 0.65rem; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+/* ── NAV ── */
+nav{background:linear-gradient(135deg,var(--red-dark),var(--red));padding:0 16px;height:62px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 14px rgba(0,0,0,.3);position:sticky;top:0;z-index:100;}
+.nav-logo{display:flex;align-items:center;gap:9px;}
+.roof-icon{display:flex;flex-direction:column;align-items:center;}
+.roof-tri{width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent;border-bottom:16px solid var(--gold);}
+.roof-body{width:25px;height:11px;background:var(--gold-light);border-radius:0 0 3px 3px;}
+.logo-text .r1{font-size:1.1rem;font-weight:900;color:#fff;letter-spacing:-.5px;}
+.logo-text .r2{font-size:.6rem;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.nav-right{display:flex;align-items:center;gap:6px;}
+.nav-btn{background:rgba(255,255,255,.13);border:1.5px solid rgba(255,255,255,.3);color:#fff;padding:6px 13px;border-radius:20px;cursor:pointer;font-size:.78rem;font-weight:600;transition:all .2s;}
+.nav-btn:hover,.nav-btn.active{background:var(--gold);border-color:var(--gold);color:var(--dark);}
+.nav-phone{color:var(--gold);font-weight:800;font-size:.82rem;}
+.logout-btn{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.22);color:#fff;padding:5px 12px;border-radius:20px;cursor:pointer;font-size:.75rem;font-weight:600;}
 
-  /* ── NAV ── */
-  nav {
-    background: linear-gradient(135deg, var(--red-dark) 0%, var(--red) 100%);
-    padding: 0 20px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.3);
-    position: sticky; top: 0; z-index: 100;
-  }
-  .nav-right { display: flex; align-items: center; gap: 8px; }
-  .nav-btn {
-    background: rgba(255,255,255,0.15);
-    border: 1.5px solid rgba(255,255,255,0.3);
-    color: white;
-    padding: 7px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 0.82rem;
-    font-weight: 600;
-    transition: all 0.2s;
-  }
-  .nav-btn:hover, .nav-btn.active {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: var(--dark);
-  }
-  .nav-phone {
-    color: var(--gold);
-    font-weight: 800;
-    font-size: 0.88rem;
-    display: flex; align-items: center; gap: 5px;
-  }
+/* ── PAGES ── */
+.page{display:none;}
+.page.active{display:block;}
 
-  /* ── HERO BANNER ── */
-  .hero-banner {
-    background: linear-gradient(135deg, var(--dark) 0%, var(--slate) 60%, var(--red-dark) 100%);
-    color: white;
-    text-align: center;
-    padding: 32px 20px 28px;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero-banner::before {
-    content: '🏠';
-    position: absolute; font-size: 8rem; opacity: 0.05;
-    top: -10px; right: -10px;
-  }
-  .hero-banner::after {
-    content: '🏠';
-    position: absolute; font-size: 6rem; opacity: 0.05;
-    bottom: -10px; left: -10px;
-  }
-  .hero-banner .tagline { font-size: 0.8rem; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
-  .hero-banner h1 { font-size: 1.8rem; font-weight: 900; line-height: 1.1; margin-bottom: 8px; }
-  .hero-banner h1 span { color: var(--gold); }
-  .hero-banner p { font-size: 0.9rem; color: rgba(255,255,255,0.8); max-width: 360px; margin: 0 auto 16px; }
-  .hero-cta {
-    display: inline-block;
-    background: var(--gold);
-    color: var(--dark);
-    font-weight: 800;
-    padding: 12px 28px;
-    border-radius: 30px;
-    font-size: 0.95rem;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(243,156,18,0.4);
-    transition: all 0.2s;
-  }
-  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(243,156,18,0.5); }
+/* ── LOGIN ── */
+.login-page{min-height:calc(100vh - 62px);background:linear-gradient(160deg,var(--dark) 0%,var(--slate) 50%,var(--red-dark) 100%);}
+.rotating-banner{background:var(--gold);color:var(--dark);text-align:center;padding:10px 16px;font-size:.82rem;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;}
+.rotating-banner .rb-dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;}
+.login-hero{text-align:center;padding:32px 20px 20px;color:#fff;}
+.login-hero .badge{display:inline-block;background:var(--gold);color:var(--dark);font-size:.7rem;font-weight:800;padding:4px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.login-hero h1{font-size:2rem;font-weight:900;line-height:1.1;margin-bottom:8px;}
+.login-hero h1 span{color:var(--gold);}
+.login-hero p{color:rgba(255,255,255,.75);font-size:.88rem;max-width:300px;margin:0 auto 20px;line-height:1.5;}
+.login-card{background:#fff;margin:0 16px 16px;border-radius:20px;padding:24px 20px;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.login-card h2{font-size:1.05rem;font-weight:900;color:var(--red);margin-bottom:5px;}
+.login-card p{font-size:.78rem;color:var(--muted);margin-bottom:16px;}
+.login-card input{width:100%;padding:13px 15px;border:2px solid #e8e8e8;border-radius:11px;font-size:.95rem;margin-bottom:11px;outline:none;transition:border-color .2s;}
+.login-card input:focus{border-color:var(--red);}
+.btn-red{width:100%;padding:14px;background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;border:none;border-radius:11px;font-size:.95rem;font-weight:800;cursor:pointer;transition:all .2s;}
+.btn-red:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(192,57,43,.4);}
+.demo-hint{margin-top:10px;font-size:.72rem;color:var(--muted);background:#f8f8f8;padding:9px;border-radius:8px;text-align:center;}
+.svc-cards{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:0 16px 16px;}
+.svc-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:13px;padding:14px 10px;text-align:center;color:#fff;}
+.svc-card .icon{font-size:1.6rem;margin-bottom:5px;}
+.svc-card .title{font-size:.78rem;font-weight:700;margin-bottom:2px;}
+.svc-card .sub{font-size:.67rem;color:rgba(255,255,255,.6);}
+.trust-bar{display:flex;justify-content:center;gap:16px;padding:12px 16px 24px;flex-wrap:wrap;}
+.trust-item{color:rgba(255,255,255,.7);font-size:.72rem;display:flex;align-items:center;gap:4px;}
+.trust-item span{color:var(--gold);}
 
-  /* ── AD STRIP ── */
-  .ad-strip {
-    background: var(--red);
-    color: white;
-    text-align: center;
-    padding: 10px 20px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .ad-strip .pill {
-    background: var(--gold);
-    color: var(--dark);
-    padding: 3px 12px;
-    border-radius: 20px;
-    font-weight: 800;
-    font-size: 0.78rem;
-  }
+/* ── TIER BADGE ── */
+.tier-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
+.tier-bronze{background:linear-gradient(135deg,#cd7f32,#b8860b);color:#fff;}
+.tier-silver{background:linear-gradient(135deg,#aaa9ad,#888);color:#fff;}
+.tier-gold{background:linear-gradient(135deg,#ffd700,#f39c12);color:var(--dark);}
+.tier-platinum{background:linear-gradient(135deg,#e5e4e2,#bdbcbc);color:var(--dark);}
 
-  /* ── PAGES ── */
-  .page { display: none; }
-  .page.active { display: block; }
+/* ── AGENT PAGE ── */
+.promo-banner{background:linear-gradient(135deg,var(--red-dark),var(--red));color:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px;justify-content:space-between;}
+.pb-text .pb-title{font-weight:800;font-size:.88rem;}
+.pb-text .pb-sub{font-size:.72rem;color:rgba(255,255,255,.8);}
+.pb-btn{background:var(--gold);color:var(--dark);border:none;padding:7px 14px;border-radius:20px;font-size:.75rem;font-weight:800;cursor:pointer;white-space:nowrap;}
 
-  /* ── LOGIN PAGE ── */
-  .login-page {
-    min-height: calc(100vh - 64px);
-    background: linear-gradient(160deg, var(--dark) 0%, var(--slate) 50%, var(--red-dark) 100%);
-    padding: 0;
-  }
-  .login-hero {
-    text-align: center;
-    padding: 36px 24px 24px;
-    color: white;
-  }
-  .login-hero .badge {
-    display: inline-block;
-    background: var(--gold);
-    color: var(--dark);
-    font-size: 0.72rem;
-    font-weight: 800;
-    padding: 4px 14px;
-    border-radius: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-  }
-  .login-hero h1 { font-size: 2.2rem; font-weight: 900; line-height: 1.1; margin-bottom: 8px; }
-  .login-hero h1 span { color: var(--gold); }
-  .login-hero p { color: rgba(255,255,255,0.75); font-size: 0.92rem; max-width: 320px; margin: 0 auto 24px; }
+.page-body{padding:14px;max-width:600px;margin:0 auto;}
 
-  .login-card {
-    background: white;
-    margin: 0 16px 20px;
-    border-radius: 20px;
-    padding: 28px 24px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-  }
-  .login-card h2 { font-size: 1.15rem; color: var(--red); font-weight: 800; margin-bottom: 6px; }
-  .login-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 18px; }
-  .login-card input {
-    width: 100%;
-    padding: 14px 16px;
-    border: 2px solid #e8e8e8;
-    border-radius: 12px;
-    font-size: 1rem;
-    margin-bottom: 12px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .login-card input:focus { border-color: var(--red); }
-  .btn-red {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.3px;
-  }
-  .btn-red:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(192,57,43,0.4); }
-  .demo-hint { margin-top: 12px; font-size: 0.75rem; color: var(--muted); background: #f8f8f8; padding: 10px; border-radius: 8px; text-align: center; }
+/* Agent header row */
+.agent-header-card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);display:flex;align-items:center;gap:14px;}
+.agent-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--red-dark));display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:900;color:#fff;flex-shrink:0;}
+.agent-info h2{font-size:1rem;font-weight:900;color:var(--dark);}
+.agent-info .agent-sub{font-size:.72rem;color:var(--muted);margin-top:2px;}
+.agent-meta{margin-left:auto;text-align:right;}
+.week-chip{background:var(--dark);color:var(--gold);padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;margin-bottom:5px;display:inline-block;}
 
-  .service-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 0 16px 20px;
-  }
-  .svc-card {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 14px;
-    padding: 16px 12px;
-    text-align: center;
-    color: white;
-  }
-  .svc-card .icon { font-size: 1.8rem; margin-bottom: 6px; }
-  .svc-card .title { font-size: 0.82rem; font-weight: 700; margin-bottom: 3px; }
-  .svc-card .sub { font-size: 0.7rem; color: rgba(255,255,255,0.6); }
+/* Streak */
+.streak-bar{background:linear-gradient(135deg,#ff6b35,#f7931e);border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;color:#fff;}
+.streak-bar .streak-flame{font-size:1.4rem;}
+.streak-bar .streak-text .st-title{font-weight:800;font-size:.88rem;}
+.streak-bar .streak-text .st-sub{font-size:.72rem;opacity:.85;}
+.streak-bar .streak-count{margin-left:auto;font-size:1.8rem;font-weight:900;}
 
-  .trust-bar {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    padding: 16px 20px 24px;
-    flex-wrap: wrap;
-  }
-  .trust-item { color: rgba(255,255,255,0.7); font-size: 0.75rem; display: flex; align-items: center; gap: 5px; }
-  .trust-item span { color: var(--gold); }
+/* Scratch card */
+.scratch-card-banner{background:linear-gradient(135deg,#8e44ad,#6c3483);border-radius:14px;padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;color:#fff;cursor:pointer;transition:all .2s;}
+.scratch-card-banner:hover{transform:translateY(-2px);}
+.sc-icon{font-size:1.8rem;flex-shrink:0;}
+.sc-text .sc-title{font-weight:800;font-size:.9rem;}
+.sc-text .sc-sub{font-size:.72rem;opacity:.8;}
+.sc-arrow{margin-left:auto;font-size:1.2rem;}
 
-  /* ── AGENT CARD PAGE ── */
-  .promo-banner {
-    background: linear-gradient(135deg, var(--red-dark), var(--red));
-    color: white;
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    justify-content: space-between;
-  }
-  .promo-banner .pb-text .pb-title { font-weight: 800; font-size: 0.92rem; }
-  .promo-banner .pb-text .pb-sub { font-size: 0.75rem; color: rgba(255,255,255,0.8); }
-  .promo-banner .pb-btn {
-    background: var(--gold);
-    color: var(--dark);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.78rem;
-    font-weight: 800;
-    cursor: pointer;
-    white-space: nowrap;
-  }
+/* Spin CTA */
+.spin-cta-card{background:linear-gradient(135deg,var(--gold),#e67e22);border-radius:14px;padding:16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;box-shadow:0 6px 20px rgba(243,156,18,.35);cursor:pointer;transition:all .2s;}
+.spin-cta-card:hover{transform:translateY(-2px);}
+.spin-cta-card .sc-text .sc-title{font-size:.95rem;font-weight:900;color:var(--dark);}
+.spin-cta-card .sc-text .sc-sub{font-size:.74rem;color:rgba(0,0,0,.6);margin-top:2px;}
+.spin-cta-card .sc-btn{background:var(--dark);color:var(--gold);border:none;padding:9px 16px;border-radius:20px;font-size:.82rem;font-weight:800;cursor:pointer;white-space:nowrap;}
 
-  .page-body { padding: 16px; max-width: 600px; margin: 0 auto; }
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+.stat-card{background:#fff;border-radius:11px;padding:11px 6px;text-align:center;box-shadow:0 2px 7px rgba(0,0,0,.06);border-top:3px solid var(--red);}
+.stat-card .num{font-size:1.4rem;font-weight:900;color:var(--red);}
+.stat-card .lbl{font-size:.62rem;color:var(--muted);margin-top:1px;text-transform:uppercase;letter-spacing:.3px;}
 
-  .welcome-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-    gap: 10px;
-  }
-  .welcome-row h2 { font-size: 1.15rem; color: var(--dark); font-weight: 800; }
-  .week-chip {
-    background: var(--dark);
-    color: var(--gold);
-    padding: 5px 14px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    white-space: nowrap;
-  }
+/* Bingo card */
+.bingo-wrap{background:#fff;border-radius:15px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:12px;border:2px solid #f0f0f0;}
+.bingo-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
+.bingo-top h3{font-size:.9rem;font-weight:800;color:var(--dark);}
+.progress-pill{background:#fff3cd;color:#856404;font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:20px;}
+.bingo-header{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:4px;}
+.bingo-header div{text-align:center;font-weight:900;font-size:1rem;color:var(--red);padding:5px 3px;background:#fef2f2;border-radius:6px;}
+.bingo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;}
+.bingo-cell{aspect-ratio:1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:800;border:2px solid #e8e8e8;background:#fafafa;color:var(--text);transition:all .3s;}
+.bingo-cell.called{background:var(--dark);border-color:var(--dark);color:#fff;box-shadow:0 3px 8px rgba(26,26,46,.25);}
+.bingo-cell.free{background:linear-gradient(135deg,var(--red),var(--red-dark));border-color:var(--red);color:#fff;font-size:.58rem;font-weight:800;text-align:center;line-height:1.2;}
+.bingo-cell.bingo-win{background:linear-gradient(135deg,var(--gold),#e67e22);border-color:var(--gold);color:#fff;animation:roofPulse .7s ease infinite alternate;box-shadow:0 4px 14px rgba(243,156,18,.5);}
+@keyframes roofPulse{from{transform:scale(1);}to{transform:scale(1.07);}}
 
-  /* SPIN CTA — big and prominent */
-  .spin-cta-card {
-    background: linear-gradient(135deg, var(--gold) 0%, #e67e22 100%);
-    border-radius: 16px;
-    padding: 18px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-    box-shadow: 0 6px 20px rgba(243,156,18,0.35);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .spin-cta-card:hover { transform: translateY(-2px); }
-  .spin-cta-card .sc-text .sc-title { font-size: 1rem; font-weight: 900; color: var(--dark); }
-  .spin-cta-card .sc-text .sc-sub { font-size: 0.78rem; color: rgba(0,0,0,0.6); margin-top: 2px; }
-  .spin-cta-card .sc-btn {
-    background: var(--dark);
-    color: var(--gold);
-    border: none;
-    padding: 10px 18px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 800;
-    cursor: pointer;
-    white-space: nowrap;
-  }
+/* Referral tracker */
+.referral-tracker{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:12px;}
+.referral-tracker h3{font-size:.9rem;font-weight:800;color:var(--dark);margin-bottom:12px;}
+.referral-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f5f5f0;}
+.referral-item:last-child{border-bottom:none;}
+.ref-avatar{width:34px;height:34px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;color:var(--muted);flex-shrink:0;}
+.ref-info .ref-name{font-size:.84rem;font-weight:700;}
+.ref-info .ref-type{font-size:.7rem;color:var(--muted);}
+.ref-status{margin-left:auto;font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px;}
+.ref-status.pending{background:#fef3c7;color:#92400e;}
+.ref-status.scheduled{background:#dbeafe;color:#1e40af;}
+.ref-status.closed{background:#d1fae5;color:#065f46;}
 
-  /* STATS */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-  .stat-card {
-    background: white;
-    border-radius: 12px;
-    padding: 14px 10px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    border-top: 3px solid var(--red);
-  }
-  .stat-card .num { font-size: 1.6rem; font-weight: 900; color: var(--red); }
-  .stat-card .lbl { font-size: 0.68rem; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.4px; }
+/* Recent numbers */
+.recent-wrap{background:#fff;border-radius:12px;padding:13px 15px;margin-bottom:12px;box-shadow:0 2px 7px rgba(0,0,0,.05);}
+.recent-wrap h4{font-size:.8rem;font-weight:700;color:var(--dark);margin-bottom:9px;}
+.number-chip{display:inline-flex;align-items:center;justify-content:center;background:var(--red);color:#fff;border-radius:50%;width:32px;height:32px;font-weight:800;font-size:.75rem;margin:2px;}
+.next-drop{font-size:.7rem;color:var(--muted);margin-top:7px;}
 
-  /* BINGO CARD */
-  .bingo-wrap {
-    background: white;
-    border-radius: 16px;
-    padding: 18px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    margin-bottom: 14px;
-    border: 2px solid #f0f0f0;
-  }
-  .bingo-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-  .bingo-top h3 { font-size: 0.95rem; font-weight: 800; color: var(--dark); }
-  .progress-pill {
-    background: #fff3cd;
-    color: #856404;
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 20px;
-  }
-  .bingo-header {
-    display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; margin-bottom: 5px;
-  }
-  .bingo-header div {
-    text-align: center;
-    font-weight: 900;
-    font-size: 1.1rem;
-    color: var(--red);
-    padding: 6px 4px;
-    background: #fef2f2;
-    border-radius: 6px;
-  }
-  .bingo-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; }
-  .bingo-cell {
-    aspect-ratio: 1;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    font-weight: 800;
-    border: 2px solid #e8e8e8;
-    background: #fafafa;
-    color: var(--text);
-    transition: all 0.3s;
-  }
-  .bingo-cell.called {
-    background: var(--dark);
-    border-color: var(--dark);
-    color: white;
-    box-shadow: 0 3px 8px rgba(26,26,46,0.25);
-  }
-  .bingo-cell.free {
-    background: linear-gradient(135deg, var(--red), var(--red-dark));
-    border-color: var(--red);
-    color: white;
-    font-size: 0.62rem;
-    font-weight: 800;
-    text-align: center;
-    line-height: 1.2;
-  }
-  .bingo-cell.bingo-win {
-    background: linear-gradient(135deg, var(--gold), #e67e22);
-    border-color: var(--gold);
-    color: white;
-    animation: roofPulse 0.7s ease infinite alternate;
-    box-shadow: 0 4px 14px rgba(243,156,18,0.5);
-  }
-  @keyframes roofPulse { from { transform: scale(1); } to { transform: scale(1.07); } }
+/* Bonus actions */
+.bonus-wrap{background:#fff;border-radius:15px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:12px;}
+.bonus-wrap h3{font-size:.9rem;font-weight:800;color:var(--dark);margin-bottom:3px;}
+.bonus-wrap .bonus-sub{font-size:.72rem;color:var(--muted);margin-bottom:13px;}
+.bonus-item{display:flex;align-items:center;gap:11px;padding:12px 11px;border-radius:10px;background:#fafafa;margin-bottom:7px;cursor:pointer;border:2px solid transparent;transition:all .2s;}
+.bonus-item:hover{border-color:var(--gold);background:#fffbeb;}
+.bonus-item.done{opacity:.55;cursor:default;}
+.bonus-item.done:hover{border-color:transparent;background:#fafafa;}
+.b-icon{font-size:1.3rem;flex-shrink:0;}
+.b-info .b-title{font-size:.82rem;font-weight:700;color:var(--dark);}
+.b-info .b-desc{font-size:.7rem;color:var(--muted);margin-top:1px;}
+.b-badge{margin-left:auto;background:var(--red);color:#fff;font-size:.65rem;font-weight:800;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
+.b-badge.done{background:var(--green);}
 
-  /* RECENT NUMBERS */
-  .recent-wrap {
-    background: white;
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-bottom: 14px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-  .recent-wrap h4 { font-size: 0.82rem; font-weight: 700; color: var(--dark); margin-bottom: 10px; }
-  .number-chip {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--red);
-    color: white;
-    border-radius: 50%;
-    width: 34px; height: 34px;
-    font-weight: 800;
-    font-size: 0.78rem;
-    margin: 3px;
-  }
-  .next-drop { font-size: 0.72rem; color: var(--muted); margin-top: 8px; }
+/* Rooval ad */
+.rooval-ad{background:linear-gradient(135deg,var(--dark),var(--slate));border-radius:15px;padding:18px;color:#fff;margin-bottom:12px;position:relative;overflow:hidden;}
+.rooval-ad::after{content:'🏠';position:absolute;font-size:4.5rem;opacity:.07;bottom:-10px;right:10px;}
+.rooval-ad .ad-label{font-size:.62rem;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px;}
+.rooval-ad h3{font-size:1rem;font-weight:900;margin-bottom:5px;line-height:1.2;}
+.rooval-ad h3 span{color:var(--gold);}
+.rooval-ad p{font-size:.76rem;color:rgba(255,255,255,.75);margin-bottom:12px;line-height:1.5;}
+.ad-cta{background:var(--gold);color:var(--dark);border:none;padding:9px 18px;border-radius:20px;font-weight:800;font-size:.8rem;cursor:pointer;}
 
-  /* BONUS ACTIONS */
-  .bonus-wrap {
-    background: white;
-    border-radius: 16px;
-    padding: 18px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    margin-bottom: 14px;
-  }
-  .bonus-wrap h3 { font-size: 0.95rem; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
-  .bonus-wrap .bonus-sub { font-size: 0.75rem; color: var(--muted); margin-bottom: 14px; }
-  .bonus-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 13px 12px;
-    border-radius: 10px;
-    background: #fafafa;
-    margin-bottom: 8px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.2s;
-  }
-  .bonus-item:hover { border-color: var(--gold); background: #fffbeb; }
-  .bonus-item.done { opacity: 0.55; cursor: default; }
-  .bonus-item.done:hover { border-color: transparent; background: #fafafa; }
-  .b-icon { font-size: 1.4rem; flex-shrink: 0; }
-  .b-info .b-title { font-size: 0.85rem; font-weight: 700; color: var(--dark); }
-  .b-info .b-desc { font-size: 0.72rem; color: var(--muted); margin-top: 1px; }
-  .b-badge {
-    margin-left: auto;
-    background: var(--red);
-    color: white;
-    font-size: 0.68rem;
-    font-weight: 800;
-    padding: 4px 10px;
-    border-radius: 20px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .b-badge.done { background: var(--green); }
+/* Footer */
+.footer-ad{background:var(--red-dark);color:#fff;text-align:center;padding:20px 16px;}
+.footer-ad .f-logo{font-size:1.1rem;font-weight:900;margin-bottom:4px;}
+.footer-ad .f-logo span{color:var(--gold);}
+.footer-ad p{font-size:.72rem;color:rgba(255,255,255,.7);margin-bottom:7px;}
+.footer-ad .f-phone{color:var(--gold);font-weight:800;font-size:.95rem;}
+.footer-ad .services{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:9px;}
+.footer-ad .services span{font-size:.67rem;color:rgba(255,255,255,.6);}
 
-  /* ROOVAL AD CARD */
-  .rooval-ad {
-    background: linear-gradient(135deg, var(--dark) 0%, var(--slate) 100%);
-    border-radius: 16px;
-    padding: 20px;
-    color: white;
-    margin-bottom: 14px;
-    position: relative;
-    overflow: hidden;
-  }
-  .rooval-ad::after { content: '🏠'; position: absolute; font-size: 5rem; opacity: 0.07; bottom: -10px; right: 10px; }
-  .rooval-ad .ad-label { font-size: 0.65rem; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
-  .rooval-ad h3 { font-size: 1.05rem; font-weight: 900; margin-bottom: 6px; line-height: 1.2; }
-  .rooval-ad h3 span { color: var(--gold); }
-  .rooval-ad p { font-size: 0.78rem; color: rgba(255,255,255,0.75); margin-bottom: 14px; line-height: 1.5; }
-  .ad-cta {
-    background: var(--gold);
-    color: var(--dark);
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-weight: 800;
-    font-size: 0.82rem;
-    cursor: pointer;
-  }
+/* ── LEADERBOARD PAGE ── */
+.lb-page{padding:14px;max-width:600px;margin:0 auto;}
+.lb-hero{background:linear-gradient(135deg,var(--dark),var(--slate));border-radius:16px;padding:20px;color:#fff;text-align:center;margin-bottom:16px;position:relative;overflow:hidden;}
+.lb-hero::before{content:'🏆';position:absolute;font-size:7rem;opacity:.06;top:-10px;right:-10px;}
+.lb-hero h2{font-size:1.3rem;font-weight:900;margin-bottom:4px;}
+.lb-hero p{font-size:.78rem;color:rgba(255,255,255,.7);}
 
-  /* BOTTOM AD FOOTER */
-  .footer-ad {
-    background: var(--red-dark);
-    color: white;
-    text-align: center;
-    padding: 20px 16px;
-    margin-top: 8px;
-  }
-  .footer-ad .f-logo { font-size: 1.2rem; font-weight: 900; margin-bottom: 4px; }
-  .footer-ad .f-logo span { color: var(--gold); }
-  .footer-ad p { font-size: 0.75rem; color: rgba(255,255,255,0.7); margin-bottom: 8px; }
-  .footer-ad .f-phone { color: var(--gold); font-weight: 800; font-size: 1rem; }
-  .footer-ad .services { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
-  .footer-ad .services span { font-size: 0.7rem; color: rgba(255,255,255,0.6); }
+/* Agent of Month */
+.aom-card{background:linear-gradient(135deg,var(--gold),#e67e22);border-radius:16px;padding:18px;margin-bottom:16px;text-align:center;box-shadow:0 6px 24px rgba(243,156,18,.35);}
+.aom-card .aom-label{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:rgba(0,0,0,.6);margin-bottom:8px;}
+.aom-card .aom-crown{font-size:2.5rem;margin-bottom:4px;}
+.aom-card .aom-name{font-size:1.3rem;font-weight:900;color:var(--dark);margin-bottom:2px;}
+.aom-card .aom-stats{font-size:.78rem;color:rgba(0,0,0,.65);}
+.aom-card .aom-badge{display:inline-block;background:var(--dark);color:var(--gold);padding:5px 16px;border-radius:20px;font-size:.72rem;font-weight:800;margin-top:10px;}
 
-  /* ── ACTION MODALS ── */
-  .action-modal {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.8); z-index: 300;
-    align-items: flex-end; justify-content: center;
-    padding-bottom: 0;
-  }
-  .action-modal.show { display: flex; }
-  .action-sheet {
-    background: white;
-    border-radius: 24px 24px 0 0;
-    padding: 28px 24px 36px;
-    width: 100%; max-width: 540px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 -8px 40px rgba(0,0,0,0.3);
-    animation: slideUp 0.3s ease;
-  }
-  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  .sheet-handle { width: 40px; height: 4px; background: #e8e8e8; border-radius: 99px; margin: 0 auto 20px; }
-  .action-sheet .sheet-icon { font-size: 2.4rem; margin-bottom: 8px; text-align: center; }
-  .action-sheet h2 { font-size: 1.2rem; font-weight: 900; color: var(--dark); margin-bottom: 6px; text-align: center; }
-  .action-sheet .sheet-desc { font-size: 0.82rem; color: var(--muted); text-align: center; margin-bottom: 20px; line-height: 1.5; }
+/* Leaderboard list */
+.lb-list{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.07);}
+.lb-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #f5f5f0;transition:background .2s;}
+.lb-item:last-child{border-bottom:none;}
+.lb-item:hover{background:#fef9f9;}
+.lb-rank{font-size:1.1rem;font-weight:900;width:28px;text-align:center;flex-shrink:0;}
+.lb-rank.gold-rank{color:var(--gold);}
+.lb-rank.silver-rank{color:var(--silver);}
+.lb-rank.bronze-rank{color:var(--bronze);}
+.lb-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:900;color:#fff;flex-shrink:0;}
+.lb-info .lb-name{font-size:.88rem;font-weight:700;}
+.lb-info .lb-detail{font-size:.7rem;color:var(--muted);margin-top:1px;}
+.lb-right{margin-left:auto;text-align:right;}
+.lb-score{font-size:1rem;font-weight:900;color:var(--red);}
+.lb-score-lbl{font-size:.64rem;color:var(--muted);}
 
-  .step-row {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 12px; background: #f8f8f8; border-radius: 12px;
-    margin-bottom: 10px;
-  }
-  .step-num {
-    background: var(--red); color: white;
-    width: 26px; height: 26px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.78rem; font-weight: 800; flex-shrink: 0; margin-top: 1px;
-  }
-  .step-text { font-size: 0.84rem; color: var(--dark); font-weight: 600; line-height: 1.4; }
-  .step-text small { display: block; color: var(--muted); font-weight: 400; font-size: 0.75rem; margin-top: 2px; }
+/* Tier progress */
+.tier-section{background:#fff;border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);}
+.tier-section h3{font-size:.9rem;font-weight:800;color:var(--dark);margin-bottom:14px;}
+.tier-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f5f5f0;}
+.tier-item:last-child{border-bottom:none;}
+.tier-icon{font-size:1.4rem;flex-shrink:0;}
+.tier-info .tier-name{font-size:.85rem;font-weight:800;}
+.tier-info .tier-req{font-size:.72rem;color:var(--muted);}
+.tier-info .tier-perks{font-size:.7rem;color:var(--green);font-weight:600;margin-top:2px;}
 
-  .link-btn {
-    width: 100%; padding: 14px;
-    border: none; border-radius: 12px;
-    font-size: 0.95rem; font-weight: 800;
-    cursor: pointer; margin-bottom: 10px;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    transition: all 0.2s;
-  }
-  .link-btn:hover { transform: translateY(-1px); }
-  .link-btn.google { background: #4285f4; color: white; }
-  .link-btn.facebook { background: #1877f2; color: white; }
-  .link-btn.confirm { background: linear-gradient(135deg, var(--red), var(--red-dark)); color: white; }
-  .link-btn.secondary { background: #f0f0f0; color: var(--dark); }
+/* ── ADMIN PAGE ── */
+.admin-page{padding:14px;max-width:900px;margin:0 auto;}
+.admin-tabs{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap;}
+.tab-btn{padding:7px 16px;border-radius:20px;border:1.5px solid #e2e8e0;background:#fff;cursor:pointer;font-size:.8rem;font-weight:600;transition:all .2s;color:var(--muted);}
+.tab-btn.active{background:var(--red);color:#fff;border-color:var(--red);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:13px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+th{background:var(--red-dark);color:#fff;padding:12px 13px;text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.4px;}
+td{padding:11px 13px;font-size:.82rem;border-bottom:1px solid #f5f5f0;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fef9f9;}
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.7rem;font-weight:700;}
+.badge-green{background:#d1fae5;color:#065f46;}
+.badge-yellow{background:#fef3c7;color:#92400e;}
+.badge-blue{background:#dbeafe;color:#1e40af;}
+.badge-red{background:#fee2e2;color:#991b1b;}
+.admin-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px;}
+.admin-stat{background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 7px rgba(0,0,0,.06);border-left:4px solid var(--red);}
+.admin-stat .num{font-size:1.8rem;font-weight:900;color:var(--red);}
+.admin-stat .lbl{font-size:.7rem;color:var(--muted);margin-top:2px;}
+.fulfill-btn{padding:5px 12px;background:var(--green);color:#fff;border:none;border-radius:7px;font-size:.76rem;font-weight:700;cursor:pointer;}
+.fulfill-btn:disabled{background:#d1fae5;color:#065f46;cursor:default;}
+.search-bar{width:100%;padding:11px 15px;border:2px solid #e8e8e8;border-radius:10px;font-size:.86rem;outline:none;margin-bottom:13px;}
+.search-bar:focus{border-color:var(--red);}
 
-  .form-group { margin-bottom: 14px; }
-  .form-group label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--dark); margin-bottom: 5px; }
-  .form-group input, .form-group select, .form-group textarea {
-    width: 100%; padding: 12px 14px;
-    border: 2px solid #e8e8e8; border-radius: 10px;
-    font-size: 0.9rem; outline: none; font-family: inherit;
-    transition: border-color 0.2s;
-  }
-  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--red); }
-  .form-group textarea { resize: vertical; min-height: 70px; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+/* ── ACTION MODALS ── */
+.action-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:300;align-items:flex-end;justify-content:center;}
+.action-modal.show{display:flex;}
+.action-sheet{background:#fff;border-radius:24px 24px 0 0;padding:24px 20px 32px;width:100%;max-width:540px;max-height:92vh;overflow-y:auto;box-shadow:0 -8px 40px rgba(0,0,0,.3);animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.sheet-handle{width:38px;height:4px;background:#e8e8e8;border-radius:99px;margin:0 auto 18px;}
+.action-sheet .sheet-icon{font-size:2.2rem;margin-bottom:7px;text-align:center;}
+.action-sheet h2{font-size:1.15rem;font-weight:900;color:var(--dark);margin-bottom:5px;text-align:center;}
+.action-sheet .sheet-desc{font-size:.8rem;color:var(--muted);text-align:center;margin-bottom:18px;line-height:1.5;}
+.step-row{display:flex;align-items:flex-start;gap:11px;padding:11px;background:#f8f8f8;border-radius:11px;margin-bottom:9px;}
+.step-num{background:var(--red);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;flex-shrink:0;margin-top:1px;}
+.step-text{font-size:.82rem;color:var(--dark);font-weight:600;line-height:1.4;}
+.step-text small{display:block;color:var(--muted);font-weight:400;font-size:.72rem;margin-top:2px;}
+.link-btn{width:100%;padding:13px;border:none;border-radius:11px;font-size:.9rem;font-weight:800;cursor:pointer;margin-bottom:9px;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;}
+.link-btn:hover{transform:translateY(-1px);}
+.link-btn.google{background:#4285f4;color:#fff;}
+.link-btn.facebook{background:#1877f2;color:#fff;}
+.link-btn.confirm{background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;}
+.link-btn.secondary{background:#f0f0f0;color:var(--dark);}
+.form-group{margin-bottom:12px;}
+.form-group label{display:block;font-size:.75rem;font-weight:700;color:var(--dark);margin-bottom:4px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 13px;border:2px solid #e8e8e8;border-radius:9px;font-size:.88rem;outline:none;font-family:inherit;transition:border-color .2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--red);}
+.form-group textarea{resize:vertical;min-height:65px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
 
-  /* ── TRIVIA ── */
-  .trivia-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.8); z-index: 300;
-    align-items: center; justify-content: center;
-  }
-  .trivia-overlay.show { display: flex; }
-  .trivia-box {
-    background: white; border-radius: 22px; padding: 28px 24px;
-    max-width: 400px; width: 92%; position: relative;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-  }
-  .trivia-label {
-    display: inline-block;
-    background: var(--dark); color: var(--gold);
-    font-size: 0.68rem; font-weight: 800;
-    padding: 4px 12px; border-radius: 20px;
-    text-transform: uppercase; letter-spacing: 1px;
-    margin-bottom: 12px;
-  }
-  .trivia-box h2 { font-size: 1rem; font-weight: 900; color: var(--dark); margin-bottom: 18px; line-height: 1.4; }
-  .trivia-options { display: grid; gap: 10px; margin-bottom: 16px; }
-  .trivia-opt {
-    padding: 13px 16px;
-    border: 2px solid #e8e8e8;
-    border-radius: 12px;
-    font-size: 0.88rem;
-    font-weight: 600;
-    cursor: pointer;
-    text-align: left;
-    background: white;
-    transition: all 0.18s;
-    color: var(--dark);
-  }
-  .trivia-opt:hover { border-color: var(--red); background: #fef9f9; }
-  .trivia-opt.correct { background: #d1fae5; border-color: var(--green); color: #065f46; }
-  .trivia-opt.wrong { background: #fee2e2; border-color: var(--red); color: #991b1b; }
-  .trivia-opt:disabled { cursor: default; }
-  .trivia-result {
-    display: none;
-    padding: 14px;
-    border-radius: 12px;
-    font-size: 0.84rem;
-    line-height: 1.5;
-    margin-bottom: 14px;
-    font-weight: 600;
-  }
-  .trivia-result.correct { background: #d1fae5; color: #065f46; }
-  .trivia-result.wrong { background: #fef3c7; color: #92400e; }
-  .trivia-continue {
-    width: 100%; padding: 13px;
-    background: linear-gradient(135deg, var(--red), var(--red-dark));
-    color: white; border: none; border-radius: 12px;
-    font-size: 0.95rem; font-weight: 800; cursor: pointer;
-    display: none;
-  }
-  .trivia-streak {
-    text-align: center; font-size: 0.75rem; color: var(--muted); margin-top: 10px;
-  }
+/* ── TRIVIA ── */
+.trivia-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:400;align-items:center;justify-content:center;padding:16px;}
+.trivia-overlay.show{display:flex;}
+.trivia-box{background:#fff;border-radius:20px;padding:26px 22px;max-width:400px;width:100%;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.5);}
+.trivia-label{display:inline-block;background:var(--dark);color:var(--gold);font-size:.65rem;font-weight:800;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;margin-bottom:11px;}
+.trivia-box h2{font-size:.97rem;font-weight:900;color:var(--dark);margin-bottom:16px;line-height:1.4;}
+.trivia-options{display:grid;gap:9px;margin-bottom:14px;}
+.trivia-opt{padding:12px 14px;border:2px solid #e8e8e8;border-radius:11px;font-size:.85rem;font-weight:600;cursor:pointer;text-align:left;background:#fff;transition:all .18s;color:var(--dark);}
+.trivia-opt:hover{border-color:var(--red);background:#fef9f9;}
+.trivia-opt.correct{background:#d1fae5;border-color:var(--green);color:#065f46;}
+.trivia-opt.wrong{background:#fee2e2;border-color:var(--red);color:#991b1b;}
+.trivia-result{display:none;padding:12px;border-radius:11px;font-size:.82rem;line-height:1.5;margin-bottom:13px;font-weight:600;}
+.trivia-result.correct{background:#d1fae5;color:#065f46;}
+.trivia-result.wrong{background:#fef3c7;color:#92400e;}
+.trivia-continue{width:100%;padding:12px;background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;border:none;border-radius:11px;font-size:.9rem;font-weight:800;cursor:pointer;display:none;}
+.trivia-streak{text-align:center;font-size:.72rem;color:var(--muted);margin-top:9px;}
 
-  /* ── MODALS ── */
-  .modal-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.75); z-index: 200;
-    align-items: center; justify-content: center;
-  }
-  .modal-overlay.show { display: flex; }
-  .modal-box {
-    background: white; border-radius: 22px; padding: 32px 28px;
-    max-width: 420px; width: 92%; text-align: center; position: relative;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
-  }
-  .modal-box .m-logo { font-size: 0.7rem; color: var(--red); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .modal-box h2 { font-size: 1.6rem; color: var(--dark); font-weight: 900; margin-bottom: 6px; }
-  .modal-box p { color: var(--muted); font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5; }
-  .close-modal { position: absolute; top: 14px; right: 14px; background: #f1f5f9; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; }
+/* ── WHEEL MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.show{display:flex;}
+.modal-box{background:#fff;border-radius:22px;padding:28px 24px;max-width:400px;width:92%;text-align:center;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.4);}
+.modal-box .m-logo{font-size:.67rem;color:var(--red);font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;}
+.modal-box h2{font-size:1.5rem;color:var(--dark);font-weight:900;margin-bottom:5px;}
+.modal-box p{color:var(--muted);font-size:.82rem;margin-bottom:18px;line-height:1.5;}
+.close-modal{position:absolute;top:13px;right:13px;background:#f1f5f9;border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.85rem;}
+.wheel-wrap{position:relative;display:inline-block;margin-bottom:15px;}
+#prizeWheel{border-radius:50%;box-shadow:0 8px 32px rgba(0,0,0,.25);}
+.wheel-pointer{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:1.7rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));}
+.spin-btn{padding:12px 32px;background:linear-gradient(135deg,var(--gold),#e67e22);color:var(--dark);border:none;border-radius:30px;font-size:.95rem;font-weight:900;cursor:pointer;box-shadow:0 4px 16px rgba(243,156,18,.4);transition:all .2s;}
+.spin-btn:hover{transform:scale(1.05);}
+.spin-btn:disabled{opacity:.5;cursor:default;transform:none;}
+.prize-result{margin-top:14px;font-size:.95rem;font-weight:700;display:none;padding:12px;border-radius:10px;background:#f8f8f8;}
 
-  /* WHEEL */
-  .wheel-wrap { position: relative; display: inline-block; margin-bottom: 16px; }
-  #prizeWheel { border-radius: 50%; box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
-  .wheel-pointer { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-size: 1.8rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); }
-  .spin-btn {
-    padding: 13px 36px;
-    background: linear-gradient(135deg, var(--gold), #e67e22);
-    color: var(--dark);
-    border: none; border-radius: 30px;
-    font-size: 1rem; font-weight: 900; cursor: pointer;
-    box-shadow: 0 4px 16px rgba(243,156,18,0.4);
-    transition: all 0.2s;
-  }
-  .spin-btn:hover { transform: scale(1.05); }
-  .spin-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
-  .prize-result { margin-top: 16px; font-size: 1rem; font-weight: 700; display: none; padding: 12px; border-radius: 10px; background: #f8f8f8; }
+/* ── SCRATCH CARD MODAL ── */
+.scratch-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;align-items:center;justify-content:center;}
+.scratch-overlay.show{display:flex;}
+.scratch-box{background:#fff;border-radius:22px;padding:28px 24px;max-width:360px;width:92%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.5);}
+.scratch-box h2{font-size:1.4rem;font-weight:900;color:var(--dark);margin-bottom:6px;}
+.scratch-box p{font-size:.82rem;color:var(--muted);margin-bottom:20px;}
+.scratch-surface{width:220px;height:220px;border-radius:16px;background:linear-gradient(135deg,#aaa,#888);margin:0 auto 20px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;border:4px solid var(--gold);box-shadow:0 6px 24px rgba(0,0,0,.3);}
+.scratch-surface::before{content:'🎴 TAP TO SCRATCH!';position:absolute;color:#fff;font-weight:900;font-size:.9rem;text-align:center;padding:10px;z-index:2;}
+.scratch-surface.revealed::before{display:none;}
+.scratch-reveal{font-size:2.5rem;font-weight:900;color:var(--dark);display:none;flex-direction:column;align-items:center;gap:6px;}
+.scratch-reveal .reveal-prize{font-size:1.6rem;font-weight:900;color:var(--red);}
+.scratch-surface.revealed .scratch-reveal{display:flex;}
+.scratch-surface.revealed{background:linear-gradient(135deg,var(--gold-light),var(--gold));}
+.scratch-close-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--purple),#6c3483);color:#fff;border:none;border-radius:11px;font-size:.9rem;font-weight:800;cursor:pointer;display:none;}
 
-  /* ADMIN PAGE */
-  .admin-page { padding: 16px; max-width: 900px; margin: 0 auto; }
-  .admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-  .tab-btn {
-    padding: 8px 18px; border-radius: 20px; border: 1.5px solid #e2e8e0;
-    background: white; cursor: pointer; font-size: 0.82rem; font-weight: 600;
-    transition: all 0.2s; color: var(--muted);
-  }
-  .tab-btn.active { background: var(--red); color: white; border-color: var(--red); }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-  table { width: 100%; border-collapse: collapse; background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-  th { background: var(--red-dark); color: white; padding: 13px 14px; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
-  td { padding: 12px 14px; font-size: 0.84rem; border-bottom: 1px solid #f5f5f0; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #fef9f9; }
-  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; }
-  .badge-green { background: #d1fae5; color: #065f46; }
-  .badge-yellow { background: #fef3c7; color: #92400e; }
-  .badge-blue { background: #dbeafe; color: #1e40af; }
-  .badge-red { background: #fee2e2; color: #991b1b; }
-  .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
-  .admin-stat { background: white; border-radius: 12px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--red); }
-  .admin-stat .num { font-size: 2rem; font-weight: 900; color: var(--red); }
-  .admin-stat .lbl { font-size: 0.72rem; color: var(--muted); margin-top: 3px; }
-  .fulfill-btn { padding: 5px 14px; background: var(--green); color: white; border: none; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
-  .fulfill-btn:disabled { background: #d1fae5; color: #065f46; cursor: default; }
-  .search-bar { width: 100%; padding: 12px 16px; border: 2px solid #e8e8e8; border-radius: 10px; font-size: 0.88rem; outline: none; margin-bottom: 14px; }
-  .search-bar:focus { border-color: var(--red); }
+/* BINGO WIN PRIZE WHEEL */
+.prize-wheel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:600;align-items:center;justify-content:center;flex-direction:column;}
+.prize-wheel-overlay.show{display:flex;}
+.prize-wheel-box{background:#fff;border-radius:24px;padding:28px 22px;max-width:420px;width:94%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6);}
+.prize-wheel-box .pw-label{font-size:.68rem;color:var(--red);font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.prize-wheel-box h2{font-size:1.6rem;font-weight:900;color:var(--dark);margin-bottom:5px;}
+.prize-wheel-box p{font-size:.82rem;color:var(--muted);margin-bottom:18px;}
 
-  /* QR MODAL */
-  .qr-scan-area { border: 3px dashed #e2e8e0; border-radius: 14px; padding: 28px; text-align: center; margin-bottom: 14px; cursor: pointer; transition: all 0.2s; }
-  .qr-scan-area:hover { border-color: var(--gold); background: #fffbeb; }
-
-  /* CONFETTI */
-  .confetti-piece { position: fixed; width: 10px; height: 10px; border-radius: 2px; animation: fall 3s ease-in forwards; pointer-events: none; z-index: 9999; }
-  @keyframes fall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
-
-  .logout-btn { background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.25); color: white; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.78rem; font-weight: 600; }
+/* CONFETTI */
+.confetti-piece{position:fixed;width:10px;height:10px;border-radius:2px;animation:fall 3s ease-in forwards;pointer-events:none;z-index:9999;}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <div class="logo-wrap">
-    <div class="roof-icon">
-      <div class="roof-triangle"></div>
-      <div class="roof-body"></div>
-    </div>
-    <div class="logo-text">
-      <div class="r1">Rooval Roofing</div>
-      <div class="r2">Agent Rewards</div>
-    </div>
+  <div class="nav-logo">
+    <div class="roof-icon"><div class="roof-tri"></div><div class="roof-body"></div></div>
+    <div class="logo-text"><div class="r1">Rooval Roofing</div><div class="r2">Agent Rewards</div></div>
   </div>
   <div class="nav-right" id="navLinks" style="display:none">
     <button class="nav-btn active" onclick="showPage('bingo')">My Card</button>
-    <button class="nav-btn" onclick="showPage('admin')">Admin</button>
+    <button class="nav-btn" onclick="showPage('leaderboard')">🏆 Board</button>
+    <button class="nav-btn" onclick="showPage('admin');buildAdminTables()">Admin</button>
     <button class="logout-btn" onclick="logout()">Logout</button>
   </div>
   <div id="navPhone" class="nav-phone">📞 (555) 766-2582</div>
 </nav>
 
-<!-- ════════════════════════════════ LOGIN PAGE ════════════════════════════════ -->
+<!-- ══════════════════════ LOGIN PAGE ══════════════════════ -->
 <div class="page active" id="page-login">
   <div class="login-page">
-
+    <div class="rotating-banner" id="rotatingBanner">
+      <div class="rb-dot"></div>
+      <span id="bannerText">Loading...</span>
+      <div class="rb-dot"></div>
+    </div>
     <div class="login-hero">
       <div class="badge">🏆 Agent Rewards Program</div>
       <h1>Win Big With<br><span>Rooval Roofing</span></h1>
-      <p>Play weekly bingo, earn bonus numbers, and spin the wheel for real prizes — just for being an amazing agent!</p>
+      <p>Play weekly bingo, earn bonus numbers, climb the leaderboard, and spin for real cash prizes!</p>
     </div>
-
     <div class="login-card">
       <h2>🔑 Agent Sign In</h2>
       <p>Enter your agent code or email to access your rewards card</p>
       <input type="text" id="loginInput" placeholder="Your email or agent code" />
       <button class="btn-red" onclick="doLogin()">Access My Bingo Card →</button>
-      <div class="demo-hint">Demo: type anything to log in as agent · type <strong>admin</strong> for the dashboard</div>
+      <div class="demo-hint">Demo: type anything to log in · type <strong>admin</strong> for dashboard</div>
     </div>
-
-    <div class="service-cards">
-      <div class="svc-card">
-        <div class="icon">🏠</div>
-        <div class="title">Roof Replacement</div>
-        <div class="sub">Full residential & commercial</div>
-      </div>
-      <div class="svc-card">
-        <div class="icon">🔧</div>
-        <div class="title">Roof Repair</div>
-        <div class="sub">Same-day emergency service</div>
-      </div>
-      <div class="svc-card">
-        <div class="icon">🔍</div>
-        <div class="title">Free Inspections</div>
-        <div class="sub">No charge, no obligation</div>
-      </div>
-      <div class="svc-card">
-        <div class="icon">⛈️</div>
-        <div class="title">Storm Damage</div>
-        <div class="sub">Insurance claim experts</div>
-      </div>
+    <div class="svc-cards">
+      <div class="svc-card"><div class="icon">🏠</div><div class="title">Roof Replacement</div><div class="sub">Full residential & commercial</div></div>
+      <div class="svc-card"><div class="icon">🔧</div><div class="title">Roof Repair</div><div class="sub">Same-day emergency service</div></div>
+      <div class="svc-card"><div class="icon">🔍</div><div class="title">Free Inspections</div><div class="sub">No charge, no obligation</div></div>
+      <div class="svc-card"><div class="icon">⛈️</div><div class="title">Storm Damage</div><div class="sub">Insurance claim experts</div></div>
     </div>
-
     <div class="trust-bar">
       <div class="trust-item"><span>✓</span> Licensed & Insured</div>
       <div class="trust-item"><span>✓</span> 5-Star Rated</div>
       <div class="trust-item"><span>✓</span> 10-Year Warranty</div>
       <div class="trust-item"><span>✓</span> Free Estimates</div>
     </div>
-
   </div>
 </div>
 
-<!-- ════════════════════════════════ BINGO PAGE ════════════════════════════════ -->
+<!-- ══════════════════════ BINGO PAGE ══════════════════════ -->
 <div class="page" id="page-bingo">
-
-  <!-- Promo banner -->
   <div class="promo-banner">
     <div class="pb-text">
       <div class="pb-title">🏠 Free Roof Inspection for Your Clients!</div>
-      <div class="pb-sub">Refer a homeowner — they get a free inspection, you get +2 numbers</div>
+      <div class="pb-sub">Refer a homeowner → they get free inspection → you get +2 numbers</div>
     </div>
     <button class="pb-btn" onclick="openReferralModal()">Refer Now</button>
   </div>
 
   <div class="page-body">
-
-    <div class="welcome-row">
-      <div>
-        <h2 id="agentGreeting">Welcome back! 👋</h2>
-        <p style="font-size:0.75rem;color:var(--muted)">Rooval Roofing Agent Rewards</p>
+    <!-- Agent header with tier -->
+    <div class="agent-header-card">
+      <div class="agent-avatar" id="agentAvatar">S</div>
+      <div class="agent-info">
+        <h2 id="agentGreeting">Welcome back!</h2>
+        <div class="agent-sub" id="agentTierBadge"></div>
       </div>
-      <div class="week-chip">📅 Week 23</div>
+      <div class="agent-meta">
+        <div class="week-chip">📅 Week 23</div>
+      </div>
     </div>
 
-    <!-- WEEKLY SPIN — front and center -->
+    <!-- Streak bar -->
+    <div class="streak-bar">
+      <div class="streak-flame">🔥</div>
+      <div class="streak-text">
+        <div class="st-title">Weekly Streak!</div>
+        <div class="st-sub" id="streakSub">Complete an action to start your streak</div>
+      </div>
+      <div class="streak-count" id="streakCount">0</div>
+    </div>
+
+    <!-- Scratch card (shows randomly) -->
+    <div class="scratch-card-banner" id="scratchBanner" onclick="openScratch()" style="display:none">
+      <div class="sc-icon">🎴</div>
+      <div class="sc-text">
+        <div class="sc-title">🎉 You Got a Surprise Scratch Card!</div>
+        <div class="sc-sub">Tap to scratch and see what you won!</div>
+      </div>
+      <div class="sc-arrow">→</div>
+    </div>
+
+    <!-- Weekly spin CTA -->
     <div class="spin-cta-card" onclick="openWheel()">
       <div class="sc-text">
         <div class="sc-title">🎡 Weekly Spin Ready!</div>
@@ -808,40 +437,39 @@
 
     <!-- Stats -->
     <div class="stats-row">
-      <div class="stat-card">
-        <div class="num" id="statNumbers">14</div>
-        <div class="lbl">Numbers Called</div>
-      </div>
-      <div class="stat-card">
-        <div class="num" id="statBonus">3</div>
-        <div class="lbl">Bonus Earned</div>
-      </div>
-      <div class="stat-card">
-        <div class="num" id="statReferrals">2</div>
-        <div class="lbl">Referrals</div>
-      </div>
+      <div class="stat-card"><div class="num" id="statNumbers">14</div><div class="lbl">Numbers</div></div>
+      <div class="stat-card"><div class="num" id="statBonus">3</div><div class="lbl">Bonus</div></div>
+      <div class="stat-card"><div class="num" id="statReferrals">2</div><div class="lbl">Referrals</div></div>
+      <div class="stat-card"><div class="num" id="statWins">1</div><div class="lbl">Prizes Won</div></div>
     </div>
 
-    <!-- Bingo Card -->
+    <!-- Bingo card -->
     <div class="bingo-wrap">
       <div class="bingo-top">
         <h3>🎱 Your Rooval Bingo Card</h3>
         <div class="progress-pill" id="progressPill">⚡ 2 away from BINGO!</div>
       </div>
-      <div class="bingo-header">
-        <div>B</div><div>I</div><div>N</div><div>G</div><div>O</div>
-      </div>
+      <div class="bingo-header"><div>B</div><div>I</div><div>N</div><div>G</div><div>O</div></div>
       <div class="bingo-grid" id="bingoGrid"></div>
+      <div id="bingoWinBanner" style="display:none;margin-top:12px;padding:12px;background:linear-gradient(135deg,var(--gold),#e67e22);border-radius:10px;text-align:center;font-weight:800;color:var(--dark);cursor:pointer" onclick="openPrizeWheel()">
+        🎉 BINGO! Tap here to spin for your CASH PRIZE! 🎡
+      </div>
     </div>
 
-    <!-- Recently Called -->
+    <!-- Referral tracker -->
+    <div class="referral-tracker">
+      <h3>📋 My Referral Status</h3>
+      <div id="myReferrals"></div>
+    </div>
+
+    <!-- Recent numbers -->
     <div class="recent-wrap">
       <h4>📋 Recently Called Numbers</h4>
       <div id="recentNumbers"></div>
       <div class="next-drop">🕗 Next number drops Monday at 8:00 AM</div>
     </div>
 
-    <!-- Rooval Ad Card -->
+    <!-- Ad -->
     <div class="rooval-ad">
       <div class="ad-label">🏠 Rooval Roofing — Trusted Since 2010</div>
       <h3>Does Your Client Need a <span>New Roof?</span></h3>
@@ -849,164 +477,176 @@
       <button class="ad-cta" onclick="openReferralModal()">Make a Referral → Earn +2 Numbers</button>
     </div>
 
-    <!-- Bonus Actions -->
+    <!-- Bonus actions -->
     <div class="bonus-wrap">
       <h3>⚡ Earn More Numbers</h3>
       <div class="bonus-sub">Complete actions below to add free numbers to your card</div>
-
       <div class="bonus-item" id="bonus-review" onclick="openReviewModal()">
         <div class="b-icon">⭐</div>
-        <div class="b-info">
-          <div class="b-title">Leave a Google Review</div>
-          <div class="b-desc">Tap to open Google → leave a review → come back to claim your number</div>
-        </div>
+        <div class="b-info"><div class="b-title">Leave a Google Review</div><div class="b-desc">Tap to open Google → leave a review → come back to claim</div></div>
         <div class="b-badge">+1 Number</div>
       </div>
-
       <div class="bonus-item" id="bonus-referral" onclick="openReferralModal()">
         <div class="b-icon">🏠</div>
-        <div class="b-info">
-          <div class="b-title">Refer a Homeowner</div>
-          <div class="b-desc">Fill out homeowner info → we handle the rest → you earn +2 numbers</div>
-        </div>
+        <div class="b-info"><div class="b-title">Refer a Homeowner</div><div class="b-desc">Fill out homeowner info → we handle the rest → earn +2 numbers</div></div>
         <div class="b-badge">+2 Numbers</div>
       </div>
-
       <div class="bonus-item" id="bonus-social" onclick="openFacebookModal()">
         <div class="b-icon">📱</div>
-        <div class="b-info">
-          <div class="b-title">Follow Rooval Roofing on Facebook</div>
-          <div class="b-desc">Tap to open our Facebook page → follow → come back to claim</div>
-        </div>
+        <div class="b-info"><div class="b-title">Follow Rooval Roofing on Facebook</div><div class="b-desc">Tap to open our Facebook page → follow → come back to claim</div></div>
         <div class="b-badge" id="social-badge">+1 Number</div>
       </div>
-
       <div class="bonus-item" id="bonus-qr" onclick="openQR()">
         <div class="b-icon">📷</div>
-        <div class="b-info">
-          <div class="b-title">Scan Event QR Code</div>
-          <div class="b-desc">Scan the code at Rooval Roofing events & job sites</div>
-        </div>
+        <div class="b-info"><div class="b-title">Scan Event QR Code</div><div class="b-desc">Scan the code at Rooval Roofing events & job sites</div></div>
         <div class="b-badge">+1 Number</div>
       </div>
     </div>
 
-    <!-- Second Ad -->
+    <!-- Storm damage ad -->
     <div class="rooval-ad" style="background:linear-gradient(135deg,var(--red-dark),#7b241c)">
       <div class="ad-label">⛈️ Storm Season is Here</div>
       <h3>Got a Client With <span>Storm Damage?</span></h3>
-      <p>Rooval Roofing works directly with insurance companies. Fast approvals, quality work, no stress for your client. Refer them today.</p>
-      <button class="ad-cta" onclick="alert('Opening referral form...')">Submit Storm Referral</button>
+      <p>Rooval Roofing works directly with insurance companies. Fast approvals, quality work, no stress for your client.</p>
+      <button class="ad-cta" onclick="openReferralModal()">Submit Storm Referral</button>
     </div>
-
   </div>
 
-  <!-- Footer Ad -->
   <div class="footer-ad">
     <div class="f-logo">Rooval <span>Roofing</span></div>
     <p>Protecting homes across the area — one roof at a time</p>
     <div class="f-phone">📞 (555) 766-2582</div>
-    <div class="services">
-      <span>✓ Residential</span>
-      <span>✓ Commercial</span>
-      <span>✓ Storm Damage</span>
-      <span>✓ Free Inspections</span>
-      <span>✓ Insurance Claims</span>
-    </div>
+    <div class="services"><span>✓ Residential</span><span>✓ Commercial</span><span>✓ Storm Damage</span><span>✓ Free Inspections</span><span>✓ Insurance Claims</span></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════ ADMIN PAGE ════════════════════════════════ -->
+<!-- ══════════════════════ LEADERBOARD PAGE ══════════════════════ -->
+<div class="page" id="page-leaderboard">
+  <div class="lb-page">
+    <div class="lb-hero">
+      <h2>🏆 Agent Leaderboard</h2>
+      <p>Top performers this month — updated in real time</p>
+    </div>
+
+    <!-- Agent of the Month -->
+    <div class="aom-card">
+      <div class="aom-label">⭐ Agent of the Month — May 2026</div>
+      <div class="aom-crown">👑</div>
+      <div class="aom-name">David Brown</div>
+      <div class="aom-stats">21 numbers called · 5 referrals · 2 bingos this month</div>
+      <div class="aom-badge">💎 Platinum Agent</div>
+    </div>
+
+    <!-- Tier guide -->
+    <div class="tier-section">
+      <h3>🎖️ Agent Tier Levels</h3>
+      <div class="tier-item">
+        <div class="tier-icon">🥉</div>
+        <div class="tier-info">
+          <div class="tier-name" style="color:var(--bronze)">Bronze Agent</div>
+          <div class="tier-req">0–2 referrals made</div>
+          <div class="tier-perks">Access to weekly numbers & spin</div>
+        </div>
+      </div>
+      <div class="tier-item">
+        <div class="tier-icon">🥈</div>
+        <div class="tier-info">
+          <div class="tier-name" style="color:#888">Silver Agent</div>
+          <div class="tier-req">3–4 referrals made</div>
+          <div class="tier-perks">+ Monthly surprise scratch card</div>
+        </div>
+      </div>
+      <div class="tier-item">
+        <div class="tier-icon">🥇</div>
+        <div class="tier-info">
+          <div class="tier-name" style="color:var(--gold)">Gold Agent</div>
+          <div class="tier-req">5–7 referrals + 1 bingo</div>
+          <div class="tier-perks">+ Bonus number every 3-week streak</div>
+        </div>
+      </div>
+      <div class="tier-item">
+        <div class="tier-icon">💎</div>
+        <div class="tier-info">
+          <div class="tier-name" style="color:#555">Platinum Agent</div>
+          <div class="tier-req">8+ referrals + top 3 leaderboard</div>
+          <div class="tier-perks">+ Priority prize fulfillment + Agent of Month eligible</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaderboard list -->
+    <div class="lb-list" id="leaderboardList"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════ ADMIN PAGE ══════════════════════ -->
 <div class="page" id="page-admin">
   <div class="admin-page">
-    <h2 style="color:var(--red);margin-bottom:4px;font-size:1.4rem;font-weight:900">Admin Dashboard</h2>
-    <p style="color:var(--muted);margin-bottom:20px;font-size:0.85rem">Rooval Roofing — Agent Rewards Management</p>
-
+    <h2 style="color:var(--red);margin-bottom:4px;font-size:1.3rem;font-weight:900">Admin Dashboard</h2>
+    <p style="color:var(--muted);margin-bottom:18px;font-size:.82rem">Rooval Roofing — Agent Rewards Management</p>
     <div class="admin-stats">
       <div class="admin-stat"><div class="num">42</div><div class="lbl">Active Agents</div></div>
       <div class="admin-stat" style="border-left-color:var(--gold)"><div class="num" style="color:var(--gold)">$180</div><div class="lbl">Prizes Pending</div></div>
       <div class="admin-stat" style="border-left-color:var(--green)"><div class="num" style="color:var(--green)">18</div><div class="lbl">Referrals This Week</div></div>
-      <div class="admin-stat" style="border-left-color:#8b5cf6"><div class="num" style="color:#8b5cf6">7</div><div class="lbl">Bingos This Month</div></div>
+      <div class="admin-stat" style="border-left-color:var(--purple)"><div class="num" style="color:var(--purple)">7</div><div class="lbl">Bingos This Month</div></div>
     </div>
-
     <div class="admin-tabs">
       <button class="tab-btn active" onclick="switchTab('agents',event)">Agents</button>
       <button class="tab-btn" onclick="switchTab('prizes',event)">Prize Fulfillment</button>
       <button class="tab-btn" onclick="switchTab('referrals',event)">Referrals</button>
       <button class="tab-btn" onclick="switchTab('email',event)">Email Schedule</button>
+      <button class="tab-btn" onclick="switchTab('aom',event)">Agent of Month</button>
     </div>
-
     <div class="tab-content active" id="tab-agents">
       <input class="search-bar" placeholder="🔍 Search agents..." oninput="filterAgents(this.value)">
-      <table><thead><tr><th>Agent</th><th>Email</th><th>Progress</th><th>Last Active</th><th>Status</th></tr></thead>
+      <table><thead><tr><th>Agent</th><th>Email</th><th>Tier</th><th>Progress</th><th>Streak</th><th>Status</th></tr></thead>
       <tbody id="agentsBody"></tbody></table>
     </div>
-
     <div class="tab-content" id="tab-prizes">
       <table><thead><tr><th>Agent</th><th>Prize</th><th>Won On</th><th>Type</th><th>Status</th><th>Action</th></tr></thead>
       <tbody id="prizesBody"></tbody></table>
     </div>
-
     <div class="tab-content" id="tab-referrals">
-      <table><thead><tr><th>Agent</th><th>Client</th><th>Date</th><th>Bonus</th><th>Status</th></tr></thead>
+      <table><thead><tr><th>Agent</th><th>Client</th><th>Date</th><th>Issue</th><th>Status</th></tr></thead>
       <tbody id="referralsBody"></tbody></table>
     </div>
-
     <div class="tab-content" id="tab-email">
-      <div style="background:white;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
-        <h3 style="color:var(--red);margin-bottom:18px;font-weight:800">📧 Email Automation</h3>
-        <div style="display:grid;gap:12px">
-          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#fafafa;border-radius:10px;border-left:4px solid var(--red)">
-            <div style="font-size:1.6rem">📬</div>
-            <div><div style="font-weight:700;margin-bottom:2px;font-size:0.9rem">Weekly Bingo Number Drop</div><div style="font-size:0.78rem;color:var(--muted)">Every Monday at 8:00 AM — new number sent to all active agents</div></div>
-            <div style="margin-left:auto"><span class="badge badge-green">● Active</span></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#fafafa;border-radius:10px;border-left:4px solid var(--green)">
-            <div style="font-size:1.6rem">🎉</div>
-            <div><div style="font-weight:700;margin-bottom:2px;font-size:0.9rem">BINGO Win Notification</div><div style="font-size:0.78rem;color:var(--muted)">Instant email when agent gets 5-in-a-row or full card</div></div>
-            <div style="margin-left:auto"><span class="badge badge-green">● Active</span></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#fafafa;border-radius:10px;border-left:4px solid var(--gold)">
-            <div style="font-size:1.6rem">⏰</div>
-            <div><div style="font-weight:700;margin-bottom:2px;font-size:0.9rem">Weekly Spin Reminder</div><div style="font-size:0.78rem;color:var(--muted)">Friday reminder email if agent hasn't used their weekly spin</div></div>
-            <div style="margin-left:auto"><span class="badge badge-yellow">● Scheduled</span></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#fafafa;border-radius:10px;border-left:4px solid #8b5cf6">
-            <div style="font-size:1.6rem">🏠</div>
-            <div><div style="font-weight:700;margin-bottom:2px;font-size:0.9rem">Rooval Roofing Referral Follow-Up</div><div style="font-size:0.78rem;color:var(--muted)">48hr follow-up when a referral is submitted — keeps agents engaged</div></div>
-            <div style="margin-left:auto"><span class="badge badge-green">● Active</span></div>
-          </div>
+      <div style="background:#fff;border-radius:13px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.06)">
+        <h3 style="color:var(--red);margin-bottom:16px;font-weight:800">📧 Email Automation Schedule</h3>
+        <div style="display:grid;gap:11px">
+          <div style="display:flex;align-items:center;gap:13px;padding:13px;background:#fafafa;border-radius:10px;border-left:4px solid var(--red)"><div style="font-size:1.5rem">📬</div><div><div style="font-weight:700;margin-bottom:1px;font-size:.88rem">Weekly Bingo Number Drop</div><div style="font-size:.75rem;color:var(--muted)">Every Monday 8:00 AM — new number + leaderboard standings sent to all agents</div></div><div style="margin-left:auto"><span class="badge badge-green">● Active</span></div></div>
+          <div style="display:flex;align-items:center;gap:13px;padding:13px;background:#fafafa;border-radius:10px;border-left:4px solid var(--green)"><div style="font-size:1.5rem">🎉</div><div><div style="font-weight:700;margin-bottom:1px;font-size:.88rem">BINGO Win Notification</div><div style="font-size:.75rem;color:var(--muted)">Instant email with prize wheel link when agent hits BINGO</div></div><div style="margin-left:auto"><span class="badge badge-green">● Active</span></div></div>
+          <div style="display:flex;align-items:center;gap:13px;padding:13px;background:#fafafa;border-radius:10px;border-left:4px solid var(--gold)"><div style="font-size:1.5rem">⏰</div><div><div style="font-weight:700;margin-bottom:1px;font-size:.88rem">Friday Spin Reminder</div><div style="font-size:.75rem;color:var(--muted)">Sent Friday if agent hasn't used their weekly spin — with leaderboard position</div></div><div style="margin-left:auto"><span class="badge badge-yellow">● Scheduled</span></div></div>
+          <div style="display:flex;align-items:center;gap:13px;padding:13px;background:#fafafa;border-radius:10px;border-left:4px solid var(--purple)"><div style="font-size:1.5rem">🎴</div><div><div style="font-weight:700;margin-bottom:1px;font-size:.88rem">Monthly Scratch Card Drop</div><div style="font-size:.75rem;color:var(--muted)">Surprise email to 5 random Silver+ agents with a scratch card bonus</div></div><div style="margin-left:auto"><span class="badge badge-green">● Active</span></div></div>
+          <div style="display:flex;align-items:center;gap:13px;padding:13px;background:#fafafa;border-radius:10px;border-left:4px solid var(--blue)"><div style="font-size:1.5rem">👑</div><div><div style="font-weight:700;margin-bottom:1px;font-size:.88rem">Agent of the Month Announcement</div><div style="font-size:.75rem;color:var(--muted)">Sent to ALL agents on the 1st of each month — celebrates the winner</div></div><div style="margin-left:auto"><span class="badge badge-green">● Active</span></div></div>
         </div>
-        <button class="btn-red" style="margin-top:18px;max-width:220px;padding:12px" onclick="alert('Test number sent to all 42 agents!')">📤 Send Number Now (Test)</button>
+        <button class="btn-red" style="margin-top:16px;max-width:210px;padding:11px" onclick="alert('Test number sent to all 42 agents!')">📤 Send Number Now (Test)</button>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-aom">
+      <div style="background:#fff;border-radius:13px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.06)">
+        <h3 style="color:var(--red);margin-bottom:6px;font-weight:800">👑 Agent of the Month</h3>
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:18px">Select the agent to crown for May 2026. They'll receive a featured spot on the leaderboard, an email announcement to all agents, and a bonus scratch card.</p>
+        <div style="display:grid;gap:10px" id="aomCandidates"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- GOOGLE REVIEW MODAL -->
+<!-- ══════════ ACTION MODALS ══════════ -->
+<!-- Google Review -->
 <div class="action-modal" id="reviewModal">
   <div class="action-sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-icon">⭐</div>
     <h2>Leave a Google Review</h2>
     <p class="sheet-desc">Share your experience with Rooval Roofing on Google — then come back and confirm to earn your free bingo number!</p>
-
-    <div class="step-row">
-      <div class="step-num">1</div>
-      <div class="step-text">Tap the button below to open our Google Review page<small>It will open in a new tab — leave us a quick review!</small></div>
-    </div>
-    <div class="step-row">
-      <div class="step-num">2</div>
-      <div class="step-text">Write your review and hit Submit on Google<small>Any honest feedback is appreciated — 5 stars means the world to us! ⭐</small></div>
-    </div>
-    <div class="step-row">
-      <div class="step-num">3</div>
-      <div class="step-text">Come back here and tap "I Left My Review" below<small>You'll answer a quick trivia question, then your number is awarded!</small></div>
-    </div>
-
+    <div class="step-row"><div class="step-num">1</div><div class="step-text">Tap below to open our Google Review page<small>It will open in a new tab</small></div></div>
+    <div class="step-row"><div class="step-num">2</div><div class="step-text">Write your review and tap Submit on Google<small>Any honest feedback is appreciated — 5 stars means the world! ⭐</small></div></div>
+    <div class="step-row"><div class="step-num">3</div><div class="step-text">Come back here and tap "I Left My Review"<small>Answer a quick trivia question, then your number is awarded!</small></div></div>
     <br>
     <button class="link-btn google" onclick="window.open(GOOGLE_REVIEW_URL,'_blank')">
-      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.5 30.3 0 24 0 14.7 0 6.7 5.4 2.9 13.3l7.9 6.1C12.6 13 17.9 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.4c-.5 2.8-2.1 5.2-4.5 6.8l7 5.4C43 36.5 46.1 30.9 46.1 24.5z"/><path fill="#FBBC05" d="M10.8 28.6A14.7 14.7 0 0 1 9.5 24c0-1.6.3-3.2.7-4.6L2.3 13.3A23.8 23.8 0 0 0 0 24c0 3.8.9 7.4 2.4 10.6l8.4-6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7-5.4c-2.1 1.4-4.8 2.2-8.9 2.2-6.1 0-11.3-4.1-13.2-9.6l-8.4 6C6.8 42.8 14.8 48 24 48z"/></svg>
+      <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.2l6.8-6.8C35.8 2.5 30.3 0 24 0 14.7 0 6.7 5.4 2.9 13.3l7.9 6.1C12.6 13 17.9 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.4c-.5 2.8-2.1 5.2-4.5 6.8l7 5.4C43 36.5 46.1 30.9 46.1 24.5z"/><path fill="#FBBC05" d="M10.8 28.6A14.7 14.7 0 0 1 9.5 24c0-1.6.3-3.2.7-4.6L2.3 13.3A23.8 23.8 0 0 0 0 24c0 3.8.9 7.4 2.4 10.6l8.4-6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7-5.4c-2.1 1.4-4.8 2.2-8.9 2.2-6.1 0-11.3-4.1-13.2-9.6l-8.4 6C6.8 42.8 14.8 48 24 48z"/></svg>
       Open Google Review Page
     </button>
     <button class="link-btn confirm" onclick="confirmReview()">✅ I Left My Review — Claim My Number!</button>
@@ -1014,78 +654,42 @@
   </div>
 </div>
 
-<!-- REFERRAL FORM MODAL -->
+<!-- Referral Form -->
 <div class="action-modal" id="referralModal">
   <div class="action-sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-icon">🏠</div>
     <h2>Refer a Homeowner</h2>
-    <p class="sheet-desc">Fill out the homeowner's information below. Rooval Roofing will reach out for a <strong>free roof inspection</strong> — and you'll earn 2 bonus bingo numbers!</p>
-
+    <p class="sheet-desc">Fill out the homeowner's info below. Rooval Roofing will reach out for a <strong>free roof inspection</strong> — you earn 2 bonus bingo numbers!</p>
     <div class="form-row">
-      <div class="form-group">
-        <label>First Name *</label>
-        <input type="text" id="ref-fname" placeholder="John" />
-      </div>
-      <div class="form-group">
-        <label>Last Name *</label>
-        <input type="text" id="ref-lname" placeholder="Smith" />
-      </div>
+      <div class="form-group"><label>First Name *</label><input type="text" id="ref-fname" placeholder="John" /></div>
+      <div class="form-group"><label>Last Name *</label><input type="text" id="ref-lname" placeholder="Smith" /></div>
     </div>
-    <div class="form-group">
-      <label>Phone Number *</label>
-      <input type="tel" id="ref-phone" placeholder="(555) 123-4567" />
+    <div class="form-group"><label>Phone Number *</label><input type="tel" id="ref-phone" placeholder="(555) 123-4567" /></div>
+    <div class="form-group"><label>Email Address</label><input type="email" id="ref-email" placeholder="john@email.com" /></div>
+    <div class="form-group"><label>Home Address</label><input type="text" id="ref-address" placeholder="123 Main St, City, State" /></div>
+    <div class="form-group"><label>What's the Roofing Issue?</label>
+      <select id="ref-issue"><option value="">Select one...</option><option>Storm / Hail Damage</option><option>Roof Leak</option><option>Full Roof Replacement</option><option>Insurance Claim Help</option><option>Routine Inspection</option><option>Other</option></select>
     </div>
-    <div class="form-group">
-      <label>Email Address</label>
-      <input type="email" id="ref-email" placeholder="john@email.com" />
-    </div>
-    <div class="form-group">
-      <label>Home Address</label>
-      <input type="text" id="ref-address" placeholder="123 Main St, City, State" />
-    </div>
-    <div class="form-group">
-      <label>What's the Roofing Issue?</label>
-      <select id="ref-issue">
-        <option value="">Select one...</option>
-        <option>Storm / Hail Damage</option>
-        <option>Roof Leak</option>
-        <option>Full Roof Replacement</option>
-        <option>Insurance Claim Help</option>
-        <option>Routine Inspection</option>
-        <option>Other</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Additional Notes</label>
-      <textarea id="ref-notes" placeholder="Any other details about the homeowner or their roof situation..."></textarea>
-    </div>
-
+    <div class="form-group"><label>Additional Notes</label><textarea id="ref-notes" placeholder="Any other details about the homeowner or their roof situation..."></textarea></div>
     <button class="link-btn confirm" onclick="submitReferral()">🏠 Submit Referral — Earn +2 Numbers!</button>
     <button class="link-btn secondary" onclick="closeActionModal('referralModal')">Cancel</button>
   </div>
 </div>
 
-<!-- FACEBOOK MODAL -->
+<!-- Facebook -->
 <div class="action-modal" id="facebookModal">
   <div class="action-sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-icon">📱</div>
     <h2>Follow Rooval Roofing</h2>
-    <p class="sheet-desc">Follow us on Facebook & Instagram to stay up to date on promotions, storm alerts, and job openings — and earn a free bingo number!</p>
-
-    <div class="step-row">
-      <div class="step-num">1</div>
-      <div class="step-text">Tap "Follow on Facebook" below — it opens in a new tab<small>Click the Follow button on our Facebook page</small></div>
-    </div>
-    <div class="step-row">
-      <div class="step-num">2</div>
-      <div class="step-text">Come back and confirm below to earn your number<small>This is a one-time bonus!</small></div>
-    </div>
-
+    <p class="sheet-desc">Follow us on Facebook to stay up to date on promotions, storm alerts, and events — and earn a free bingo number!</p>
+    <div class="step-row"><div class="step-num">1</div><div class="step-text">Tap "Follow on Facebook" below<small>Opens our Facebook page in a new tab</small></div></div>
+    <div class="step-row"><div class="step-num">2</div><div class="step-text">Click the Follow button on our page<small>Takes 2 seconds!</small></div></div>
+    <div class="step-row"><div class="step-num">3</div><div class="step-text">Come back and confirm below<small>One-time bonus number awarded!</small></div></div>
     <br>
     <button class="link-btn facebook" onclick="window.open(FACEBOOK_URL,'_blank')">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.791-4.697 4.533-4.697 1.313 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="white"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.791-4.697 4.533-4.697 1.313 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
       Follow on Facebook
     </button>
     <button class="link-btn confirm" onclick="confirmFollow()">✅ I Followed — Claim My Number!</button>
@@ -1093,7 +697,23 @@
   </div>
 </div>
 
-<!-- TRIVIA MODAL -->
+<!-- QR Modal -->
+<div class="action-modal" id="qrModal">
+  <div class="action-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-icon">📷</div>
+    <h2>Scan Event QR Code</h2>
+    <p class="sheet-desc">Scan the QR code at any Rooval Roofing event or job site to earn a free bonus number!</p>
+    <div style="border:3px dashed #e8e8e8;border-radius:13px;padding:28px;text-align:center;margin-bottom:14px;cursor:pointer;transition:all .2s" onclick="simulateQRScan()">
+      <div style="font-size:3rem;margin-bottom:7px">▦</div>
+      <p style="font-weight:700;color:var(--red)">Click to Simulate Scan</p>
+      <p style="font-size:.74rem;color:var(--muted);margin-top:3px">In production: uses device camera</p>
+    </div>
+    <button class="link-btn secondary" onclick="closeActionModal('qrModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- Trivia Modal -->
 <div class="trivia-overlay" id="triviaModal">
   <div class="trivia-box">
     <div class="trivia-label">🧠 Insurance Trivia — Earn Your Number!</div>
@@ -1105,211 +725,178 @@
   </div>
 </div>
 
-<!-- QR MODAL -->
-<div class="modal-overlay" id="qrModal">
-  <div class="modal-box">
-    <button class="close-modal" onclick="closeQR()">✕</button>
-    <div class="m-logo">🏠 Rooval Roofing — Event Check-In</div>
-    <h2>📷 Scan QR Code</h2>
-    <p>Scan the QR code at any Rooval Roofing event or job site to earn a free bonus number on your card!</p>
-    <div class="qr-scan-area" onclick="simulateQRScan()">
-      <div style="font-size:3rem;margin-bottom:8px">▦</div>
-      <p style="font-weight:700;color:var(--red)">Click to Simulate Scan</p>
-      <p style="font-size:0.75rem;color:var(--muted);margin-top:4px">In production: uses device camera</p>
-    </div>
-  </div>
-</div>
-
-<!-- WHEEL MODAL -->
+<!-- Weekly Spin Wheel -->
 <div class="modal-overlay" id="wheelModal">
   <div class="modal-box">
     <button class="close-modal" onclick="closeWheel()">✕</button>
     <div class="m-logo">🏠 Rooval Roofing Rewards</div>
     <h2>🎡 Weekly Spin!</h2>
-    <p>Spin the wheel to land on a bonus number. If that number is on your bingo card — it gets marked!</p>
-    <div class="wheel-wrap">
-      <div class="wheel-pointer">▼</div>
-      <canvas id="prizeWheel" width="270" height="270"></canvas>
-    </div><br>
+    <p>Land on a number — if it's on your card it gets marked!</p>
+    <div class="wheel-wrap"><div class="wheel-pointer">▼</div><canvas id="prizeWheel" width="260" height="260"></canvas></div><br>
     <button class="spin-btn" id="spinBtn" onclick="spinWheel()">🎲 SPIN!</button>
     <div class="prize-result" id="prizeResult"></div>
   </div>
 </div>
 
+<!-- BINGO WIN Prize Wheel -->
+<div class="prize-wheel-overlay" id="prizeWheelOverlay">
+  <div class="prize-wheel-box">
+    <div class="pw-label">🏠 Rooval Roofing — BINGO WIN!</div>
+    <h2>🎉 BINGO! Spin for Cash!</h2>
+    <p>You hit BINGO! Spin the prize wheel to claim your real cash reward!</p>
+    <div class="wheel-wrap"><div class="wheel-pointer">▼</div><canvas id="prizeWheelBingo" width="260" height="260"></canvas></div><br>
+    <button class="spin-btn" id="spinBingoBtn" onclick="spinBingoWheel()">💰 SPIN FOR PRIZE!</button>
+    <div class="prize-result" id="prizeResultBingo"></div>
+  </div>
+</div>
+
+<!-- Scratch Card Modal -->
+<div class="scratch-overlay" id="scratchModal">
+  <div class="scratch-box">
+    <div style="font-size:.67rem;color:var(--purple);font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">🎴 Rooval Roofing — Surprise Bonus</div>
+    <h2>You Got a Scratch Card!</h2>
+    <p>Tap the card below to reveal your surprise reward from Rooval Roofing!</p>
+    <div class="scratch-surface" id="scratchSurface" onclick="revealScratch()">
+      <div class="scratch-reveal" id="scratchReveal">
+        <div style="font-size:2rem">🎉</div>
+        <div class="reveal-prize" id="scratchPrize">+1 Number!</div>
+        <div style="font-size:.78rem;color:var(--dark);font-weight:600">Added to your card!</div>
+      </div>
+    </div>
+    <button class="scratch-close-btn" id="scratchCloseBtn" onclick="closeScratch()">Awesome! Claim My Reward 🎉</button>
+    <div style="font-size:.72rem;color:var(--muted);margin-top:10px">Scratch cards are randomly sent to Silver+ agents each month</div>
+  </div>
+</div>
+
 <script>
-// ── LINKS — swap these with real URLs ──
-const GOOGLE_REVIEW_URL = 'https://g.page/r/YOUR_GOOGLE_REVIEW_LINK_HERE/review'; // ← paste your Google review link here
-const FACEBOOK_URL      = 'https://www.facebook.com/share/17RSTFpmze/?mibextid=wwXIfr'; // Rooval Roofing Facebook
+// ── LINKS ──
+const GOOGLE_REVIEW_URL = 'https://g.page/r/YOUR_GOOGLE_REVIEW_LINK_HERE/review';
+const FACEBOOK_URL = 'https://www.facebook.com/share/17RSTFpmze/?mibextid=wwXIfr';
 
-// ── TRIVIA DATA ──
-const triviaBank = [
-  { q:"What does 'liability insurance' protect you against?", a:1, opts:["Damage to your own property","Claims from others for injury or damage you cause","Your own medical bills","Natural disasters"] },
-  { q:"What is a deductible in an insurance policy?", a:0, opts:["The amount you pay out-of-pocket before insurance kicks in","The maximum your insurer will ever pay","Your monthly premium","A penalty for filing too many claims"] },
-  { q:"What does 'actual cash value' (ACV) mean in a roofing claim?", a:2, opts:["The original cost of your roof","The cost to replace with a brand new roof","Replacement cost minus depreciation","Whatever the adjuster decides"] },
-  { q:"What is 'replacement cost value' (RCV) coverage?", a:1, opts:["Pays only what the roof is worth today","Pays the full cost to replace with new materials","Covers only storm damage","Requires no deductible"] },
-  { q:"Which type of insurance claim covers wind and hail damage to a roof?", a:0, opts:["Homeowners insurance","Auto insurance","Life insurance","Workers comp"] },
-  { q:"What is an insurance 'premium'?", a:3, opts:["The amount paid after a claim","A bonus for not filing claims","The policy limit","The regular payment to keep your policy active"] },
-  { q:"What does 'subrogation' mean in insurance?", a:2, opts:["A type of roof coverage","Canceling a policy early","The insurer recovering costs from the at-fault party","Adding a new person to a policy"] },
-  { q:"What is a 'policy limit' in an insurance contract?", a:1, opts:["How long the policy lasts","The maximum amount the insurer will pay for a covered loss","The minimum deductible required","The agent's commission rate"] },
-  { q:"What is 'force majeure' as it relates to insurance claims?", a:0, opts:["Acts of nature beyond human control that may affect coverage","A special rider for valuable items","A type of flood insurance","A government insurance program"] },
-  { q:"Which government program provides flood insurance in the U.S.?", a:3, opts:["FEMA Direct Pay","HUD Flood Assist","SBA Disaster Relief","National Flood Insurance Program (NFIP)"] },
-  { q:"What does 'coinsurance' mean in a property insurance policy?", a:2, opts:["Two insurers sharing the same risk","Coverage for roommates","A requirement to insure property for a certain % of its value","Insuring multiple properties together"] },
-  { q:"What is a 'binder' in insurance?", a:1, opts:["A folder for policy documents","Temporary proof of insurance coverage while a formal policy is prepared","A discount for bundling policies","A legal penalty for misrepresentation"] },
-  { q:"What does 'indemnity' mean in insurance?", a:0, opts:["Restoring the insured to their financial position before the loss","Paying more than the actual loss","Denying a claim","Canceling a policy"] },
-  { q:"What is 'umbrella insurance'?", a:2, opts:["Insurance for rainy-day emergencies","Coverage for boats and watercraft","Extra liability coverage beyond standard policy limits","Health insurance for freelancers"] },
-  { q:"What does a 'public adjuster' do?", a:1, opts:["Works for the insurance company to deny claims","Represents the policyholder in negotiating a claim settlement","Inspects roofs for safety","Sets insurance premium rates"] },
-  { q:"What is 'depreciation' in a roofing insurance claim?", a:3, opts:["The cost of materials increasing over time","A discount for older homes","Extra coverage for expensive roofs","The reduction in value of the roof due to age and wear"] },
-  { q:"What is a 'claims adjuster'?", a:0, opts:["A professional who evaluates insurance claims on behalf of the insurer","An agent who sells policies","A contractor who does repairs","A government inspector"] },
-  { q:"Which of these is typically NOT covered by standard homeowners insurance?", a:2, opts:["Fire damage","Theft","Flooding from heavy rain","Wind damage"] },
-  { q:"What does 'E&O insurance' stand for and who needs it?", a:1, opts:["Everything & Operations — for contractors","Errors & Omissions — for professionals like insurance agents","Entry & Occupancy — for landlords","Emergency & Operations — for hospitals"] },
-  { q:"What is a 'named peril' policy?", a:3, opts:["A policy named after the homeowner","Coverage only for the most expensive risks","A policy covering all risks except those excluded","A policy that only covers specific risks listed in the policy"] },
+// ── ROTATING BANNERS ──
+const bannerMessages = [
+  '🏆 Sarah J. just won $50 this week — log in and you could be next!',
+  '⛈️ Storm season is here — every referral this week earns DOUBLE numbers!',
+  '📅 New bingo number drops this Monday at 8 AM — are you ready?',
+  '🎡 Don\'t forget your weekly spin — it resets every Monday!',
+  '💎 David Brown is #1 on the leaderboard — can you beat him?',
+  '🏠 Refer a homeowner today — your clients get a FREE roof inspection!',
+  '🔥 3-week streak bonus: complete actions 3 weeks in a row for a free number!',
 ];
-
-let triviaQueue = [];
-let triviaCallback = null;
-let triviaAnsweredCorrect = false;
-let triviaStreak = 0;
-let pendingBonusType = null;
-let pendingBonusCount = 0;
-
-function shuffleTrivia() {
-  triviaQueue = [...triviaBank].sort(() => Math.random() - 0.5);
+let bannerIdx = 0;
+function rotateBanner() {
+  document.getElementById('bannerText').textContent = bannerMessages[bannerIdx % bannerMessages.length];
+  bannerIdx++;
 }
-shuffleTrivia();
-
-function getNextTrivia() {
-  if (triviaQueue.length === 0) shuffleTrivia();
-  return triviaQueue.pop();
-}
-
-function showTrivia(callback, bonusType, bonusCount) {
-  triviaCallback = callback;
-  pendingBonusType = bonusType;
-  pendingBonusCount = bonusCount;
-  triviaAnsweredCorrect = false;
-
-  const q = getNextTrivia();
-  document.getElementById('triviaQuestion').textContent = q.q;
-  document.getElementById('triviaResult').style.display = 'none';
-  document.getElementById('triviaContinue').style.display = 'none';
-
-  const opts = document.getElementById('triviaOptions');
-  opts.innerHTML = '';
-  q.opts.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'trivia-opt';
-    btn.textContent = opt;
-    btn.onclick = () => answerTrivia(i, q.a, q.opts[q.a]);
-    opts.appendChild(btn);
-  });
-
-  document.getElementById('triviaStreak').textContent =
-    triviaStreak > 0 ? `🔥 ${triviaStreak} correct in a row!` : '';
-  document.getElementById('triviaModal').classList.add('show');
-}
-
-function answerTrivia(chosen, correct, correctText) {
-  const btns = document.querySelectorAll('.trivia-opt');
-  btns.forEach(b => { b.disabled = true; b.onclick = null; });
-
-  const result = document.getElementById('triviaResult');
-  const continueBtn = document.getElementById('triviaContinue');
-
-  if (chosen === correct) {
-    btns[chosen].classList.add('correct');
-    triviaAnsweredCorrect = true;
-    triviaStreak++;
-    result.className = 'trivia-result correct';
-    result.innerHTML = `✅ <strong>Correct!</strong> Great knowledge! Your bonus number${pendingBonusCount > 1 ? 's are' : ' is'} added to your card.`;
-    continueBtn.textContent = `Claim My Number${pendingBonusCount > 1 ? 's' : ''}! 🎉`;
-  } else {
-    btns[chosen].classList.add('wrong');
-    btns[correct].classList.add('correct');
-    triviaAnsweredCorrect = false;
-    triviaStreak = 0;
-    result.className = 'trivia-result wrong';
-    result.innerHTML = `📚 <strong>Not quite!</strong> The correct answer is: <strong>"${correctText}"</strong><br>You still get your number — keep learning!`;
-    continueBtn.textContent = `Got it — Claim My Number! 📚`;
-  }
-
-  result.style.display = 'block';
-  continueBtn.style.display = 'block';
-  if (triviaStreak > 1) {
-    document.getElementById('triviaStreak').textContent = `🔥 ${triviaStreak} correct in a row! You're on fire!`;
-  }
-}
-
-function closeTriviaAndReward() {
-  document.getElementById('triviaModal').classList.remove('show');
-  if (triviaCallback) triviaCallback();
-  triviaCallback = null;
-}
+rotateBanner();
+setInterval(rotateBanner, 4000);
 
 // ── DATA ──
 const agentsData = [
-  { name:'Sarah Johnson', email:'sarah.j@agency.com', progress:14, bonus:3, active:'2 hours ago', status:'active' },
-  { name:'Mike Torres', email:'mtorres@agency.com', progress:11, bonus:1, active:'Yesterday', status:'active' },
-  { name:'Lisa Chen', email:'lchen@agency.com', progress:18, bonus:4, active:'1 hour ago', status:'bingo' },
-  { name:'James Park', email:'jpark@agency.com', progress:6, bonus:0, active:'5 days ago', status:'inactive' },
-  { name:'Amy Williams', email:'awilliams@agency.com', progress:9, bonus:2, active:'Today', status:'active' },
-  { name:'David Brown', email:'dbrown@agency.com', progress:21, bonus:5, active:'30 min ago', status:'bingo' },
+  { name:'David Brown',   email:'dbrown@agency.com',    referrals:8,  progress:21, streak:4, status:'bingo',    active:'30 min ago' },
+  { name:'Lisa Chen',     email:'lchen@agency.com',     referrals:6,  progress:18, streak:3, status:'bingo',    active:'1 hour ago' },
+  { name:'Sarah Johnson', email:'sarah.j@agency.com',   referrals:4,  progress:14, streak:2, status:'active',   active:'2 hours ago' },
+  { name:'Amy Williams',  email:'awilliams@agency.com', referrals:3,  progress:9,  streak:1, status:'active',   active:'Today' },
+  { name:'Mike Torres',   email:'mtorres@agency.com',   referrals:2,  progress:11, streak:2, status:'active',   active:'Yesterday' },
+  { name:'James Park',    email:'jpark@agency.com',     referrals:0,  progress:6,  streak:0, status:'inactive', active:'5 days ago' },
 ];
 const prizesData = [
-  { agent:'Lisa Chen', prize:'$25 Gift Card', won:'May 26', type:'Gift Card', fulfilled:false },
-  { agent:'David Brown', prize:'$50 Cash', won:'May 25', type:'Cash', fulfilled:false },
-  { agent:'Sarah Johnson', prize:'$10 Gift Card', won:'May 18', type:'Gift Card', fulfilled:true },
-  { agent:'Mike Torres', prize:'$5 Cash', won:'May 10', type:'Cash', fulfilled:true },
+  { agent:'Lisa Chen',     prize:'$25 Gift Card', won:'May 26', type:'Gift Card', fulfilled:false },
+  { agent:'David Brown',   prize:'$50 Cash',      won:'May 25', type:'Cash',      fulfilled:false },
+  { agent:'Sarah Johnson', prize:'$10 Gift Card', won:'May 18', type:'Gift Card', fulfilled:true  },
+  { agent:'Mike Torres',   prize:'$5 Cash',       won:'May 10', type:'Cash',      fulfilled:true  },
 ];
 const referralsData = [
-  { agent:'Sarah Johnson', client:'Tom Henderson', date:'May 27', bonus:'+2 numbers', status:'approved' },
-  { agent:'Amy Williams', client:'Karen Liu', date:'May 26', bonus:'+2 numbers', status:'pending' },
-  { agent:'David Brown', client:'Frank Adams', date:'May 25', bonus:'+2 numbers', status:'approved' },
-  { agent:'Sarah Johnson', client:'Maria Santos', date:'May 20', bonus:'+2 numbers', status:'approved' },
+  { agent:'Sarah Johnson', client:'Tom Henderson', date:'May 27', issue:'Storm Damage',     status:'scheduled' },
+  { agent:'Amy Williams',  client:'Karen Liu',     date:'May 26', issue:'Roof Replacement', status:'pending'   },
+  { agent:'David Brown',   client:'Frank Adams',   date:'May 25', issue:'Insurance Claim',  status:'closed'    },
+  { agent:'Sarah Johnson', client:'Maria Santos',  date:'May 20', issue:'Roof Leak',        status:'closed'    },
+  { agent:'Mike Torres',   client:'John Carey',    date:'May 18', issue:'Inspection',       status:'pending'   },
+];
+const myReferrals = [
+  { name:'Tom Henderson',  type:'Storm Damage',     status:'scheduled' },
+  { name:'Maria Santos',   type:'Roof Leak',        status:'closed'    },
 ];
 
+// ── BINGO CARD ──
 const cardNumbers = [
-  [5, 19, 33, 47, 63],
+  [5,  19, 33, 47, 63],
   [11, 22, 38, 52, 70],
-  [7, 16, 'FREE', 55, 65],
-  [3, 28, 44, 58, 72],
+  [7,  16,'FREE',55,65],
+  [3,  28, 44, 58, 72],
   [14, 25, 40, 60, 68]
 ];
-const calledNumbers = new Set([5, 19, 33, 47, 63, 22, 38, 16, 55, 44, 25, 40, 14, 60]);
+const calledNumbers = new Set([5,19,33,47,63,22,38,16,55,44,25,40,14,60]);
 const winCells = new Set(['0-0','0-1','0-2','0-3','0-4']);
-let recentCalled = [60, 55, 40, 33, 22, 14, 19];
+let recentCalled = [60,55,40,33,22,14,19];
 
-// ── BINGO ──
+function getTier(referrals) {
+  if (referrals >= 8)  return { name:'Platinum Agent', cls:'tier-platinum', icon:'💎' };
+  if (referrals >= 5)  return { name:'Gold Agent',     cls:'tier-gold',     icon:'🥇' };
+  if (referrals >= 3)  return { name:'Silver Agent',   cls:'tier-silver',   icon:'🥈' };
+  return                      { name:'Bronze Agent',   cls:'tier-bronze',   icon:'🥉' };
+}
+
 function buildBingoGrid() {
   const grid = document.getElementById('bingoGrid');
   grid.innerHTML = '';
-  cardNumbers.forEach((row, ri) => {
-    row.forEach((num, ci) => {
+  cardNumbers.forEach((row,ri) => {
+    row.forEach((num,ci) => {
       const cell = document.createElement('div');
       cell.className = 'bingo-cell';
       const key = `${ri}-${ci}`;
-      if (num === 'FREE') {
-        cell.classList.add('called','free');
-        cell.innerHTML = '🏠<br>FREE';
-      } else if (winCells.has(key)) {
-        cell.classList.add('called','bingo-win');
-        cell.textContent = num;
-      } else if (calledNumbers.has(num)) {
-        cell.classList.add('called');
-        cell.textContent = num;
-      } else {
-        cell.textContent = num;
-      }
+      if (num === 'FREE') { cell.classList.add('called','free'); cell.innerHTML='🏠<br>FREE'; }
+      else if (winCells.has(key)) { cell.classList.add('called','bingo-win'); cell.textContent=num; }
+      else if (calledNumbers.has(num)) { cell.classList.add('called'); cell.textContent=num; }
+      else { cell.textContent=num; }
       grid.appendChild(cell);
     });
   });
+  document.getElementById('bingoWinBanner').style.display = winCells.size ? 'block' : 'none';
 }
 
 function buildRecentNumbers() {
   document.getElementById('recentNumbers').innerHTML =
-    recentCalled.map(n => `<span class="number-chip">${n}</span>`).join('');
+    recentCalled.slice(0,8).map(n=>`<span class="number-chip">${n}</span>`).join('');
+}
+
+function buildMyReferrals() {
+  const el = document.getElementById('myReferrals');
+  if (!myReferrals.length) { el.innerHTML='<p style="color:var(--muted);font-size:.8rem">No referrals yet — submit one to get started!</p>'; return; }
+  el.innerHTML = myReferrals.map(r=>`
+    <div class="referral-item">
+      <div class="ref-avatar">${r.name[0]}</div>
+      <div class="ref-info"><div class="ref-name">${r.name}</div><div class="ref-type">${r.type}</div></div>
+      <div class="ref-status ${r.status}">${r.status==='closed'?'✅ Job Closed!':r.status==='scheduled'?'📅 Inspection Scheduled':'⏳ Pending Contact'}</div>
+    </div>`).join('');
+}
+
+// ── LEADERBOARD ──
+function buildLeaderboard() {
+  const sorted = [...agentsData].sort((a,b) => b.referrals - a.referrals || b.progress - a.progress);
+  const colors = ['#c0392b','#922b21','#e67e22','#2980b9','#27ae60','#8e44ad'];
+  const rankStyles = ['gold-rank','silver-rank','bronze-rank','','',''];
+  document.getElementById('leaderboardList').innerHTML = sorted.map((a,i) => {
+    const tier = getTier(a.referrals);
+    return `<div class="lb-item">
+      <div class="lb-rank ${rankStyles[i]||''}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+      <div class="lb-avatar" style="background:${colors[i%colors.length]}">${a.name[0]}</div>
+      <div class="lb-info">
+        <div class="lb-name">${a.name}</div>
+        <div class="lb-detail">${tier.icon} ${tier.name} · 🔥 ${a.streak}wk streak</div>
+      </div>
+      <div class="lb-right">
+        <div class="lb-score">${a.referrals}</div>
+        <div class="lb-score-lbl">referrals</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ── LOGIN ──
+let currentStreak = 2;
+let agentReferrals = 2;
+
 function doLogin() {
   const val = document.getElementById('loginInput').value.trim();
   if (!val) { alert('Please enter your agent code or email'); return; }
@@ -1321,13 +908,23 @@ function doLogin() {
   }
   const name = val.includes('@')
     ? val.split('@')[0].replace(/\./g,' ').replace(/\b\w/g,c=>c.toUpperCase())
-    : val.charAt(0).toUpperCase() + val.slice(1);
-  document.getElementById('agentGreeting').textContent = `Welcome back, ${name}! 👋`;
+    : val.charAt(0).toUpperCase()+val.slice(1);
+  document.getElementById('agentGreeting').textContent = `${name} 👋`;
+  document.getElementById('agentAvatar').textContent = name[0].toUpperCase();
+  const tier = getTier(agentReferrals);
+  document.getElementById('agentTierBadge').innerHTML = `<span class="tier-badge ${tier.cls}">${tier.icon} ${tier.name}</span>`;
+  document.getElementById('streakCount').textContent = currentStreak;
+  document.getElementById('streakSub').textContent = currentStreak > 0
+    ? `${currentStreak} week${currentStreak!==1?'s':''} in a row — keep it up!`
+    : 'Complete an action to start your streak';
+  // Show scratch card for Silver+ agents randomly
+  if (agentReferrals >= 3 && Math.random() > 0.4) {
+    document.getElementById('scratchBanner').style.display = 'flex';
+  }
   showPage('bingo');
   document.getElementById('navLinks').style.display = 'flex';
   document.getElementById('navPhone').style.display = 'none';
-  buildBingoGrid();
-  buildRecentNumbers();
+  buildBingoGrid(); buildRecentNumbers(); buildMyReferrals(); buildLeaderboard();
 }
 
 function logout() {
@@ -1338,253 +935,267 @@ function logout() {
 }
 
 function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  if (name==='bingo') document.querySelectorAll('.nav-btn')[0].classList.add('active');
-  if (name==='admin') document.querySelectorAll('.nav-btn')[1].classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const map = {bingo:0,leaderboard:1,admin:2};
+  if (map[name]!==undefined) document.querySelectorAll('.nav-btn')[map[name]].classList.add('active');
 }
 
-// ── QR BONUS (still uses direct claim) ──
-function claimBonus(type) {
-  if (type === 'qr') {
-    showTrivia(() => { markBonusDone('qr', 1); }, 'qr', 1);
-  }
-}
-
-// ── QR ──
-function openQR() { document.getElementById('qrModal').classList.add('show'); }
-function closeQR() { document.getElementById('qrModal').classList.remove('show'); }
-function simulateQRScan() { closeQR(); claimBonus('qr'); }
-
-// ── WHEEL ──
-const wheelSegs = [
-  { label:'B-7',  color:'#c0392b', num:7  },
-  { label:'I-22', color:'#922b21', num:22 },
-  { label:'N-33', color:'#e67e22', num:33 },
-  { label:'G-52', color:'#1a1a2e', num:52 },
-  { label:'O-68', color:'#2c3e50', num:68 },
-  { label:'B-11', color:'#c0392b', num:11 },
-  { label:'I-19', color:'#7b241c', num:19 },
-  { label:'N-40', color:'#e67e22', num:40 },
+// ── TRIVIA ──
+const triviaBank = [
+  {q:"What does 'liability insurance' protect you against?",a:1,opts:["Damage to your own property","Claims from others for injury or damage you cause","Your own medical bills","Natural disasters"]},
+  {q:"What is a deductible in an insurance policy?",a:0,opts:["The amount you pay out-of-pocket before insurance kicks in","The maximum your insurer will ever pay","Your monthly premium","A penalty for filing too many claims"]},
+  {q:"What does 'actual cash value' (ACV) mean in a roofing claim?",a:2,opts:["The original cost of your roof","The cost to replace with a brand new roof","Replacement cost minus depreciation","Whatever the adjuster decides"]},
+  {q:"What is 'replacement cost value' (RCV) coverage?",a:1,opts:["Pays only what the roof is worth today","Pays the full cost to replace with new materials","Covers only storm damage","Requires no deductible"]},
+  {q:"Which type of insurance covers wind and hail damage to a roof?",a:0,opts:["Homeowners insurance","Auto insurance","Life insurance","Workers comp"]},
+  {q:"What is an insurance 'premium'?",a:3,opts:["The amount paid after a claim","A bonus for not filing claims","The policy limit","The regular payment to keep your policy active"]},
+  {q:"What does 'subrogation' mean in insurance?",a:2,opts:["A type of roof coverage","Canceling a policy early","The insurer recovering costs from the at-fault party","Adding a new person to a policy"]},
+  {q:"What is a 'policy limit'?",a:1,opts:["How long the policy lasts","The maximum amount the insurer will pay for a covered loss","The minimum deductible required","The agent's commission rate"]},
+  {q:"Which program provides flood insurance in the U.S.?",a:3,opts:["FEMA Direct Pay","HUD Flood Assist","SBA Disaster Relief","National Flood Insurance Program (NFIP)"]},
+  {q:"What does 'coinsurance' mean in a property policy?",a:2,opts:["Two insurers sharing risk","Coverage for roommates","A requirement to insure property for a % of its value","Insuring multiple properties"]},
+  {q:"What is a 'binder' in insurance?",a:1,opts:["A folder for documents","Temporary proof of coverage while a formal policy is prepared","A discount for bundling","A legal penalty for misrepresentation"]},
+  {q:"What does 'indemnity' mean in insurance?",a:0,opts:["Restoring the insured to their financial position before the loss","Paying more than the actual loss","Denying a claim","Canceling a policy"]},
+  {q:"What is 'umbrella insurance'?",a:2,opts:["Insurance for emergencies","Coverage for watercraft","Extra liability coverage beyond standard policy limits","Health insurance for freelancers"]},
+  {q:"What does a 'public adjuster' do?",a:1,opts:["Works for the insurer to deny claims","Represents the policyholder in negotiating settlements","Inspects roofs for safety","Sets premium rates"]},
+  {q:"What is 'depreciation' in a roofing insurance claim?",a:3,opts:["Cost of materials rising","A discount for older homes","Extra coverage for expensive roofs","The reduction in value due to age and wear"]},
+  {q:"What is a 'named peril' policy?",a:3,opts:["Named after the homeowner","Covers the most expensive risks","Covers all risks except exclusions","Only covers specific listed risks"]},
+  {q:"What does E&O insurance stand for?",a:1,opts:["Everything & Operations","Errors & Omissions — for professionals","Entry & Occupancy","Emergency & Operations"]},
+  {q:"Which is typically NOT covered by standard homeowners insurance?",a:2,opts:["Fire damage","Theft","Flooding from heavy rain","Wind damage"]},
+  {q:"What is 'force majeure' in insurance?",a:0,opts:["Acts of nature beyond human control affecting coverage","A rider for valuables","A type of flood insurance","A government program"]},
+  {q:"When is the best time to request a referral from a satisfied customer?",a:1,opts:["Before the job starts","Immediately after project completion when satisfaction is highest","A month later","Only if they bring it up first"]},
 ];
-let spinning=false, currentAngle=0;
+let triviaQueue=[], triviaCallback=null, triviaStreak=0, pendingBonusCount=0;
+function shuffleTrivia(){triviaQueue=[...triviaBank].sort(()=>Math.random()-.5);}
+shuffleTrivia();
+function getNextTrivia(){if(!triviaQueue.length)shuffleTrivia();return triviaQueue.pop();}
 
-function drawWheel(angle) {
-  const canvas=document.getElementById('prizeWheel');
-  const ctx=canvas.getContext('2d');
-  const cx=135,cy=135,r=128;
-  ctx.clearRect(0,0,270,270);
-  const arc=(2*Math.PI)/wheelSegs.length;
-  let start=angle;
-  wheelSegs.forEach(seg=>{
-    ctx.beginPath(); ctx.moveTo(cx,cy);
-    ctx.arc(cx,cy,r,start,start+arc);
-    ctx.fillStyle=seg.color; ctx.fill();
-    ctx.strokeStyle='white'; ctx.lineWidth=2; ctx.stroke();
-    ctx.save(); ctx.translate(cx,cy); ctx.rotate(start+arc/2);
-    ctx.textAlign='right'; ctx.fillStyle='white';
-    ctx.font='bold 13px Segoe UI'; ctx.fillText(seg.label,r-10,5);
-    ctx.restore(); start+=arc;
+function showTrivia(callback,_type,count){
+  triviaCallback=callback; pendingBonusCount=count;
+  const q=getNextTrivia();
+  document.getElementById('triviaQuestion').textContent=q.q;
+  document.getElementById('triviaResult').style.display='none';
+  document.getElementById('triviaContinue').style.display='none';
+  const opts=document.getElementById('triviaOptions');
+  opts.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='trivia-opt'; btn.textContent=opt;
+    btn.onclick=()=>answerTrivia(i,q.a,q.opts[q.a]);
+    opts.appendChild(btn);
   });
-  ctx.beginPath(); ctx.arc(cx,cy,22,0,2*Math.PI);
-  ctx.fillStyle='white'; ctx.fill();
-  ctx.strokeStyle='#e8e8e8'; ctx.lineWidth=2; ctx.stroke();
-  // Roof logo in center
-  ctx.fillStyle=`#c0392b`; ctx.font='bold 11px Segoe UI'; ctx.textAlign='center';
-  ctx.fillText('🏠',cx,cy+4);
+  document.getElementById('triviaStreak').textContent=triviaStreak>0?`🔥 ${triviaStreak} correct in a row!`:'';
+  document.getElementById('triviaModal').classList.add('show');
 }
-
-function openWheel() {
-  document.getElementById('wheelModal').classList.add('show');
-  document.getElementById('spinBtn').disabled=false;
-  document.getElementById('spinBtn').textContent='🎲 SPIN!';
-  document.getElementById('prizeResult').style.display='none';
-  drawWheel(currentAngle);
-}
-function closeWheel() { document.getElementById('wheelModal').classList.remove('show'); }
-
-function spinWheel() {
-  if(spinning) return;
-  spinning=true;
-  document.getElementById('spinBtn').disabled=true;
-  document.getElementById('prizeResult').style.display='none';
-  const spinRad=(1800+Math.random()*1440)*Math.PI/180;
-  const duration=4000, start=performance.now(), startAngle=currentAngle;
-  function animate(now) {
-    const t=Math.min((now-start)/duration,1);
-    const ease=1-Math.pow(1-t,4);
-    drawWheel(startAngle+spinRad*ease);
-    if(t<1) { requestAnimationFrame(animate); }
-    else { currentAngle=(startAngle+spinRad)%(2*Math.PI); spinning=false; determineWinner(currentAngle); }
+function answerTrivia(chosen,correct,correctText){
+  document.querySelectorAll('.trivia-opt').forEach(b=>{b.disabled=true;b.onclick=null;});
+  const res=document.getElementById('triviaResult'), cont=document.getElementById('triviaContinue');
+  if(chosen===correct){
+    document.querySelectorAll('.trivia-opt')[chosen].classList.add('correct');
+    triviaStreak++;
+    res.className='trivia-result correct';
+    res.innerHTML=`✅ <strong>Correct!</strong> Your bonus number${pendingBonusCount>1?'s are':' is'} added!`;
+  } else {
+    document.querySelectorAll('.trivia-opt')[chosen].classList.add('wrong');
+    document.querySelectorAll('.trivia-opt')[correct].classList.add('correct');
+    triviaStreak=0;
+    res.className='trivia-result wrong';
+    res.innerHTML=`📚 <strong>Not quite!</strong> Answer: <strong>"${correctText}"</strong> — You still get your number!`;
   }
-  requestAnimationFrame(animate);
+  res.style.display='block'; cont.style.display='block';
+  cont.textContent=`Claim My Number${pendingBonusCount>1?'s':''}! 🎉`;
+  if(triviaStreak>1) document.getElementById('triviaStreak').textContent=`🔥 ${triviaStreak} correct in a row! You're on fire!`;
+}
+function closeTriviaAndReward(){document.getElementById('triviaModal').classList.remove('show');if(triviaCallback)triviaCallback();triviaCallback=null;}
+
+// ── ACTION MODALS ──
+function closeActionModal(id){document.getElementById(id).classList.remove('show');}
+function openReviewModal(){const el=document.getElementById('bonus-review');if(el.classList.contains('done'))return;document.getElementById('reviewModal').classList.add('show');}
+function confirmReview(){closeActionModal('reviewModal');showTrivia(()=>markBonusDone('review',1),'review',1);}
+function openReferralModal(){const el=document.getElementById('bonus-referral');if(el.classList.contains('done'))return;document.getElementById('referralModal').classList.add('show');}
+function submitReferral(){
+  const fname=document.getElementById('ref-fname').value.trim();
+  const lname=document.getElementById('ref-lname').value.trim();
+  const phone=document.getElementById('ref-phone').value.trim();
+  if(!fname||!lname||!phone){alert('Please fill in First Name, Last Name, and Phone Number.');return;}
+  myReferrals.unshift({name:`${fname} ${lname}`,type:document.getElementById('ref-issue').value||'Roof Inspection',status:'pending'});
+  closeActionModal('referralModal');
+  showTrivia(()=>{
+    markBonusDone('referral',2);
+    agentReferrals++;
+    const ref=parseInt(document.getElementById('statReferrals').textContent);
+    document.getElementById('statReferrals').textContent=ref+1;
+    buildMyReferrals();
+    // Update tier badge
+    const tier=getTier(agentReferrals);
+    document.getElementById('agentTierBadge').innerHTML=`<span class="tier-badge ${tier.cls}">${tier.icon} ${tier.name}</span>`;
+    ['ref-fname','ref-lname','ref-phone','ref-email','ref-address','ref-notes'].forEach(id=>{document.getElementById(id).value='';});
+    document.getElementById('ref-issue').selectedIndex=0;
+  },'referral',2);
+}
+function openFacebookModal(){const el=document.getElementById('bonus-social');if(el.classList.contains('done'))return;document.getElementById('facebookModal').classList.add('show');}
+function confirmFollow(){closeActionModal('facebookModal');showTrivia(()=>{markBonusDone('social',1);document.getElementById('social-badge').textContent='✓ Done';document.getElementById('social-badge').classList.add('done');},'social',1);}
+function openQR(){document.getElementById('qrModal').classList.add('show');}
+function closeQR(){closeActionModal('qrModal');}
+function simulateQRScan(){closeActionModal('qrModal');showTrivia(()=>markBonusDone('qr',1),'qr',1);}
+function claimBonus(type){if(type==='qr'){showTrivia(()=>markBonusDone('qr',1),'qr',1);}}
+
+function markBonusDone(type,count){
+  const el=document.getElementById('bonus-'+type);
+  if(!el)return;
+  el.classList.add('done');
+  const badge=el.querySelector('.b-badge');
+  if(badge&&type!=='social'){badge.textContent='✓ Done';badge.classList.add('done');}
+  const desc=el.querySelector('.b-desc');
+  if(desc)desc.textContent='Completed — numbers added to your card!';
+  const cur=parseInt(document.getElementById('statBonus').textContent);
+  document.getElementById('statBonus').textContent=cur+count;
+  currentStreak++;
+  document.getElementById('streakCount').textContent=currentStreak;
+  document.getElementById('streakSub').textContent=`${currentStreak} week${currentStreak!==1?'s':''} in a row — keep it up!`;
+  for(let i=0;i<count;i++){const n=Math.floor(Math.random()*75)+1;recentCalled.unshift(n);calledNumbers.add(n);}
+  buildRecentNumbers();buildBingoGrid();showConfetti();
 }
 
-function determineWinner(angle) {
-  const arc=(2*Math.PI)/wheelSegs.length;
-  const pointer=(Math.PI*1.5-angle+Math.PI*20)%(2*Math.PI);
-  let acc=0, winner=wheelSegs[0];
-  for(const seg of wheelSegs){ if(pointer>=acc&&pointer<acc+arc){winner=seg;break;} acc+=arc; }
-
-  // Close wheel, show trivia, then reveal result
+// ── WEEKLY SPIN WHEEL ──
+const weeklySegs=[
+  {label:'B-7', color:'#c0392b',num:7},{label:'I-22',color:'#922b21',num:22},
+  {label:'N-33',color:'#e67e22',num:33},{label:'G-52',color:'#1a1a2e',num:52},
+  {label:'O-68',color:'#2c3e50',num:68},{label:'B-11',color:'#c0392b',num:11},
+  {label:'I-19',color:'#7b241c',num:19},{label:'N-40',color:'#e67e22',num:40},
+];
+let spinning=false,currentAngle=0;
+function drawWheel(angle,canvasId,segs){
+  const canvas=document.getElementById(canvasId),ctx=canvas.getContext('2d');
+  const cx=130,cy=130,r=122,arc=(2*Math.PI)/segs.length;
+  ctx.clearRect(0,0,260,260);
+  let start=angle;
+  segs.forEach(seg=>{
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,start+arc);
+    ctx.fillStyle=seg.color;ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(start+arc/2);
+    ctx.textAlign='right';ctx.fillStyle='#fff';ctx.font='bold 12px Segoe UI';
+    ctx.fillText(seg.label,r-8,4);ctx.restore();start+=arc;
+  });
+  ctx.beginPath();ctx.arc(cx,cy,20,0,2*Math.PI);ctx.fillStyle='#fff';ctx.fill();
+  ctx.strokeStyle='#e8e8e8';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='#c0392b';ctx.font='11px serif';ctx.textAlign='center';ctx.fillText('🏠',cx,cy+4);
+}
+function openWheel(){document.getElementById('wheelModal').classList.add('show');document.getElementById('spinBtn').disabled=false;document.getElementById('spinBtn').textContent='🎲 SPIN!';document.getElementById('prizeResult').style.display='none';drawWheel(currentAngle,'prizeWheel',weeklySegs);}
+function closeWheel(){document.getElementById('wheelModal').classList.remove('show');}
+function spinWheel(){
+  if(spinning)return;spinning=true;document.getElementById('spinBtn').disabled=true;
+  const spinRad=(1800+Math.random()*1440)*Math.PI/180,duration=4000,start=performance.now(),startAngle=currentAngle;
+  function animate(now){
+    const t=Math.min((now-start)/duration,1),ease=1-Math.pow(1-t,4);
+    drawWheel(startAngle+spinRad*ease,'prizeWheel',weeklySegs);
+    if(t<1){requestAnimationFrame(animate);}else{currentAngle=(startAngle+spinRad)%(2*Math.PI);spinning=false;determineWeeklyWinner(currentAngle);}
+  }requestAnimationFrame(animate);
+}
+function determineWeeklyWinner(angle){
+  const arc=(2*Math.PI)/weeklySegs.length,pointer=(Math.PI*1.5-angle+Math.PI*20)%(2*Math.PI);
+  let acc=0,winner=weeklySegs[0];
+  for(const seg of weeklySegs){if(pointer>=acc&&pointer<acc+arc){winner=seg;break;}acc+=arc;}
   closeWheel();
-  showTrivia(() => {
-    recentCalled.unshift(winner.num); calledNumbers.add(winner.num);
-    buildRecentNumbers();
-    let onCard=false;
-    cardNumbers.forEach(row=>{ if(row.includes(winner.num)) onCard=true; });
-    if(onCard) buildBingoGrid();
-
-    document.getElementById('spinBtn').disabled=true;
-    document.getElementById('spinBtn').textContent='✓ Used this week';
+  showTrivia(()=>{
+    recentCalled.unshift(winner.num);calledNumbers.add(winner.num);buildRecentNumbers();
+    let onCard=false;cardNumbers.forEach(row=>{if(row.includes(winner.num))onCard=true;});
+    if(onCard)buildBingoGrid();
+    document.getElementById('spinBtn').disabled=true;document.getElementById('spinBtn').textContent='✓ Used this week';
     document.getElementById('spinTriggerBtn').textContent='✓ Spin Used This Week';
-    const b=parseInt(document.getElementById('statBonus').textContent);
-    document.getElementById('statBonus').textContent=b+1;
-
-    if(onCard){
-      showConfetti();
-      setTimeout(()=>alert(`🎉 Number ${winner.label} landed — and it's ON your card! Marked! 🏠`), 200);
-    } else {
-      setTimeout(()=>alert(`🎲 Number ${winner.label} called — not on your card this time.\nKeep earning bonus numbers! 🏠`), 200);
-    }
-  }, 'spin', 1);
+    const b=parseInt(document.getElementById('statBonus').textContent);document.getElementById('statBonus').textContent=b+1;
+    setTimeout(()=>alert(onCard?`🎉 Number ${winner.label} is ON your card! Marked! 🏠`:`🎲 Number ${winner.label} — not on your card this time. Keep earning!`),200);
+  },'spin',1);
 }
+
+// ── BINGO PRIZE WHEEL ──
+const prizeSegs=[
+  {label:'$5 Cash', color:'#3498db'},{label:'$25 Gift',color:'#8e44ad'},
+  {label:'$10 Cash',color:'#27ae60'},{label:'$50 Cash',color:'#c0392b'},
+  {label:'Lunch 🍕', color:'#e67e22'},{label:'$15 Gift',color:'#2980b9'},
+  {label:'Spin Again',color:'#7f8c8d'},{label:'$100 💰',color:'#922b21'},
+];
+let bingoSpinning=false,bingoAngle=0;
+function openPrizeWheel(){drawWheel(bingoAngle,'prizeWheelBingo',prizeSegs);document.getElementById('prizeWheelOverlay').classList.add('show');document.getElementById('spinBingoBtn').disabled=false;document.getElementById('spinBingoBtn').textContent='💰 SPIN FOR PRIZE!';document.getElementById('prizeResultBingo').style.display='none';}
+function spinBingoWheel(){
+  if(bingoSpinning)return;bingoSpinning=true;document.getElementById('spinBingoBtn').disabled=true;
+  const spinRad=(1800+Math.random()*1440)*Math.PI/180,duration=4000,start=performance.now(),startAngle=bingoAngle;
+  function animate(now){
+    const t=Math.min((now-start)/duration,1),ease=1-Math.pow(1-t,4);
+    drawWheel(startAngle+spinRad*ease,'prizeWheelBingo',prizeSegs);
+    if(t<1){requestAnimationFrame(animate);}else{bingoAngle=(startAngle+spinRad)%(2*Math.PI);bingoSpinning=false;determinePrize(bingoAngle);}
+  }requestAnimationFrame(animate);
+}
+function determinePrize(angle){
+  const arc=(2*Math.PI)/prizeSegs.length,pointer=(Math.PI*1.5-angle+Math.PI*20)%(2*Math.PI);
+  let acc=0,winner=prizeSegs[0];
+  for(const seg of prizeSegs){if(pointer>=acc&&pointer<acc+arc){winner=seg;break;}acc+=arc;}
+  const res=document.getElementById('prizeResultBingo');
+  res.innerHTML=`🎉 <strong>You won: ${winner.label}!</strong><br><small>Rooval Roofing will contact you to fulfill your prize within 48 hours!</small>`;
+  res.style.background='#d1fae5';res.style.display='block';
+  const wins=parseInt(document.getElementById('statWins').textContent);document.getElementById('statWins').textContent=wins+1;
+  showConfetti();
+  setTimeout(()=>{document.getElementById('prizeWheelOverlay').classList.remove('show');},5000);
+}
+
+// ── SCRATCH CARD ──
+const scratchPrizes=['🎁 +1 Bonus Number!','🎁 +2 Bonus Numbers!','⭐ +1 Number!','🎉 Double Spin!','🏠 +1 Number!'];
+function openScratch(){document.getElementById('scratchSurface').classList.remove('revealed');document.getElementById('scratchCloseBtn').style.display='none';document.getElementById('scratchModal').classList.add('show');}
+function revealScratch(){
+  const prize=scratchPrizes[Math.floor(Math.random()*scratchPrizes.length)];
+  document.getElementById('scratchPrize').textContent=prize;
+  document.getElementById('scratchSurface').classList.add('revealed');
+  document.getElementById('scratchCloseBtn').style.display='block';
+  showConfetti();
+  const b=parseInt(document.getElementById('statBonus').textContent);document.getElementById('statBonus').textContent=b+1;
+  const n=Math.floor(Math.random()*75)+1;recentCalled.unshift(n);calledNumbers.add(n);
+  buildRecentNumbers();buildBingoGrid();
+}
+function closeScratch(){document.getElementById('scratchModal').classList.remove('show');document.getElementById('scratchBanner').style.display='none';}
 
 // ── CONFETTI ──
 function showConfetti(){
-  const colors=['#c0392b','#f39c12','#f9ca24','#27ae60','#2c3e50','#e67e22'];
+  const colors=['#c0392b','#f39c12','#f9ca24','#27ae60','#2c3e50','#e67e22','#8e44ad'];
   for(let i=0;i<60;i++){
-    const el=document.createElement('div'); el.className='confetti-piece';
-    el.style.left=Math.random()*100+'vw'; el.style.top='-20px';
+    const el=document.createElement('div');el.className='confetti-piece';
+    el.style.left=Math.random()*100+'vw';el.style.top='-20px';
     el.style.background=colors[Math.floor(Math.random()*colors.length)];
-    el.style.animationDelay=Math.random()*1.5+'s';
-    el.style.animationDuration=(2+Math.random()*2)+'s';
-    document.body.appendChild(el); setTimeout(()=>el.remove(),4000);
+    el.style.animationDelay=Math.random()*1.5+'s';el.style.animationDuration=(2+Math.random()*2)+'s';
+    document.body.appendChild(el);setTimeout(()=>el.remove(),4000);
   }
 }
 
 // ── ADMIN ──
 function buildAdminTables(){
   const ab=document.getElementById('agentsBody');
-  if(ab) ab.innerHTML=agentsData.map(a=>`<tr>
-    <td><strong>${a.name}</strong></td><td style="color:var(--muted)">${a.email}</td>
-    <td><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;background:#e8e8e8;border-radius:99px;height:5px"><div style="width:${Math.min(a.progress/25*100,100)}%;background:var(--red);height:5px;border-radius:99px"></div></div><span style="font-size:0.78rem;color:var(--muted)">${a.progress}/25</span></div></td>
-    <td style="color:var(--muted)">${a.active}</td>
-    <td>${a.status==='bingo'?'<span class="badge badge-green">🎉 BINGO</span>':a.status==='active'?'<span class="badge badge-blue">Active</span>':'<span class="badge badge-red">Inactive</span>'}</td>
-  </tr>`).join('');
-
+  if(ab)ab.innerHTML=agentsData.map(a=>{
+    const tier=getTier(a.referrals);
+    return `<tr>
+      <td><strong>${a.name}</strong></td><td style="color:var(--muted);font-size:.78rem">${a.email}</td>
+      <td><span class="tier-badge ${tier.cls}" style="font-size:.62rem">${tier.icon} ${tier.name}</span></td>
+      <td><div style="display:flex;align-items:center;gap:7px"><div style="flex:1;background:#e8e8e8;border-radius:99px;height:5px"><div style="width:${Math.min(a.progress/25*100,100)}%;background:var(--red);height:5px;border-radius:99px"></div></div><span style="font-size:.75rem;color:var(--muted)">${a.progress}/25</span></div></td>
+      <td>🔥 ${a.streak}wk</td>
+      <td>${a.status==='bingo'?'<span class="badge badge-green">🎉 BINGO</span>':a.status==='active'?'<span class="badge badge-blue">Active</span>':'<span class="badge badge-red">Inactive</span>'}</td>
+    </tr>`;}).join('');
   const pb=document.getElementById('prizesBody');
-  if(pb) pb.innerHTML=prizesData.map((p,i)=>`<tr>
-    <td><strong>${p.agent}</strong></td><td>${p.prize}</td><td>${p.won}</td>
-    <td><span class="badge ${p.type==='Cash'?'badge-green':'badge-blue'}">${p.type}</span></td>
-    <td>${p.fulfilled?'<span class="badge badge-green">✓ Done</span>':'<span class="badge badge-yellow">Pending</span>'}</td>
-    <td><button class="fulfill-btn" ${p.fulfilled?'disabled':''} onclick="fulfillPrize(${i})">${p.fulfilled?'Done':'Mark Fulfilled'}</button></td>
-  </tr>`).join('');
-
+  if(pb)pb.innerHTML=prizesData.map((p,i)=>`<tr><td><strong>${p.agent}</strong></td><td>${p.prize}</td><td>${p.won}</td><td><span class="badge ${p.type==='Cash'?'badge-green':'badge-blue'}">${p.type}</span></td><td>${p.fulfilled?'<span class="badge badge-green">✓ Done</span>':'<span class="badge badge-yellow">Pending</span>'}</td><td><button class="fulfill-btn" ${p.fulfilled?'disabled':''} onclick="fulfillPrize(${i})">${p.fulfilled?'Done':'Mark Fulfilled'}</button></td></tr>`).join('');
   const rb=document.getElementById('referralsBody');
-  if(rb) rb.innerHTML=referralsData.map(r=>`<tr>
-    <td><strong>${r.agent}</strong></td><td>${r.client}</td><td>${r.date}</td>
-    <td><span class="badge badge-blue">${r.bonus}</span></td>
-    <td>${r.status==='approved'?'<span class="badge badge-green">✓ Approved</span>':'<span class="badge badge-yellow">Pending</span>'}</td>
-  </tr>`).join('');
+  if(rb)rb.innerHTML=referralsData.map(r=>`<tr><td><strong>${r.agent}</strong></td><td>${r.client}</td><td>${r.date}</td><td>${r.issue}</td><td>${r.status==='closed'?'<span class="badge badge-green">✅ Closed</span>':r.status==='scheduled'?'<span class="badge badge-blue">📅 Scheduled</span>':'<span class="badge badge-yellow">Pending</span>'}</td></tr>`).join('');
+  const ac=document.getElementById('aomCandidates');
+  if(ac)ac.innerHTML=agentsData.filter(a=>a.referrals>=3).map(a=>{
+    const tier=getTier(a.referrals);
+    return `<div style="display:flex;align-items:center;gap:12px;padding:13px;background:#fafafa;border-radius:11px;border:2px solid #e8e8e8;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='#e8e8e8'" onclick="crownAOM('${a.name}')">
+      <div style="width:40px;height:40px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1rem">${a.name[0]}</div>
+      <div><div style="font-weight:700">${a.name}</div><div style="font-size:.75rem;color:var(--muted)">${tier.icon} ${tier.name} · ${a.referrals} referrals · 🔥 ${a.streak}wk streak</div></div>
+      <button style="margin-left:auto;padding:6px 14px;background:linear-gradient(135deg,var(--gold),#e67e22);color:var(--dark);border:none;border-radius:20px;font-size:.76rem;font-weight:800;cursor:pointer">👑 Crown</button>
+    </div>`;}).join('');
 }
+function fulfillPrize(i){prizesData[i].fulfilled=true;buildAdminTables();}
+function crownAOM(name){alert(`👑 ${name} has been crowned Agent of the Month!\n\nAn announcement email will be sent to all 42 agents. 🎉`);}
+function filterAgents(val){document.querySelectorAll('#agentsBody tr').forEach(row=>{row.style.display=row.textContent.toLowerCase().includes(val.toLowerCase())?'':'none';});}
+function switchTab(name,e){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));e.target.classList.add('active');document.getElementById('tab-'+name).classList.add('active');}
 
-function fulfillPrize(i){ prizesData[i].fulfilled=true; buildAdminTables(); }
-
-function filterAgents(val){
-  document.querySelectorAll('#agentsBody tr').forEach(row=>{
-    row.style.display=row.textContent.toLowerCase().includes(val.toLowerCase())?'':'none';
-  });
-}
-
-function switchTab(name,e){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  e.target.classList.add('active');
-  document.getElementById('tab-'+name).classList.add('active');
-}
-
-// ── ACTION MODAL HELPERS ──
-function closeActionModal(id) { document.getElementById(id).classList.remove('show'); }
-
-// Google Review
-function openReviewModal() {
-  const el = document.getElementById('bonus-review');
-  if (el.classList.contains('done')) return;
-  document.getElementById('reviewModal').classList.add('show');
-}
-function confirmReview() {
-  closeActionModal('reviewModal');
-  showTrivia(() => {
-    markBonusDone('review', 1);
-  }, 'review', 1);
-}
-
-// Referral Form
-function openReferralModal() {
-  const el = document.getElementById('bonus-referral');
-  if (el.classList.contains('done')) return;
-  document.getElementById('referralModal').classList.add('show');
-}
-function submitReferral() {
-  const fname = document.getElementById('ref-fname').value.trim();
-  const lname = document.getElementById('ref-lname').value.trim();
-  const phone = document.getElementById('ref-phone').value.trim();
-  if (!fname || !lname || !phone) {
-    alert('Please fill in First Name, Last Name, and Phone Number to submit a referral.');
-    return;
-  }
-  closeActionModal('referralModal');
-  showTrivia(() => {
-    markBonusDone('referral', 2);
-    const ref = parseInt(document.getElementById('statReferrals').textContent);
-    document.getElementById('statReferrals').textContent = ref + 1;
-    // Clear form
-    ['ref-fname','ref-lname','ref-phone','ref-email','ref-address','ref-notes'].forEach(id => {
-      document.getElementById(id).value = '';
-    });
-    document.getElementById('ref-issue').selectedIndex = 0;
-  }, 'referral', 2);
-}
-
-// Facebook Follow
-function openFacebookModal() {
-  const el = document.getElementById('bonus-social');
-  if (el.classList.contains('done')) return;
-  document.getElementById('facebookModal').classList.add('show');
-}
-function confirmFollow() {
-  closeActionModal('facebookModal');
-  showTrivia(() => {
-    markBonusDone('social', 1);
-    document.getElementById('social-badge').textContent = '✓ Done';
-    document.getElementById('social-badge').classList.add('done');
-  }, 'social', 1);
-}
-
-// Shared: mark a bonus item done and award numbers
-function markBonusDone(type, count) {
-  const el = document.getElementById('bonus-' + type);
-  if (!el) return;
-  el.classList.add('done');
-  const badge = el.querySelector('.b-badge');
-  if (badge && type !== 'social') { badge.textContent = '✓ Done'; badge.classList.add('done'); }
-  const desc = el.querySelector('.b-desc');
-  if (desc) desc.textContent = 'Completed — numbers added to your card!';
-  const cur = parseInt(document.getElementById('statBonus').textContent);
-  document.getElementById('statBonus').textContent = cur + count;
-  for (let i = 0; i < count; i++) {
-    const n = Math.floor(Math.random() * 75) + 1;
-    recentCalled.unshift(n);
-    calledNumbers.add(n);
-  }
-  buildRecentNumbers();
-  buildBingoGrid();
-  showConfetti();
-}
-
-buildBingoGrid(); buildRecentNumbers();
+buildBingoGrid();buildRecentNumbers();buildLeaderboard();
 </script>
 </body>
 </html>
